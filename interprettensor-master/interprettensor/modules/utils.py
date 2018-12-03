@@ -74,4 +74,4 @@ class Utils():
         import os
         if not os.path.exists(self.checkpoint_dir):
             os.system('mkdir '+self.checkpoint_dir)
-        save_path = self.saver.save(self.session, self.checkpoint_dir+'/model.ckpt',write_meta_graph=False)
+        save_path = self.saver.save(self.session, self.checkpoint_dir+'/model.ckpt'+str(step),write_meta_graph=False)

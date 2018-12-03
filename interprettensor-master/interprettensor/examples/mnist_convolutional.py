@@ -37,23 +37,22 @@ import scipy.io as sio
 flags = tf.flags
 logging = tf.logging
 
-flags.DEFINE_integer("max_steps", 400,'Number of steps to run trainer.')
+flags.DEFINE_integer("max_steps", 200,'Number of steps to run trainer.')
 flags.DEFINE_integer("batch_size", 10,'Number of steps to run trainer.')
-flags.DEFINE_integer("test_every", 40,'Number of steps to run trainer.')
+flags.DEFINE_integer("test_every", 20,'Number of steps to run trainer.')
 flags.DEFINE_float("learning_rate", 0.01,'Initial learning rate')
 flags.DEFINE_float("dropout", 0.9, 'Keep probability for training dropout.')
 flags.DEFINE_string("data_dir", 'data','Directory for storing data')
 flags.DEFINE_string("summaries_dir", 'mnist_convolutional_logs','Summaries directory')
 flags.DEFINE_boolean("relevance", True,'Compute relevances')
 flags.DEFINE_string("relevance_method", 'simple','relevance methods: simple/epsilon/ww/flat/alphabeta')
-flags.DEFINE_boolean("save_model", False,'Save the trained model')
+flags.DEFINE_boolean("save_model", True,'Save the trained model')
 flags.DEFINE_boolean("reload_model", False,'Restore the trained model')
 #flags.DEFINE_string("checkpoint_dir", 'mnist_convolution_model','Checkpoint dir')
 flags.DEFINE_string("checkpoint_dir", 'mnist_convolutional_model','Checkpoint dir')
 flags.DEFINE_string("checkpoint_reload_dir", 'mnist_convolutional_model','Checkpoint dir')
 
 FLAGS = flags.FLAGS
-
 
 def nn():
     
@@ -84,6 +83,8 @@ def feed_dict(mnist, train):
 def train():
   # Import data
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
+  standard_d = feed_dict(mnist, False)
+
   config = tf.ConfigProto(allow_soft_placement = True)
   config.gpu_options.allow_growth = True
   with tf.Session(config=config) as sess:
@@ -126,7 +127,7 @@ def train():
 
     tf.global_variables_initializer().run()
     
-    #utils = Utils(sess, FLAGS.checkpoint_reload_dir)
+    utils = Utils(sess, FLAGS.checkpoint_reload_dir)
     ''' Reload from a list of numpy arrays '''
     if FLAGS.reload_model:
         tvars = tf.trainable_variables()
@@ -137,6 +138,7 @@ def train():
     for i in range(FLAGS.max_steps):
         if i % FLAGS.test_every == 0:  # test-set accuracy
             d = feed_dict(mnist, False)
+            #test_inp = {x:standard_d[0], y_: standard_d[1], keep_prob: standard_d[2]}
             test_inp = {x:d[0], y_: d[1], keep_prob: d[2]}
             #pdb.set_trace()
             
@@ -152,7 +154,8 @@ def train():
             #pdb.set_trace()
             print('Relevances: ', [np.sum(rel) for rel in rel_layer])
             print(np.sum(relevance_test))
-            
+
+
             # save model if required
             if FLAGS.save_model:
                 utils.save_model()

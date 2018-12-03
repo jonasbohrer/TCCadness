@@ -36,9 +36,9 @@ import pdb
 flags = tf.flags
 logging = tf.logging
 
-flags.DEFINE_integer("max_steps", 3000,'Number of steps to run trainer.')
-flags.DEFINE_integer("batch_size", 100,'Number of steps to run trainer.')
-flags.DEFINE_integer("test_every", 100,'Number of steps to run trainer.')
+flags.DEFINE_integer("max_steps", 200,'Number of steps to run trainer.')
+flags.DEFINE_integer("batch_size", 20,'Number of steps to run trainer.')
+flags.DEFINE_integer("test_every", 20,'Number of steps to run trainer.')
 flags.DEFINE_float("learning_rate", 0.01,'Initial learning rate')
 flags.DEFINE_float("dropout", 0.9, 'Keep probability for training dropout.')
 flags.DEFINE_string("data_dir", 'data','Directory for storing data')
