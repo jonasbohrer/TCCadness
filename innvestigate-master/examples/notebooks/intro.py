@@ -49,7 +49,7 @@ model = keras.models.Sequential([
 ])
 
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-model.fit(data[0], data[1], epochs=1, batch_size=128)
+model.fit(data[0], data[1], epochs=10, batch_size=128)
 
 scores = model.evaluate(data[2], data[3], batch_size=128)
 print("Scores on test set: loss=%s accuracy=%s" % tuple(scores))
@@ -61,4 +61,44 @@ image = data[2][7:8]
 
 plot.imshow(image.squeeze(), cmap='gray', interpolation='nearest')
 plot.show()
+
+# Stripping the softmax activation from the model
+model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
+
+# Creating an analyzer
+gradient_analyzer = innvestigate.analyzer.Gradient(model_wo_sm)
+
+# Applying the analyzer
+analysis = gradient_analyzer.analyze(image)
+
+# Displaying the gradient
+plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
+plot.show()
+
+# Creating an analyzer
+gradient_analyzer = innvestigate.create_analyzer("gradient", model_wo_sm)
+
+# Applying the analyzer
+analysis = gradient_analyzer.analyze(image)
+
+# Displaying the gradient
+plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
+plot.show()
+
+# Creating a parameterized analyzer
+abs_gradient_analyzer = innvestigate.create_analyzer("gradient", model_wo_sm, postprocess="abs")
+square_gradient_analyzer = innvestigate.create_analyzer("gradient", model_wo_sm, postprocess="square")
+
+# Creating an analyzer
+patternnet_analyzer = innvestigate.create_analyzer("pattern.net", model_wo_sm, pattern_type="relu")
+
+# Train (or adapt) the analyzer to the training data
+patternnet_analyzer.fit(data[0], verbose=True)
+
+# Applying the analyzer
+analysis = patternnet_analyzer.analyze(image)
+
+# Creating an analyzer and set neuron_selection_mode to "index"
+inputXgradient_analyzer = innvestigate.create_analyzer("input_t_gradient", model_wo_sm,
+                                                       neuron_selection_mode="index")
 

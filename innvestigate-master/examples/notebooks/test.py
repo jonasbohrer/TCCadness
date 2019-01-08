@@ -48,23 +48,25 @@ model = keras.models.Sequential([
     keras.layers.Dense(10, activation="softmax"),
 ])
 
+model.load_weights('test_model10.h5')
+
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
+#model.fit(data[0], data[1], epochs=10, batch_size=128)
+
+#scores = model.evaluate(data[2], data[3], batch_size=128)
+#print("Scores on test set: loss=%s accuracy=%s" % tuple(scores))
+
+#model.save('test_model10.h5')
+
 model.fit(data[0], data[1], epochs=10, batch_size=128)
-
-scores = model.evaluate(data[2], data[3], batch_size=128)
-print("Scores on test set: loss=%s accuracy=%s" % tuple(scores))
-
-model.save('test_model10.h5')
-
-model.fit(data[0], data[1], epochs=20, batch_size=128)
 
 scores2 = model.evaluate(data[2], data[3], batch_size=128)
 print("Scores on test set: loss=%s accuracy=%s" % tuple(scores2))
 
 model.save('test_model20.h5')
 
-model.fit(data[0], data[1], epochs=30, batch_size=128)
+model.fit(data[0], data[1], epochs=10, batch_size=128)
 
 scores3 = model.evaluate(data[2], data[3], batch_size=128)
 print("Scores on test set: loss=%s accuracy=%s" % tuple(scores3))
