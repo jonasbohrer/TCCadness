@@ -57,11 +57,14 @@ class Utils():
         self.name = name
         self.session = session
         self.checkpoint_dir = checkpoint_dir
-        if var_list:
-            self.saver = tf.train.Saver(var_list)
-        else:
-            self.saver = tf.train.Saver()
-        
+        try:
+            if var_list:
+                self.saver = tf.train.Saver(var_list)
+            else:
+                self.saver = tf.train.Saver()
+        except:
+            pass
+            
 
     def reload_model(self):
         if self.checkpoint_dir is not None:
