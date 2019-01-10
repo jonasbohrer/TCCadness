@@ -39,7 +39,7 @@ import innvestigate.utils.tests.networks
 ###############################################################################
 
 
-def fetch_data():
+def fetch_data(train_size = 60000, test_size = 10000):
     channels_first = K.image_data_format() == "channels_first"
     # the data, shuffled and split between train and test sets
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -54,7 +54,7 @@ def fetch_data():
     x_train = x_train.astype("float32")
     x_test = x_test.astype("float32")
 
-    return x_train, y_train, x_test, y_test
+    return x_train[0:train_size], y_train[0:train_size], x_test[0:test_size], y_test[0:test_size]
 
 
 def create_preprocessing_f(X, input_range=[0, 1]):

@@ -5,6 +5,7 @@ import imp
 import matplotlib.pyplot as plot
 import numpy as np
 import os, copy
+import imageio
 
 import keras
 import keras.backend
@@ -61,27 +62,44 @@ models = [
 'test_model10.h5',
 ]
 
-for modelname in models:
-    model.load_weights("models/"+modelname)
-    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    scores = model.evaluate(data[2], data[3], batch_size=128)
-    print("Scores on test set for model {}: loss/accuracy={}".format(model, tuple(scores)))
+images = [
+    data[2][7:8],
+    data[2][8:9],
+    data[2][9:10]
+]
 
-    # Choosing a test image for the tutorial:
-    image = data[2][7:8]
+# Choosing a test image for the relevance test:
+i = 0
+for image in images:
+    plot.imshow(image.squeeze(), cmap='gray', interpolation='nearest')
+    plot.savefig("models/figs/original"+str(i)+".png")
 
-    #plot.imshow(image.squeeze(), cmap='gray', interpolation='nearest')
-    #plot.show()
+    # Generate images for every model checkpoint
+    for modelname in models:
+        model.load_weights("models/"+modelname)
 
-    # Stripping the softmax activation from the model
-    model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
+        # Stripping the softmax activation from the model
+        model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
 
-    analyzer = innvestigate.create_analyzer("lrp.z", model_wo_sm, )
-    analysis = analyzer.analyze(image)
-    plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
-    plot.savefig("models/figs/"+modelname.replace(".h5", ".png"))
-    #plot.show()
+        analyzer = innvestigate.create_analyzer("lrp.z", model_wo_sm, )
+        analysis = analyzer.analyze(image)
+        plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
+        plot.savefig("models/figs/fig"+str(i)+"_"+modelname.replace(".h5", ".png"))
 
+    png_dir = 'models/figs/'
+    files = []
+    try:
+        for file_name in os.listdir(png_dir):
+            if file_name.endswith('.png') and file_name.startswith('fig'+str(i)):
+                print (file_name)
+                file_path = os.path.join(png_dir, file_name)
+                files.append(imageio.imread(file_path))
+        
+        imageio.mimsave('models/figs/movie'+str(i)+'.gif', files)
+    except:
+        pass
+
+    i += 1
 
 exit(0)
 

@@ -15,12 +15,18 @@ import keras.utils
 import innvestigate
 import innvestigate.utils as iutils
 
+epochs = 20
+batch_size = 128
+checkpoints = 2 #Number of epochs between each checkpoint
+train_size = 1000
+test_size = 100
+
 # Use utility libraries to focus on relevant iNNvestigate routines.
 mnistutils = imp.load_source("utils_mnist", "utils/utils_mnist.py")
 
 # Load data
 # returns x_train, y_train, x_test, y_test as numpy.ndarray
-data_not_preprocessed = mnistutils.fetch_data()
+data_not_preprocessed = mnistutils.fetch_data(train_size, test_size)
 
 # Create preprocessing functions
 input_range = [-1, 1]
@@ -48,9 +54,6 @@ model = keras.models.Sequential([
 
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-epochs = 10
-batch_size = 128
-checkpoints = 1 #Number of epochs between each checkpoint
 n = 0
 
 while n < epochs:
