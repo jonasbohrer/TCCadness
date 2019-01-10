@@ -16,7 +16,7 @@ import innvestigate
 import innvestigate.utils as iutils
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
-mnistutils = imp.load_source("utils_mnist", "../utils_mnist.py")
+mnistutils = imp.load_source("utils_mnist", "utils/utils_mnist.py")
 
 # Load data
 # returns x_train, y_train, x_test, y_test as numpy.ndarray
@@ -36,9 +36,7 @@ if keras.backend.image_data_format == "channels_first":
     input_shape = (1, 28, 28)
 else:
     input_shape = (28, 28, 1)
-
     
-
 model = keras.models.Sequential([
     keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
     keras.layers.Conv2D(64, (3, 3), activation="relu"),
@@ -48,44 +46,20 @@ model = keras.models.Sequential([
     keras.layers.Dense(10, activation="softmax"),
 ])
 
-model.load_weights('test_model10.h5')
-
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-#model.fit(data[0], data[1], epochs=10, batch_size=128)
+epochs = 10
+batch_size = 128
+checkpoints = 1 #Number of epochs between each checkpoint
+n = 0
 
-#scores = model.evaluate(data[2], data[3], batch_size=128)
-#print("Scores on test set: loss=%s accuracy=%s" % tuple(scores))
+while n < epochs:
+    model.fit(data[0], data[1], epochs=checkpoints, batch_size=batch_size)
+    n +=checkpoints
 
-#model.save('test_model10.h5')
+    scores = model.evaluate(data[2], data[3], batch_size=batch_size)
+    print("Scores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
+    model.save('models/test_model{}.h5'.format(n))
 
-model.fit(data[0], data[1], epochs=10, batch_size=128)
-
-scores2 = model.evaluate(data[2], data[3], batch_size=128)
-print("Scores on test set: loss=%s accuracy=%s" % tuple(scores2))
-
-model.save('test_model20.h5')
-
-model.fit(data[0], data[1], epochs=10, batch_size=128)
-
-scores3 = model.evaluate(data[2], data[3], batch_size=128)
-print("Scores on test set: loss=%s accuracy=%s" % tuple(scores3))
-
-model.save('test_model30.h5')
-
-exit(0)
-
-# Choosing a test image for the tutorial:
-image = data[2][7:8]
-
-plot.imshow(image.squeeze(), cmap='gray', interpolation='nearest')
-plot.show()
-
-# Stripping the softmax activation from the model
-model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
-
-analyzer = innvestigate.create_analyzer("lrp.z", model_wo_sm, )
-analysis = analyzer.analyze(image)
-plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
-
-plot.show()
+    if n+checkpoints > epochs:
+        checkpoints = epochs - n
