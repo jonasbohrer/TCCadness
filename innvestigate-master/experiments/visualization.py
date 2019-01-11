@@ -93,10 +93,11 @@ for image in images:
         for file_path in file_paths:
             print (file_path)
             files.append(imageio.imread(file_path))
+        for n in range(1,10):
+            files.append(files[-1])
         imageio.mimsave('models/figs/movie'+str(i)+'.gif', files)
     except:
         pass
-
     i += 1
 
 exit(0)

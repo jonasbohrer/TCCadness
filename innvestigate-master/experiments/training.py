@@ -18,8 +18,8 @@ import innvestigate.utils as iutils
 epochs = 20
 batch_size = 128
 checkpoints = 1 #Number of epochs between each checkpoint
-train_size = 1000
-test_size = 100
+train_size = 10000
+test_size = 1000
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
 mnistutils = imp.load_source("utils_mnist", "utils/utils_mnist.py")
