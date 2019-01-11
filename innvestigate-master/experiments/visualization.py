@@ -49,23 +49,17 @@ model = keras.models.Sequential([
     keras.layers.Dense(10, activation="softmax"),
 ])
 
-models = [
-'test_model1.h5',
-'test_model2.h5',
-'test_model3.h5',
-'test_model4.h5',
-'test_model5.h5',
-'test_model6.h5',
-'test_model7.h5',
-'test_model8.h5',
-'test_model9.h5',
-'test_model10.h5',
-]
+models_dir = 'models/'
+models = []
+for file_name in os.listdir(models_dir):
+    if file_name.endswith('.h5'):
+        print (file_name)
+        models.append(file_name)
 
 images = [
     data[2][7:8],
-    data[2][8:9],
-    data[2][9:10]
+    data[2][80:81],
+    data[2][90:91]
 ]
 
 # Choosing a test image for the relevance test:
@@ -88,13 +82,17 @@ for image in images:
 
     png_dir = 'models/figs/'
     files = []
+    files = [imageio.imread(png_dir+"original"+str(i)+".png")]*5
+    file_paths = []
     try:
         for file_name in os.listdir(png_dir):
             if file_name.endswith('.png') and file_name.startswith('fig'+str(i)):
-                print (file_name)
                 file_path = os.path.join(png_dir, file_name)
-                files.append(imageio.imread(file_path))
-        
+                file_paths.append(file_path)
+        file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
+        for file_path in file_paths:
+            print (file_path)
+            files.append(imageio.imread(file_path))
         imageio.mimsave('models/figs/movie'+str(i)+'.gif', files)
     except:
         pass

@@ -17,7 +17,7 @@ import innvestigate.utils as iutils
 
 epochs = 20
 batch_size = 128
-checkpoints = 2 #Number of epochs between each checkpoint
+checkpoints = 1 #Number of epochs between each checkpoint
 train_size = 1000
 test_size = 100
 
