@@ -17,7 +17,7 @@ import innvestigate
 import innvestigate.utils as iutils
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
-mnistutils = imp.load_source("utils_mnist", "utils/utils_mnist.py")
+mnistutils = imp.load_source("utils_mnist", "../utils/utils_mnist.py")
 
 # Load data
 # returns x_train, y_train, x_test, y_test as numpy.ndarray
@@ -38,8 +38,6 @@ if keras.backend.image_data_format == "channels_first":
 else:
     input_shape = (28, 28, 1)
 
-    
-
 model = keras.models.Sequential([
     keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
     keras.layers.Conv2D(64, (3, 3), activation="relu"),
@@ -49,15 +47,29 @@ model = keras.models.Sequential([
     keras.layers.Dense(10, activation="softmax"),
 ])
 
+methods = [ ("lrp.z",                           {},             'imgnetutils.heatmap',    "LRP-Z"),
+            ("lrp.epsilon",                     {"epsilon": 1}, 'imgnetutils.heatmap',    "LRP-Epsilon"),
+            ("lrp.sequential_preset_a_flat",    {"epsilon": 1}, 'imgnetutils.heatmap',    "LRP-PresetAFlat"),
+            ("lrp.sequential_preset_b_flat",    {"epsilon": 1}, 'imgnetutils.heatmap',    "LRP-PresetBFlat")]
+method = methods[1]
+
 models_dir = 'models/'
 models = []
 for file_name in os.listdir(models_dir):
     if file_name.endswith('.h5'):
-        print (file_name)
         models.append(file_name)
+models = sorted(models, key=lambda x: (len(x), str.lower(x)))
+print (models)
 
 images = [
     data[2][7:8],
+    data[2][10:11],
+    data[2][20:21],
+    data[2][30:31],
+    data[2][40:41],
+    data[2][50:51],
+    data[2][61:62],
+    data[2][70:71],
     data[2][80:81],
     data[2][90:91]
 ]
@@ -70,15 +82,18 @@ for image in images:
 
     # Generate images for every model checkpoint
     for modelname in models:
+        print("Generating figs for "+modelname)
         model.load_weights("models/"+modelname)
 
         # Stripping the softmax activation from the model
         model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
 
-        analyzer = innvestigate.create_analyzer("lrp.z", model_wo_sm, )
+        analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
         analysis = analyzer.analyze(image)
+        #print (model.predict(image), model.predict_classes(image))
+
         plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
-        plot.savefig("models/figs/fig"+str(i)+"_"+modelname.replace(".h5", ".png"))
+        plot.savefig("models/figs/fig"+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
 
     png_dir = 'models/figs/'
     files = []
@@ -91,10 +106,10 @@ for image in images:
                 file_paths.append(file_path)
         file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
         for file_path in file_paths:
-            print (file_path)
             files.append(imageio.imread(file_path))
         for n in range(1,10):
             files.append(files[-1])
+        print('generated models/figs/movie'+str(i)+'.gif')
         imageio.mimsave('models/figs/movie'+str(i)+'.gif', files)
     except:
         pass

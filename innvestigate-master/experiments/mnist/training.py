@@ -22,7 +22,7 @@ train_size = 10000
 test_size = 1000
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
-mnistutils = imp.load_source("utils_mnist", "utils/utils_mnist.py")
+mnistutils = imp.load_source("utils_mnist", "../utils/utils_mnist.py")
 
 # Load data
 # returns x_train, y_train, x_test, y_test as numpy.ndarray
