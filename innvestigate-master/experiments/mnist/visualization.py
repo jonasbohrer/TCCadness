@@ -39,8 +39,8 @@ else:
     input_shape = (28, 28, 1)
 
 model = keras.models.Sequential([
-    keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
-    keras.layers.Conv2D(64, (3, 3), activation="relu"),
+    keras.layers.Conv2D(20, (3, 3), activation="relu", input_shape=input_shape),
+    keras.layers.Conv2D(40, (3, 3), activation="relu"),
     keras.layers.MaxPooling2D((2, 2)),
     keras.layers.Flatten(),
     keras.layers.Dense(512, activation="relu"),
