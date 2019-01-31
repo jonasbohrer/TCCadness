@@ -92,4 +92,14 @@ for generation in range (1, generations+1):
     for individual in population:
         print(" Applying lrp to individual {0}".format(str(individual)))
 
+        model_wo_sm = iutils.keras.graph.model_wo_softmax(individual)
+
+        analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
+        analysis = analyzer.analyze(image)
+        #print (model.predict(image), model.predict_classes(image))
+
+        #plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
+        #plot.savefig("models/figs/fig"+str(i)+"_pred"+str(individual.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+        analysis.
+
     print("  Sorting, conserving elite and applying crossovers to the rest")

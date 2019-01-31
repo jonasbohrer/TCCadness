@@ -4,7 +4,7 @@ warnings.simplefilter('ignore')
 import imp
 import matplotlib.pyplot as plot
 import numpy as np
-import os, copy
+import os, copy, sys
 import imageio
 
 import keras
@@ -39,21 +39,40 @@ else:
     input_shape = (28, 28, 1)
 
 model = keras.models.Sequential([
-    keras.layers.Conv2D(20, (3, 3), activation="relu", input_shape=input_shape),
-    keras.layers.Conv2D(40, (3, 3), activation="relu"),
+    keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
+    keras.layers.MaxPooling2D((2, 2)),
+    keras.layers.Conv2D(32, (3, 3), activation="relu"),
     keras.layers.MaxPooling2D((2, 2)),
     keras.layers.Flatten(),
     keras.layers.Dense(512, activation="relu"),
     keras.layers.Dense(10, activation="softmax"),
 ])
 
-methods = [ ("lrp.z",                           {},             'imgnetutils.heatmap',    "LRP-Z"),
-            ("lrp.epsilon",                     {"epsilon": 1}, 'imgnetutils.heatmap',    "LRP-Epsilon"),
-            ("lrp.sequential_preset_a_flat",    {"epsilon": 1}, 'imgnetutils.heatmap',    "LRP-PresetAFlat"),
-            ("lrp.sequential_preset_b_flat",    {"epsilon": 1}, 'imgnetutils.heatmap',    "LRP-PresetBFlat")]
-method = methods[1]
+methods = [ ("lrp.z",                           {},             mnistutils.heatmap,    "LRP-Z"),
+            ("lrp.epsilon",                     {"epsilon": 1}, mnistutils.heatmap,    "LRP-Epsilon"),
+            ("lrp.sequential_preset_a_flat",    {"epsilon": 1}, mnistutils.heatmap,    "LRP-PresetAFlat"),
+            ("lrp.sequential_preset_b_flat",    {"epsilon": 1}, mnistutils.heatmap,    "LRP-PresetBFlat"),
+            ("lrp.alpha_2_beta_1",              {},             mnistutils.heatmap,    "LRP-PresetAlpha2Beta1"),
+            ("lrp.alpha_2_beta_1_IB",           {},             mnistutils.heatmap,    "LRP-PresetAlpha2Beta1IB"),
+            ("lrp.sequential_preset_a_flat",    {"epsilon": 1}, mnistutils.heatmap,    "LRP-PresetAFlat"),
+            ("lrp.sequential_preset_b_flat",    {"epsilon": 1}, mnistutils.heatmap,    "LRP-PresetBFlat")]
+            
+method_n = int(sys.argv[1]) if sys.argv[1] != None else 6
+analysis_mode = "all"
+
+method = methods[method_n]
+print ("Using {}".format(method[3]))
 
 models_dir = 'models/'
+figs_dir = models_dir+'figs/'+method[3]+'/'
+
+if not os.path.exists(os.path.dirname(figs_dir)):
+    try:
+        os.makedirs(os.path.dirname(figs_dir))
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+
 models = []
 for file_name in os.listdir(models_dir):
     if file_name.endswith('.h5'):
@@ -78,39 +97,58 @@ images = [
 i = 0
 for image in images:
     plot.imshow(image.squeeze(), cmap='gray', interpolation='nearest')
-    plot.savefig("models/figs/original"+str(i)+".png")
+    plot.savefig(figs_dir+"/original"+str(i)+".png")
 
     # Generate images for every model checkpoint
     for modelname in models:
-        print("Generating figs for "+modelname)
-        model.load_weights("models/"+modelname)
+        if analysis_mode == "all":
+            print("Generating figs for "+modelname)
+            model.load_weights(models_dir+modelname)
 
-        # Stripping the softmax activation from the model
-        model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
+            # Stripping the softmax activation from the model
+            model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
 
-        analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
-        analysis = analyzer.analyze(image)
-        #print (model.predict(image), model.predict_classes(image))
+            analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1], neuron_selection_mode="index")
 
-        plot.imshow(analysis.squeeze(), cmap='seismic', interpolation='nearest')
-        plot.savefig("models/figs/fig"+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+            for output_node in [0,1,2,3,4,5,6,7,8,9]:
+                analysis = analyzer.analyze(image, output_node)
+                processed_analysis = mnistutils.postprocess(analysis)
+                processed_analysis = method[2](processed_analysis)
+                #print (model.predict(image), model.predict_classes(image))
+                plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')      
+                plot.savefig(figs_dir+'fig'+str(i)+"_rel"+str(output_node)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+            exit(0)
+        else:
+            print("Generating figs for "+modelname)
+            model.load_weights(models_dir+modelname)
 
-    png_dir = 'models/figs/'
+            # Stripping the softmax activation from the model
+            model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
+
+            analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
+            analysis = analyzer.analyze(image)
+            processed_analysis = mnistutils.postprocess(analysis)
+            processed_analysis = method[2](processed_analysis)
+            #print (model.predict(image), model.predict_classes(image))
+            plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')      
+            plot.savefig(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+
     files = []
-    files = [imageio.imread(png_dir+"original"+str(i)+".png")]*5
+    files = [imageio.imread(figs_dir+"original"+str(i)+".png")]*5
     file_paths = []
+    print (os.listdir(figs_dir))
     try:
-        for file_name in os.listdir(png_dir):
+        for file_name in os.listdir(figs_dir):
             if file_name.endswith('.png') and file_name.startswith('fig'+str(i)):
-                file_path = os.path.join(png_dir, file_name)
+                file_path = os.path.join(figs_dir, file_name)
                 file_paths.append(file_path)
         file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
         for file_path in file_paths:
             files.append(imageio.imread(file_path))
         for n in range(1,10):
             files.append(files[-1])
-        print('generated models/figs/movie'+str(i)+'.gif')
-        imageio.mimsave('models/figs/movie'+str(i)+'.gif', files)
+        print('generated '+figs_dir+'movie'+str(i)+'.gif')
+        imageio.mimsave(figs_dir+'movie'+str(i)+'.gif', files)
     except:
         pass
     i += 1

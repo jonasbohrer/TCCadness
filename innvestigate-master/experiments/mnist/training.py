@@ -18,8 +18,8 @@ import innvestigate.utils as iutils
 epochs = 20
 batch_size = 128
 checkpoints = 1 #Number of epochs between each checkpoint
-train_size = 10000
-test_size = 1000
+train_size = 60000
+test_size = 6000
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
 mnistutils = imp.load_source("utils_mnist", "../utils/utils_mnist.py")
@@ -45,7 +45,8 @@ else:
     
 model = keras.models.Sequential([
     keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
-    keras.layers.Conv2D(64, (3, 3), activation="relu"),
+    keras.layers.MaxPooling2D((2, 2)),
+    keras.layers.Conv2D(32, (3, 3), activation="relu"),
     keras.layers.MaxPooling2D((2, 2)),
     keras.layers.Flatten(),
     keras.layers.Dense(512, activation="relu"),
