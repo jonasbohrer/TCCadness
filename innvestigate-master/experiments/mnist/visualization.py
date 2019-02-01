@@ -21,32 +21,44 @@ def join_images(images):
     #images = map(Image.open, ['Test1.jpg', 'Test2.jpg', 'Test3.jpg'])
     widths, heights = zip(*(i.size for i in images))
 
-    total_width = sum(widths)
-    max_height = max(heights)
+    total_height = sum(heights)
+    max_width = max(widths)
 
-    new_im = Image.new('RGB', (total_width, max_height))
+    new_im = Image.new('RGB', (max_width, total_height))
 
-    x_offset = 0
+    y_offset = 0
     for im in images:
-        new_im.paste(im, (x_offset,0))
-        x_offset += im.size[0]
+        new_im.paste(im, (0, y_offset))
+        y_offset += im.size[1]
         
     return new_im
 
-def concat_images(imga, imgb):
+def concat_images(imga, imgb, orientation='horizontal'):
     """
     Combines two color image ndarrays side-by-side.
     """
-    ha,wa = imga.shape[1:3]
-    hb,wb = imgb.shape[1:3]
-    max_height = np.max([ha, hb])
-    total_width = wa+wb
-    new_img = np.zeros(shape=(1, max_height, total_width, 3))
-    new_img[0,:ha,:wa]=imga
-    new_img[0,:hb,wa:wa+wb]=imgb
-    return new_img
+    if orientation == 'horizontal':
+        ha,wa = imga.shape[1:3]
+        hb,wb = imgb.shape[1:3]
+        max_height = np.max([ha, hb])
+        total_width = wa+wb
+        new_img = np.zeros(shape=(1, max_height, total_width, 3))
+        new_img[0,:ha,:wa]=imga
+        new_img[0,:hb,wa:wa+wb]=imgb
+        return new_img
+    elif orientation == 'vertical':
+        ha,wa = imga.shape[1:3]
+        hb,wb = imgb.shape[1:3]
+        max_width = np.max([wa, wb])
+        total_height = ha+hb
+        new_img = np.zeros(shape=(1, total_height, max_width, 3))
+        new_img[0,:ha,:wa]=imga
+        new_img[0,:hb,wa:wa+wb]=imgb
+        return new_img
+    else:
+        return None
 
-def concat_n_images(images):
+def concat_n_images(images, orientation='horizontal'):
     """
     Combines N color images from a list of image paths.
     """
@@ -55,8 +67,60 @@ def concat_n_images(images):
         if i==0:
             output = img
         else:
-            output = concat_images(output, img)
+            output = concat_images(output, img, orientation)
     return output
+
+def generate_gifs(i, figs_dir, model, image):
+
+    files = []
+    #files = [imageio.imread(figs_dir+'fig'+str(i)+"_original.png")]*5
+    file_paths = []
+    #print (os.listdir(figs_dir))
+    try:
+        for file_name in os.listdir(figs_dir):
+            if file_name.endswith('.png') and file_name.startswith('fig'+str(i)+'_pred'):
+                file_path = os.path.join(figs_dir, file_name)
+                file_paths.append(file_path)
+        file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
+        for file_path in file_paths:
+            files.append(imageio.imread(file_path))
+        for n in range(1,10):
+            files.append(files[-1])
+        print('generated '+figs_dir+'movie'+str(i)+'.gif')
+        imageio.mimsave(figs_dir+'movie'+str(i)+"_pred_"+str(model.predict_classes(image))+'_'+str(max(model.predict(image)[0]))+'.gif', files)
+    except:
+        pass
+
+def join_gifs(figs_dir, models, method):
+
+    movie = []
+    for modelname in models:
+        file_paths = []
+        files = []
+        for file_name in os.listdir(figs_dir):
+            if file_name.endswith(modelname.replace(".h5", ".png")) and file_name.startswith('fig'):
+                file_path = os.path.join(figs_dir, file_name)
+                file_paths.append(file_path)
+        file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
+        for file_path in file_paths:
+            files.append(Image.open(file_path))
+        join_images(files).save(figs_dir+'movie_'+modelname.replace(".h5", ".png"))
+
+    file_paths = []
+    files = []
+    for file_name in os.listdir(figs_dir):
+        if file_name.endswith(".png") and file_name.startswith('movie_'):
+            file_path = os.path.join(figs_dir, file_name)
+            file_paths.append(file_path)
+    file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
+    for file_path in file_paths:
+        files.append(imageio.imread(file_path))
+    print(len(files))
+    for n in range(1,10):
+        files.append(files[-1])
+    print('generated '+figs_dir+'movie.gif')
+    imageio.mimsave(figs_dir+'movie.gif', files)
+    imageio.mimsave(figs_dir+"/../"+method[3]+'.gif', files)
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
 mnistutils = imp.load_source("utils_mnist", "../utils/utils_mnist.py")
@@ -109,7 +173,6 @@ model = keras.models.Sequential([
     keras.layers.Dense(10, activation="softmax"),
 ])
 
-
 models = []
 for file_name in os.listdir(models_dir):
     if file_name.endswith('.h5'):
@@ -125,88 +188,64 @@ if not os.path.exists(os.path.dirname(figs_dir)):
             raise
 
 images = [
-    data[2][7:8],
-    #data[2][10:11],
-    #data[2][20:21],
-    #data[2][30:31],
-    #data[2][40:41],
-    #data[2][50:51],
-   # data[2][61:62],
-    #data[2][70:71],
-    #data[2][80:81],
-    #data[2][90:91]
+    data[2][10:11], #0
+    data[2][40:41], #1
+    data[2][43:44], #2
+    data[2][30:31], #3
+    #data[2][90:91], #3
+    data[2][42:43], #4
+    data[2][45:46], #5
+    data[2][50:51], #6
+    data[2][70:71], #7
+    #data[2][80:81], #7
+    data[2][61:62], #8
+    data[2][20:21], #9
+    #data[2][7:8], #9
 ]
 
 # Choosing a test image for the relevance test:
 i = 0
+
 for image in images:
-    plot.imshow(image.squeeze(), cmap='gray', interpolation='nearest')
-    plot.savefig(figs_dir+"/original"+str(i)+".png")
-    """if analysis_mode == "all":
-        imgs = [Image.open(figs_dir+"original"+str(i)+".png")]*len(output_nodes)
-        join_images(imgs).save(figs_dir+"original"+str(i)+".png")
-        exit(0)"""
+    original = mnistutils.bk_proj(mnistutils.postprocess(image))
+    #if analysis_mode == "all":
+    #    original = concat_n_images([original]*len(output_nodes))
+    Image.fromarray(np.uint8(original[0]*255)).save(figs_dir+'fig'+str(i)+"_original.png")
 
     # Generate images for every model checkpoint
     for modelname in models:
+        print("Generating figs for "+modelname)
+        model.load_weights(models_dir+modelname)
+
+        # Stripping the softmax activation from the model
+        model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
         if analysis_mode == "all":
-            print("Generating figs for "+modelname)
-            model.load_weights(models_dir+modelname)
-
-            # Stripping the softmax activation from the model
-            model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
-
             analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1], neuron_selection_mode="index")
-
-#  images = map(Image.open, ['Test1.jpg', 'Test2.jpg', 'Test3.jpg'])
-            lrp_images = []
+            lrp_images = [original]
             for output_node in output_nodes:
                 analysis = analyzer.analyze(image, output_node)
                 processed_analysis = mnistutils.postprocess(analysis)
                 processed_analysis = method[2](processed_analysis)
-                #print (model.predict(image), model.predict_classes(image))
                 lrp_images.append(processed_analysis)
+                #print (model.predict(image), model.predict_classes(image))
                 #plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')      
                 #plot.savefig(figs_dir+'fig'+str(i)+"_rel"+str(output_node)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
-
-            #join_images(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"), images)
-            imgs = concat_n_images(lrp_images)
-            Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
         else:
-            print("Generating figs for "+modelname)
-            model.load_weights(models_dir+modelname)
-
-            # Stripping the softmax activation from the model
-            model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
-
             analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
             analysis = analyzer.analyze(image)
             processed_analysis = mnistutils.postprocess(analysis)
             processed_analysis = method[2](processed_analysis)
             #print (model.predict(image), model.predict_classes(image))
-            plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')      
-            plot.savefig(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+            #plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')
+            #plot.savefig(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+            lrp_images = [original, processed_analysis]
+        imgs = concat_n_images(lrp_images)
+        Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
 
-    files = []
-    if analysis_mode != "all":
-        files = [imageio.imread(figs_dir+"original"+str(i)+".png")]*5
-    file_paths = []
-    print (os.listdir(figs_dir))
-    try:
-        for file_name in os.listdir(figs_dir):
-            if file_name.endswith('.png') and file_name.startswith('fig'+str(i)):
-                file_path = os.path.join(figs_dir, file_name)
-                file_paths.append(file_path)
-        file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
-        for file_path in file_paths:
-            files.append(imageio.imread(file_path))
-        for n in range(1,10):
-            files.append(files[-1])
-        print('generated '+figs_dir+'movie'+str(i)+'.gif')
-        imageio.mimsave(figs_dir+'movie'+str(i)+'.gif', files)
-    except:
-        pass
+    generate_gifs(i, figs_dir, model, image)
     i += 1
+
+join_gifs(figs_dir, models, method)
 
 exit(0)
 
