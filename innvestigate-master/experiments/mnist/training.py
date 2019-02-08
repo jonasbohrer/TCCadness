@@ -17,19 +17,19 @@ import innvestigate.utils as iutils
 
 def create_model():
 
-    """keras.models.Sequential([
+    model = keras.models.Sequential([
             keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
             keras.layers.MaxPooling2D((2, 2)),
-            keras.layers.Conv2D(32, (3, 3), activation="relu"),
+            keras.layers.Conv2D(16, (3, 3), activation="relu"),
             keras.layers.MaxPooling2D((2, 2)),
             keras.layers.Flatten(),
-            keras.layers.Dense(512, activation="relu"),
+            keras.layers.Dense(256, activation="relu"),
             keras.layers.Dense(10, activation="softmax"),
             ])
 
-    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])"""
+    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-    model = keras.models.Sequential()
+    """    model = keras.models.Sequential()
     model.add(keras.layers.Conv2D(10,
         kernel_size=(3, 3),
         activation='relu',
@@ -37,18 +37,28 @@ def create_model():
         bias_initializer=keras.initializers.RandomUniform(),
         input_shape=(28,28,1)))
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(keras.layers.Conv2D(10,
+        kernel_size=(3, 3),
+        activation='relu',
+        kernel_initializer=keras.initializers.RandomUniform(),
+        bias_initializer=keras.initializers.RandomUniform()))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
     model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(100,
+        kernel_initializer=keras.initializers.RandomUniform(),
+        bias_initializer=keras.initializers.RandomUniform(),
+        activation='relu'))
     model.add(keras.layers.Dense(10,
         kernel_initializer=keras.initializers.RandomUniform(),
         bias_initializer=keras.initializers.RandomUniform(),
         activation='softmax'))
     model.compile(loss=keras.losses.categorical_crossentropy,
         optimizer=keras.optimizers.SGD(momentum=0.1, lr=0.005),
-        metrics=['accuracy'])
+        metrics=['accuracy'])"""
 
     return model
 
-epochs = 5
+epochs = 20
 batch_size = 128
 checkpoints = 1 #Number of epochs between each checkpoint
 train_size = 60000
