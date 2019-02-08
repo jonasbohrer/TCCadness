@@ -120,7 +120,48 @@ def join_gifs(figs_dir, models, method):
         files.append(files[-1])
     print('generated '+figs_dir+'movie.gif')
     imageio.mimsave(figs_dir+'movie.gif', files)
-    imageio.mimsave(figs_dir+"/../"+method[3]+'.gif', files)
+    imageio.mimsave(figs_dir+"/../../"+method[3]+'.gif', files)
+
+def create_model():
+
+    """keras.models.Sequential([
+            keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
+            keras.layers.MaxPooling2D((2, 2)),
+            keras.layers.Conv2D(32, (3, 3), activation="relu"),
+            keras.layers.MaxPooling2D((2, 2)),
+            keras.layers.Flatten(),
+            keras.layers.Dense(512, activation="relu"),
+            keras.layers.Dense(10, activation="softmax"),
+            ])
+
+    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])]"""
+
+    model = keras.models.Sequential()
+    model.add(keras.layers.Conv2D(10,
+        kernel_size=(3, 3),
+        activation='relu',
+        kernel_initializer=keras.initializers.RandomUniform(),
+        bias_initializer=keras.initializers.RandomUniform(),
+        input_shape=(28,28,1)))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10,
+        kernel_initializer=keras.initializers.RandomUniform(),
+        bias_initializer=keras.initializers.RandomUniform(),
+        activation='softmax'))
+    model.compile(loss=keras.losses.categorical_crossentropy,
+        optimizer=keras.optimizers.SGD(momentum=0.1, lr=0.005),
+        metrics=['accuracy'])
+
+    return model
+
+def get_models():
+    models = []
+    for file_name in os.listdir(models_dir):
+        if file_name.endswith('.h5'):
+            models.append(file_name)
+    models = sorted(models, key=lambda x: (len(x), str.lower(x)))
+    return (models)
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
 mnistutils = imp.load_source("utils_mnist", "../utils/utils_mnist.py")
@@ -153,32 +194,19 @@ methods = [ ("lrp.z",                           {},             mnistutils.heatm
             ("lrp.sequential_preset_a_flat",    {"epsilon": 1}, mnistutils.heatmap,    "LRP-PresetAFlat"),
             ("lrp.sequential_preset_b_flat",    {"epsilon": 1}, mnistutils.heatmap,    "LRP-PresetBFlat")]
             
-method_n = int(sys.argv[1]) if sys.argv[1] != None else 6
+modelfilename = sys.argv[1] if sys.argv[1] != None else "test_model"
+method_n = int(sys.argv[2]) if sys.argv[2] != None else 6
 
 method = methods[method_n]
 print ("Using {}".format(method[3]))
 
 output_nodes = [0,1,2,3,4,5,6,7,8,9]
 analysis_mode = "all"
-models_dir = 'models/'
+models_dir = 'models/'+modelfilename+'/'
 figs_dir = models_dir+'figs/'+method[3]+'/'
 
-model = keras.models.Sequential([
-    keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
-    keras.layers.MaxPooling2D((2, 2)),
-    keras.layers.Conv2D(32, (3, 3), activation="relu"),
-    keras.layers.MaxPooling2D((2, 2)),
-    keras.layers.Flatten(),
-    keras.layers.Dense(512, activation="relu"),
-    keras.layers.Dense(10, activation="softmax"),
-])
-
-models = []
-for file_name in os.listdir(models_dir):
-    if file_name.endswith('.h5'):
-        models.append(file_name)
-models = sorted(models, key=lambda x: (len(x), str.lower(x)))
-print (models)
+model = create_model()
+models = get_models()
 
 if not os.path.exists(os.path.dirname(figs_dir)):
     try:

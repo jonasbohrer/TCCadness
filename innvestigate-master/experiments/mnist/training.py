@@ -4,7 +4,7 @@ warnings.simplefilter('ignore')
 import imp
 import matplotlib.pyplot as plot
 import numpy as np
-import os
+import os, sys
 
 import keras
 import keras.backend
@@ -15,11 +15,53 @@ import keras.utils
 import innvestigate
 import innvestigate.utils as iutils
 
-epochs = 20
+def create_model():
+
+    """keras.models.Sequential([
+            keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
+            keras.layers.MaxPooling2D((2, 2)),
+            keras.layers.Conv2D(32, (3, 3), activation="relu"),
+            keras.layers.MaxPooling2D((2, 2)),
+            keras.layers.Flatten(),
+            keras.layers.Dense(512, activation="relu"),
+            keras.layers.Dense(10, activation="softmax"),
+            ])
+
+    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])"""
+
+    model = keras.models.Sequential()
+    model.add(keras.layers.Conv2D(10,
+        kernel_size=(3, 3),
+        activation='relu',
+        kernel_initializer=keras.initializers.RandomUniform(),
+        bias_initializer=keras.initializers.RandomUniform(),
+        input_shape=(28,28,1)))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10,
+        kernel_initializer=keras.initializers.RandomUniform(),
+        bias_initializer=keras.initializers.RandomUniform(),
+        activation='softmax'))
+    model.compile(loss=keras.losses.categorical_crossentropy,
+        optimizer=keras.optimizers.SGD(momentum=0.1, lr=0.005),
+        metrics=['accuracy'])
+
+    return model
+
+epochs = 5
 batch_size = 128
 checkpoints = 1 #Number of epochs between each checkpoint
 train_size = 60000
 test_size = 6000
+modelfilename = sys.argv[1] if sys.argv[1] != None else "test_model"
+
+if not os.path.exists(os.path.dirname('models/'+modelfilename+"/")):
+    try:
+        os.makedirs(os.path.dirname('models/'+modelfilename+"/"))
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+
 
 # Use utility libraries to focus on relevant iNNvestigate routines.
 mnistutils = imp.load_source("utils_mnist", "../utils/utils_mnist.py")
@@ -43,17 +85,11 @@ if keras.backend.image_data_format == "channels_first":
 else:
     input_shape = (28, 28, 1)
     
-model = keras.models.Sequential([
-    keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
-    keras.layers.MaxPooling2D((2, 2)),
-    keras.layers.Conv2D(32, (3, 3), activation="relu"),
-    keras.layers.MaxPooling2D((2, 2)),
-    keras.layers.Flatten(),
-    keras.layers.Dense(512, activation="relu"),
-    keras.layers.Dense(10, activation="softmax"),
-])
+model = create_model()
 
-model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+with open('models/'+modelfilename+"/summary.txt", "w") as text_file:
+    model.summary(print_fn=lambda x: text_file.write(x + '\n'))
+    text_file.write("\nepochs: {}\nbatch_size: {}\ncheckpoints: {}\ntrain_size: {}\ntest_size: {}".format(epochs, batch_size, checkpoints, train_size, test_size))
 
 n = 0
 
@@ -63,7 +99,7 @@ while n < epochs:
 
     scores = model.evaluate(data[2], data[3], batch_size=batch_size)
     print("Scores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
-    model.save('models/test_model{}.h5'.format(n))
+    model.save('models/'+modelfilename+'/checkpoint_{}.h5'.format(n))
 
     if n+checkpoints > epochs:
         checkpoints = epochs - n
