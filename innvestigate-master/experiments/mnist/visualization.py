@@ -215,7 +215,11 @@ for image in images:
     # Generate images for every model checkpoint
     for modelname in models:
         print("Generating figs for "+modelname)
-        model.load_weights(models_dir+modelname)
+
+        try:
+            model.load_weights(models_dir+modelname)
+        except: 
+            model = keras.models.load_model(models_dir+modelname)
 
         # Stripping the softmax activation from the model
         model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
