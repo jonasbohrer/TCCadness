@@ -130,11 +130,11 @@ def create_model():
             keras.layers.Conv2D(16, (3, 3), activation="relu"),
             keras.layers.MaxPooling2D((2, 2)),
             keras.layers.Flatten(),
-            keras.layers.Dense(256, activation="relu"),
+            keras.layers.Dense(128, activation="relu"),
             keras.layers.Dense(10, activation="softmax"),
             ])
 
-    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(lr=0.0002), metrics=["accuracy"])
     """
     model = keras.models.Sequential()
     model.add(keras.layers.Conv2D(10,

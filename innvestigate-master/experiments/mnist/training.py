@@ -23,11 +23,11 @@ def create_model():
             keras.layers.Conv2D(16, (3, 3), activation="relu"),
             keras.layers.MaxPooling2D((2, 2)),
             keras.layers.Flatten(),
-            keras.layers.Dense(256, activation="relu"),
+            keras.layers.Dense(128, activation="relu"),
             keras.layers.Dense(10, activation="softmax"),
             ])
 
-    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(lr=0.0002), metrics=["accuracy"])
 
     """    model = keras.models.Sequential()
     model.add(keras.layers.Conv2D(10,
@@ -101,15 +101,16 @@ with open('models/'+modelfilename+"/summary.txt", "w") as text_file:
     model.summary(print_fn=lambda x: text_file.write(x + '\n'))
     text_file.write("\nepochs: {}\nbatch_size: {}\ncheckpoints: {}\ntrain_size: {}\ntest_size: {}".format(epochs, batch_size, checkpoints, train_size, test_size))
 
-n = 0
+    n = 0
 
-while n < epochs:
-    model.fit(data[0], data[1], epochs=checkpoints, batch_size=batch_size)
-    n +=checkpoints
+    while n < epochs:
+        model.fit(data[0], data[1], epochs=checkpoints, batch_size=batch_size)
+        n +=checkpoints
 
-    scores = model.evaluate(data[2], data[3], batch_size=batch_size)
-    print("Scores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
-    model.save('models/'+modelfilename+'/checkpoint_{}.h5'.format(n))
+        scores = model.evaluate(data[2], data[3], batch_size=batch_size)
+        print("Scores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
+        text_file.write("\nScores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
+        model.save('models/'+modelfilename+'/checkpoint_{}.h5'.format(n))
 
-    if n+checkpoints > epochs:
-        checkpoints = epochs - n
+        if n+checkpoints > epochs:
+            checkpoints = epochs - n

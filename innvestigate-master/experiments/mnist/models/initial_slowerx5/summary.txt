@@ -1,0 +1,47 @@
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1 (Conv2D)            (None, 26, 26, 32)        320       
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 13, 13, 32)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 11, 11, 16)        4624      
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 5, 5, 16)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 400)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 128)               51328     
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                1290      
+=================================================================
+Total params: 57,562
+Trainable params: 57,562
+Non-trainable params: 0
+_________________________________________________________________
+
+epochs: 20
+batch_size: 128
+checkpoints: 1
+train_size: 60000
+test_size: 6000
+Scores on test set for run 1: loss/accuracy=(0.3703256766001383, 0.8885)
+Scores on test set for run 2: loss/accuracy=(0.22296916961669921, 0.9343333338101705)
+Scores on test set for run 3: loss/accuracy=(0.16924676493803661, 0.9513333328564961)
+Scores on test set for run 4: loss/accuracy=(0.13483277215560277, 0.9608333331743876)
+Scores on test set for run 5: loss/accuracy=(0.1136111880938212, 0.9663333336512248)
+Scores on test set for run 6: loss/accuracy=(0.09932848697900772, 0.9696666669845581)
+Scores on test set for run 7: loss/accuracy=(0.08922122804323832, 0.9718333336512248)
+Scores on test set for run 8: loss/accuracy=(0.0815577898422877, 0.9735000003178914)
+Scores on test set for run 9: loss/accuracy=(0.07417325019836425, 0.9756666669845581)
+Scores on test set for run 10: loss/accuracy=(0.07308578397830327, 0.9761666669845581)
+Scores on test set for run 11: loss/accuracy=(0.06740157560507457, 0.9775000003178914)
+Scores on test set for run 12: loss/accuracy=(0.06666489428281784, 0.9773333336512248)
+Scores on test set for run 13: loss/accuracy=(0.0619362980723381, 0.9791666663487752)
+Scores on test set for run 14: loss/accuracy=(0.06310665402809779, 0.9783333336512248)
+Scores on test set for run 15: loss/accuracy=(0.05761630391081174, 0.9808333336512248)
+Scores on test set for run 16: loss/accuracy=(0.05525961085160573, 0.9803333331743876)
+Scores on test set for run 17: loss/accuracy=(0.054193898777167, 0.9803333331743876)
+Scores on test set for run 18: loss/accuracy=(0.053070772687594095, 0.9816666665077209)
+Scores on test set for run 19: loss/accuracy=(0.05282708641886711, 0.9819999996821086)
+Scores on test set for run 20: loss/accuracy=(0.05458759272595247, 0.9816666668256124)
