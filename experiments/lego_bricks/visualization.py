@@ -274,19 +274,15 @@ for image in images:
             for output_node in output_nodes:
                 analysis = analyzer.analyze(image, output_node)
                 processed_analysis = iutils.postprocess_images(analysis)
-                processed_analysis = method[2](processed_analysis, cmap_type=blue_red1)
+                processed_analysis = method[2](processed_analysis, cmap_type="seismic")
                 lrp_images.append(processed_analysis)
-                #print (model.predict(image), model.predict_classes(image))
-                #plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')      
-                #plot.savefig(figs_dir+'fig'+str(i)+"_rel"+str(output_node)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+
         else:
             analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
             analysis = analyzer.analyze(image)
             processed_analysis = iutils.postprocess_images(analysis)
             processed_analysis = method[2](processed_analysis)
-            #print (model.predict(image), model.predict_classes(image))
-            #plot.imshow(processed_analysis.squeeze(), cmap='seismic', interpolation='nearest')
-            #plot.savefig(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+
             lrp_images = [original, processed_analysis]
         imgs = concat_n_images(lrp_images)
         Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
