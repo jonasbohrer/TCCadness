@@ -117,7 +117,9 @@ def join_gifs(figs_dir, models, method):
             file_paths.append(file_path)
     file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
     for file_path in file_paths:
-        files.append(imageio.imread(file_path))
+        img = Image.open(file_path).resize((800,800))
+        files.append(np.array(img))
+        #files.append(imageio.imread(file_path))
     print(len(files))
     for n in range(1,10):
         files.append(files[-1])

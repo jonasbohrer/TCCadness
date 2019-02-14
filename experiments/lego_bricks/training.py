@@ -1,4 +1,4 @@
-import keras
+import keras, os
 import matplotlib.pyplot as plot
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -42,14 +42,52 @@ validation_generator = test_datagen.flow_from_directory(
 #train_generator[batch_n = total/batch_size][1=class][indv; size = batch_size]
 #print(len(validation_generator[0][0][0]))
 
-model.fit_generator(
+"""model.fit_generator(
         train_generator,
         steps_per_epoch=200,
-        epochs=20,
+        epochs=1,
+        validation_data=validation_generator,
+        validation_steps=5)"""
+
+#model.save('test.h5')
+
+modelfilename = 'model1'
+checkpoints = 1
+epochs = 20
+batch_size = 200
+
+if not os.path.exists(os.path.dirname('models/'+modelfilename+"/")):
+    try:
+        os.makedirs(os.path.dirname('models/'+modelfilename+"/"))
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+
+with open('models/'+modelfilename+"/summary.txt", "w") as text_file:
+    model.summary(print_fn=lambda x: text_file.write(x + '\n'))
+    #text_file.write("\nepochs: {}\nbatch_size: {}\ncheckpoints: {}\ntrain_size: {}\ntest_size: {}".format(epochs, batch_size, checkpoints, train_size, test_size))
+
+    n = 0
+
+
+    while n < epochs:
+        model.fit_generator(
+        train_generator,
+        steps_per_epoch=200,
+        epochs=1,
         validation_data=validation_generator,
         validation_steps=5)
+        n += checkpoints
 
-model.save('test.h5')
+
+        #scores = model.evaluate(data[2], data[3], batch_size=batch_size)
+        #print("Scores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
+        #text_file.write("\nScores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
+        model.save('models/'+modelfilename+'/checkpoint_{}.h5'.format(n))
+
+        """if n+checkpoints > epochs:
+            checkpoints = epochs - n"""
+
 
 """image = validation_generator[0][0][2:3]
 c
