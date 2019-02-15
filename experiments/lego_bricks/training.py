@@ -25,7 +25,8 @@ train_generator = train_datagen.flow_from_directory(
         'LEGO brick images/train/',
         target_size=(200, 200),
         batch_size=32,
-        class_mode='binary', seed=1)
+        class_mode='binary',
+        seed=1)
 
 #train_generator[batch_n = total/batch_size][0=image][x][y][channel]
 #train_generator[batch_n = total/batch_size][1=class][indv; size = batch_size]
@@ -51,10 +52,10 @@ validation_generator = test_datagen.flow_from_directory(
 
 #model.save('test.h5')
 
-modelfilename = 'model1'
+modelfilename = sys.argv[1] if sys.argv[1] != None else "test_model"
 checkpoints = 1
 epochs = 20
-batch_size = 200
+batch_size = 100
 
 if not os.path.exists(os.path.dirname('models/'+modelfilename+"/")):
     try:
@@ -73,7 +74,7 @@ with open('models/'+modelfilename+"/summary.txt", "w") as text_file:
     while n < epochs:
         model.fit_generator(
         train_generator,
-        steps_per_epoch=200,
+        steps_per_epoch=100,
         epochs=1,
         validation_data=validation_generator,
         validation_steps=5)
