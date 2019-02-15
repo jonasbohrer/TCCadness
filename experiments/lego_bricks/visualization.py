@@ -81,7 +81,7 @@ def generate_gifs(i, figs_dir, model, image):
     #print (os.listdir(figs_dir))
     try:
         for file_name in os.listdir(figs_dir):
-            if file_name.endswith('.png') and file_name.startswith('fig'+str(i)+'_pred'):
+            if file_name.endswith('.png') and file_name.startswith('fig'+str(i)+'_checkpoint'):
                 file_path = os.path.join(figs_dir, file_name)
                 file_paths.append(file_path)
         file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
@@ -90,7 +90,7 @@ def generate_gifs(i, figs_dir, model, image):
         for n in range(1,10):
             files.append(files[-1])
         print('generated '+figs_dir+'movie'+str(i)+'.gif')
-        imageio.mimsave(figs_dir+'movie'+str(i)+"_pred_"+str(model.predict_classes(image))+'_'+str(max(model.predict(image)[0]))+'.gif', files)
+        imageio.mimsave(figs_dir+'movie'+str(i)+"_pred_"+str(model.predict_classes(image))+str(max(model.predict(image)[0]))+'.gif', files)
     except:
         pass
 
@@ -101,7 +101,7 @@ def join_gifs(figs_dir, models, method):
         file_paths = []
         files = []
         for file_name in os.listdir(figs_dir):
-            if file_name.endswith(modelname.replace(".h5", ".png")) and file_name.startswith('fig'):
+            if file_name.endswith("].png") and file_name.startswith('fig'):
                 file_path = os.path.join(figs_dir, file_name)
                 file_paths.append(file_path)
         file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
@@ -117,9 +117,12 @@ def join_gifs(figs_dir, models, method):
             file_paths.append(file_path)
     file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
     for file_path in file_paths:
-        img = Image.open(file_path).resize((800,800))
+        max_size = 800,800
+        img = Image.open(file_path)
+        print(np.array(img).shape)
+        img.thumbnail(max_size)
+        print(np.array(img).shape)
         files.append(np.array(img))
-        #files.append(imageio.imread(file_path))
     print(len(files))
     for n in range(1,10):
         files.append(files[-1])
@@ -273,12 +276,23 @@ for image in images:
         if analysis_mode == "all":
             analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1], neuron_selection_mode="index")
             lrp_images = [original]
+            predicted = model.predict_classes(image)
+
+            #Generate heatmaps for every class
             for output_node in output_nodes:
                 analysis = analyzer.analyze(image, output_node)
                 processed_analysis = iutils.postprocess_images(analysis)
                 processed_analysis = method[2](processed_analysis, cmap_type="seismic")
-                lrp_images.append(processed_analysis)
 
+                #Draw a box to identify the predicted class
+                if output_node == predicted:
+                    print(processed_analysis.squeeze().shape)
+                    processed_analysis[0][::2, 0:3, 1] = 0
+                    processed_analysis[0][0:3, ::2, 1] = 0
+                    processed_analysis[0][::2, -4:-1, 1] = 0
+                    processed_analysis[0][-4:-1, ::2, 1] = 0
+
+                lrp_images.append(processed_analysis)
         else:
             analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
             analysis = analyzer.analyze(image)
@@ -286,8 +300,10 @@ for image in images:
             processed_analysis = method[2](processed_analysis)
 
             lrp_images = [original, processed_analysis]
+        
+        #Join images and save an overview of the predictions
         imgs = concat_n_images(lrp_images)
-        Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_pred"+str(model.predict_classes(image))+"_"+modelname.replace(".h5", ".png"))
+        Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_"+modelname.replace(".h5", "")+"_pred"+str(model.predict_classes(image))+'.png')
 
     generate_gifs(i, figs_dir, model, image)
     i += 1
