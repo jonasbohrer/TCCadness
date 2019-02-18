@@ -101,10 +101,10 @@ def join_gifs(figs_dir, models, method):
         file_paths = []
         files = []
         for file_name in os.listdir(figs_dir):
-            if file_name.endswith("].png") and file_name.startswith('fig'):
+            if file_name.endswith("].png") and file_name.startswith('fig') and (modelname.replace(".h5", "_") in file_name):
                 file_path = os.path.join(figs_dir, file_name)
                 file_paths.append(file_path)
-        file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
+        file_paths = sorted(file_paths, key=lambda x: (len(x.split("_pred")[0]), str.lower(x)))
         for file_path in file_paths:
             files.append(Image.open(file_path))
         join_images(files).save(figs_dir+'movie_'+modelname.replace(".h5", ".png"))
@@ -119,11 +119,8 @@ def join_gifs(figs_dir, models, method):
     for file_path in file_paths:
         max_size = 800,800
         img = Image.open(file_path)
-        print(np.array(img).shape)
         img.thumbnail(max_size)
-        print(np.array(img).shape)
         files.append(np.array(img))
-    print(len(files))
     for n in range(1,10):
         files.append(files[-1])
     print('generated '+figs_dir+'movie.gif')
@@ -256,7 +253,7 @@ images = [
 # Choosing a test image for the relevance test:
 i = 0
 
-for image in images:
+"""for image in images:
     original = iutils.postprocess_images(image)
     #if analysis_mode == "all":
     #    original = concat_n_images([original]*len(output_nodes))
@@ -264,7 +261,7 @@ for image in images:
 
     # Generate images for every model checkpoint
     for modelname in models:
-        print("Generating figs for "+modelname)
+        print("Generating figs for "+modelname+", image "+str(i))
 
         try:
             model.load_weights(models_dir+modelname)
@@ -286,7 +283,6 @@ for image in images:
 
                 #Draw a box to identify the predicted class
                 if output_node == predicted:
-                    print(processed_analysis.squeeze().shape)
                     processed_analysis[0][::2, 0:3, 1] = 0
                     processed_analysis[0][0:3, ::2, 1] = 0
                     processed_analysis[0][::2, -4:-1, 1] = 0
@@ -306,7 +302,7 @@ for image in images:
         Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_"+modelname.replace(".h5", "")+"_pred"+str(model.predict_classes(image))+'.png')
 
     generate_gifs(i, figs_dir, model, image)
-    i += 1
+    i += 1"""
 
 join_gifs(figs_dir, models, method)
 
