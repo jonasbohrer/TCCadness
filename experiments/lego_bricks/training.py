@@ -1,4 +1,4 @@
-import keras, os
+import keras, os, sys
 import matplotlib.pyplot as plot
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -54,8 +54,8 @@ validation_generator = test_datagen.flow_from_directory(
 
 modelfilename = sys.argv[1] if sys.argv[1] != None else "test_model"
 checkpoints = 1
-epochs = 20
-batch_size = 100
+epochs = 30
+batch_size = 25
 
 if not os.path.exists(os.path.dirname('models/'+modelfilename+"/")):
     try:
@@ -70,12 +70,11 @@ with open('models/'+modelfilename+"/summary.txt", "w") as text_file:
 
     n = 0
 
-
     while n < epochs:
         model.fit_generator(
         train_generator,
-        steps_per_epoch=100,
-        epochs=1,
+        steps_per_epoch=batch_size,
+        epochs=checkpoints,
         validation_data=validation_generator,
         validation_steps=5)
         n += checkpoints

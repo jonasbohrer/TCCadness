@@ -7,6 +7,7 @@ import matplotlib.pyplot as plot
 import numpy as np
 import os, copy, sys
 import imageio
+import collections
 
 import keras
 import keras.backend
@@ -171,11 +172,23 @@ def create_model():
     return model
 
 def get_models():
+    modelnames = []
     models = []
+
     for file_name in os.listdir(models_dir):
         if file_name.endswith('.h5'):
-            models.append(file_name)
-    models = sorted(models, key=lambda x: (len(x), str.lower(x)))
+            modelnames.append(file_name)
+    modelnames = sorted(modelnames, key=lambda x: (len(x), str.lower(x)))
+
+    for modelname in modelnames:
+        model = create_model()
+        try:
+            model.load_weights(models_dir+modelname)
+        except: 
+            model = keras.models.load_model(models_dir+modelname)
+        models.append((modelname, model))
+
+    models = collections.OrderedDict(models)
     return (models)
 
 cdict1 = {'red':   ((0.0, 0.0, 0.0),
@@ -251,22 +264,18 @@ images = [
 ]
 
 # Choosing a test image for the relevance test:
-i = 0
 
-"""for image in images:
+i = 0
+for image in images:
     original = iutils.postprocess_images(image)
     #if analysis_mode == "all":
     #    original = concat_n_images([original]*len(output_nodes))
     Image.fromarray(np.uint8(original[0]*255)).save(figs_dir+'fig'+str(i)+"_original.png")
 
-    # Generate images for every model checkpoint
     for modelname in models:
-        print("Generating figs for "+modelname+", image "+str(i))
 
-        try:
-            model.load_weights(models_dir+modelname)
-        except: 
-            model = keras.models.load_model(models_dir+modelname)
+        print("Generating figs for "+modelname+", image "+str(i))
+        model = models[modelname]
 
         # Stripping the softmax activation from the model
         model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
@@ -302,7 +311,7 @@ i = 0
         Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_"+modelname.replace(".h5", "")+"_pred"+str(model.predict_classes(image))+'.png')
 
     generate_gifs(i, figs_dir, model, image)
-    i += 1"""
+    i += 1
 
 join_gifs(figs_dir, models, method)
 
