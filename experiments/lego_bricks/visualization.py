@@ -85,7 +85,7 @@ def generate_gifs(i, figs_dir, model, image):
             if file_name.endswith('.png') and file_name.startswith('fig'+str(i)+'_checkpoint'):
                 file_path = os.path.join(figs_dir, file_name)
                 file_paths.append(file_path)
-        file_paths = sorted(file_paths, key=lambda x: (len(x), str.lower(x)))
+        file_paths = sorted(file_paths, key=lambda x: (len(x.split("_pred")[0]), str.lower(x)))
         for file_path in file_paths:
             files.append(imageio.imread(file_path))
         for n in range(1,10):

@@ -5,15 +5,17 @@ from keras.preprocessing.image import ImageDataGenerator
 input_shape = (200, 200, 3)
 
 model = keras.models.Sequential([
-            keras.layers.Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
+            keras.layers.Conv2D(48, (3, 3), activation="relu", input_shape=input_shape),
             keras.layers.MaxPooling2D((2, 2)),
-            keras.layers.Conv2D(16, (3, 3), activation="relu"),
+            keras.layers.Conv2D(32, (3, 3), activation="relu"),
+            keras.layers.MaxPooling2D((2, 2)),
+            keras.layers.Conv2D(24, (3, 3), activation="relu"),
             keras.layers.MaxPooling2D((2, 2)),
             keras.layers.Flatten(),
             keras.layers.Dense(128, activation="relu"),
             keras.layers.Dense(16, activation="softmax"),
             ])
-model.compile(loss="sparse_categorical_crossentropy", optimizer=keras.optimizers.Adam(lr=0.001), metrics=["accuracy"])
+model.compile(loss="sparse_categorical_crossentropy", optimizer=keras.optimizers.Adam(lr=0.005), metrics=["accuracy"])
 
 train_datagen = ImageDataGenerator(
         rescale=1./255,
@@ -50,12 +52,12 @@ validation_generator = test_datagen.flow_from_directory(
         validation_data=validation_generator,
         validation_steps=5)"""
 
-#model.save('test.h5')
-
 modelfilename = sys.argv[1] if sys.argv[1] != None else "test_model"
 checkpoints = 1
-epochs = 30
-batch_size = 25
+epochs = 50
+steps_per_epoch = 50
+
+#model.load_weights(models_dir+modelname)
 
 if not os.path.exists(os.path.dirname('models/'+modelfilename+"/")):
     try:
@@ -66,27 +68,33 @@ if not os.path.exists(os.path.dirname('models/'+modelfilename+"/")):
 
 with open('models/'+modelfilename+"/summary.txt", "w") as text_file:
     model.summary(print_fn=lambda x: text_file.write(x + '\n'))
-    #text_file.write("\nepochs: {}\nbatch_size: {}\ncheckpoints: {}\ntrain_size: {}\ntest_size: {}".format(epochs, batch_size, checkpoints, train_size, test_size))
+    text_file.write("\nepochs: {}\nsteps_per_epoch: {}\ncheckpoints: {}".format(epochs, steps_per_epoch, checkpoints))
 
     n = 0
 
     while n < epochs:
-        model.fit_generator(
+        print("\nEpoch {}:".format(n))
+        history = model.fit_generator(
         train_generator,
-        steps_per_epoch=batch_size,
+        steps_per_epoch=steps_per_epoch,
         epochs=checkpoints,
         validation_data=validation_generator,
-        validation_steps=5)
+        validation_steps=int(steps_per_epoch/10))
         n += checkpoints
-
 
         #scores = model.evaluate(data[2], data[3], batch_size=batch_size)
         #print("Scores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
-        #text_file.write("\nScores on test set for run {}: loss/accuracy={}".format(n, tuple(scores)))
         model.save('models/'+modelfilename+'/checkpoint_{}.h5'.format(n))
+        text_file.write("\nEpoch {}: {}".format(n, history.history))
+
+        #No need to keep after 0.95, abort
+        if history.history["acc"][-1] >= 0.95:
+            print('Achieved 95% acc')
+            n = epochs
 
         """if n+checkpoints > epochs:
             checkpoints = epochs - n"""
+
 
 
 """image = validation_generator[0][0][2:3]
