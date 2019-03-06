@@ -12,7 +12,9 @@ model = VGG16(weights='imagenet')
 model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
 
 # Load the evalutation dataset
-img_path = 'images/valid/ball/Ball_2013_FIFA_Confederations_Cup.jpg'
+figs_dir = "figs/"
+#img_path = 'images/valid/ball/Ball_2013_FIFA_Confederations_Cup.jpg'
+img_path = 'images/valid/misc/1.jpg'
 img = image.load_img(img_path, target_size=(224, 224))
 x = image.img_to_array(img)
 x = np.expand_dims(x, axis=0)
@@ -53,4 +55,4 @@ for image in images:
         processed_analysis = iutils.postprocess_images(analysis)
         processed_analysis = method[2](processed_analysis, cmap_type="seismic")
         print(str(output_node)+label[1])
-        Image.fromarray(processed_analysis.flatten()*255).save(str(output_node)+label[1]+".png")
+        Image.fromarray(np.uint8(processed_analysis[0]*255)).save("{figs_dir}/{outputnode}_{label}_{perc}.png".format(figs_dir=figs_dir, outputnode=output_node, label=label[1], perc=label[2]))
