@@ -17,7 +17,7 @@ K.set_image_data_format("channels_last")
 x_train = x_train.reshape(x_train.shape[0], 28, 28, 1).astype('float32') / 255
 x_test = x_test.reshape(x_test.shape[0], 28, 28, 1).astype('float32') / 255
 
-train_size = 5000
+train_size = 60000
 test_size = 600
 
 x_train = x_train[0:train_size]
@@ -53,7 +53,7 @@ model = devol.run(dataset=dataset,
                   num_generations=20,
                   pop_size=5,
                   epochs=5,
-                  steps_per_epoch=1,
+                  train_size=1500,
                   replace=0.4)
 
 print(model.summary())

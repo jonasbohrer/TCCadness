@@ -1,2 +1,6 @@
 
 *.png
+*.zip
+*.pyc
+*.csv
+*.h5
