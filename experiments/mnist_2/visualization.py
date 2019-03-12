@@ -263,36 +263,39 @@ for image in images:
             model = keras.models.load_model(models_dir+modelname)
 
         # Stripping the softmax activation from the model
-        model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
-        if analysis_mode == "all":
-            analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1], neuron_selection_mode="index")
-            lrp_images = [original]
-            predicted = model.predict_classes(image)
+        try:
+            model_wo_sm = iutils.keras.graph.model_wo_softmax(model)
+            if analysis_mode == "all":
+                analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1], neuron_selection_mode="index")
+                lrp_images = [original]
+                predicted = model.predict_classes(image)
 
-            for output_node in output_nodes:
-                analysis = analyzer.analyze(image, output_node)
-                processed_analysis = iutils.postprocess_images(analysis)
+                for output_node in output_nodes:
+                    analysis = analyzer.analyze(image, output_node)
+                    processed_analysis = iutils.postprocess_images(analysis)
+                    processed_analysis = method[2](processed_analysis)
+
+                    #Draw a box to identify the predicted class
+                    if output_node == predicted:
+                        processed_analysis[0][::2, 0:3, 1] = 0
+                        processed_analysis[0][0:3, ::2, 1] = 0
+                        processed_analysis[0][::2, -4:-1, 1] = 0
+                        processed_analysis[0][-4:-1, ::2, 1] = 0
+                    
+                    lrp_images.append(processed_analysis)
+
+            else:
+                analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
+                analysis = analyzer.analyze(image)
+                processed_analysis = mnistutils.postprocess(analysis)
                 processed_analysis = method[2](processed_analysis)
 
-                #Draw a box to identify the predicted class
-                if output_node == predicted:
-                    processed_analysis[0][::2, 0:3, 1] = 0
-                    processed_analysis[0][0:3, ::2, 1] = 0
-                    processed_analysis[0][::2, -4:-1, 1] = 0
-                    processed_analysis[0][-4:-1, ::2, 1] = 0
+                lrp_images = [original, processed_analysis]
                 
-                lrp_images.append(processed_analysis)
-
-        else:
-            analyzer = innvestigate.create_analyzer(method[0], model_wo_sm, **method[1])
-            analysis = analyzer.analyze(image)
-            processed_analysis = mnistutils.postprocess(analysis)
-            processed_analysis = method[2](processed_analysis)
-
-            lrp_images = [original, processed_analysis]
-            
-        imgs = concat_n_images(lrp_images)
-        Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_"+modelname.replace(".h5", "")+"_pred"+str(model.predict_classes(image))+'.png')
+            imgs = concat_n_images(lrp_images)
+            Image.fromarray(np.uint8(imgs[0]*255)).save(figs_dir+'fig'+str(i)+"_"+modelname.replace(".h5", "")+"_pred"+str(model.predict_classes(image))+'.png')
+        except:
+            print('model {} skipped'.format(modelname))
 
     generate_gifs(i, figs_dir, model, image)
     i += 1

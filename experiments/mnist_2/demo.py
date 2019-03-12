@@ -53,7 +53,7 @@ model = devol.run(dataset=dataset,
                   num_generations=20,
                   pop_size=5,
                   epochs=5,
-                  train_size=1500,
-                  replace=0.4)
+                  train_size=2500,
+                  replace=0.5)
 
 print(model.summary())
