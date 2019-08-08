@@ -1,0 +1,16 @@
+WARNING - 2019-08-07 21:22:53,746: This will get logged to a file
+INFO - 2019-08-07 21:22:53,746: Hi, this is a test run.
+INFO - 2019-08-07 21:22:53,758: Iterating over 1 epochs
+INFO - 2019-08-07 21:22:53,758: Iterating fitness over 2 individuals
+INFO - 2019-08-07 21:22:53,758: Fitting one individual
+INFO - 2019-08-07 21:22:53,758: Generating keras layers
+INFO - 2019-08-07 21:22:53,758: Adding a Flatten() layer
+WARNING - 2019-08-07 21:22:53,763: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING - 2019-08-07 21:22:53,837: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO - 2019-08-07 21:22:54,203: Fitting one individual
+INFO - 2019-08-07 21:22:54,203: Generating keras layers
+INFO - 2019-08-07 21:22:54,203: Adding a Flatten() layer
