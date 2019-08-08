@@ -22,6 +22,7 @@ class LayerPosition(Enum):
     INPUT = "input"
     INTERMED = "intermed"
     OUTPUT = "output"
+    COMPILER = "compiler"
 
 class Datasets:
     def __init__(self, complete=None, test=None, training=None, validation=None):
@@ -66,8 +67,9 @@ class Genome:
     Represents a topology made of modules.
     modules: modules composing a topology.
     """
-    def __init__(self, modules=None):
+    def __init__(self, modules=None, compiler=None):
         self.modules = modules
+        self.compiler = compiler
 
     def __getitem__(self, item):
         return self.modules[item]
@@ -95,13 +97,13 @@ class Individual:
         self.parents = parents
         self.model = None
 
+    @staticmethod
     def generate(self):
         """
         Returns the keras model representing of the topology.
         """
 
         logging.info(f"Generating keras layers")
-
         keras_topology = []
 
         for module in self.genome:
@@ -112,18 +114,17 @@ class Individual:
                 keras_topology.append(component.keras_component)
         
         self.model = keras.models.Sequential(keras_topology)
-        self.model.compile(loss="sparse_categorical_crossentropy", optimizer=keras.optimizers.Adam(lr=0.005), metrics=["accuracy"])
+        self.model.compile(**self.genome.compiler)
 
-    def fit(self, input_x, input_y):
+    def fit(self, input_x, input_y, epochs=1):
         """
         Fits the keras model representing the topology.
         """
 
-        logging.info(f"Fitting one individual")
+        logging.info(f"Fitting one individual for {epochs} epochs")
 
         self.generate()
-                        
-        fitness = self.model.fit(input_x, input_y, epochs=10)
+        fitness = self.model.fit(input_x, input_y, epochs=epochs)
 
         return fitness
 
@@ -155,11 +156,9 @@ class Population:
         """
 
         logging.info(f"Iterating fitness over {len(self.individuals)} individuals")
-
         iteration = []
 
         #(batch, channels, rows, cols)
-
         input_x = self.datasets.training[0]
         input_y = self.datasets.training[1]
 
@@ -218,12 +217,13 @@ def test_run():
                 new_input_conv_component = Component(None, keras.layers.Conv2D(8, (3, 3), activation="relu", input_shape=(8, 8, 1)))
                 new_conv_component = Component(None, keras.layers.Conv2D(4, (3, 3), activation="relu"),)
                 new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
+                new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
                 #Combine them in modules
                 new_input_module = Module([new_input_conv_component], LayerPosition.INPUT)
                 new_intermed_module = Module([new_conv_component], LayerPosition.INTERMED)
                 new_output_module = Module([new_softmax_component], LayerPosition.OUTPUT)
                 #Create the genome combining modules
-                new_genome = Genome([new_input_module, new_intermed_module, new_output_module])
+                new_genome = Genome([new_input_module, new_intermed_module, new_output_module], new_compiler)
                 #Create individual with the Genome
                 new_individual = Individual(genome=new_genome)
                 new_individuals.append(new_individual)
@@ -245,8 +245,40 @@ def test_run():
                                   [[0], [0], [0], [0], [0], [0], [0], [0]],
                                   [[0], [0], [0], [0], [0], [0], [0], [0]],
                                   [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]]]]], [1, 0]]
-    
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]]],
+                                 [[[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]]],
+                                 [[[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]]],
+                                 [[[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]]],
+                                 [[[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
+                                  [[1], [1], [1], [1], [1], [1], [1], [1]]]]], [1, 0, 1, 0, 1, 0]]
+
     my_dataset = Datasets(training=training_dataset)
 
     logging.basicConfig(filename='test.log',
@@ -257,9 +289,9 @@ def test_run():
     logging.info(f"Hi, this is a test run.")
 
     population = MyPopulation(my_dataset)
-    population.create(2)
+    population.create(5)
 
-    iteration = population.iterate_epochs()
+    iteration = population.iterate_epochs(5)
 
 
 if __name__ == "__main__":
