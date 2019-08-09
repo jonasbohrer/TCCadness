@@ -1,89 +1,89 @@
-WARNING - 2019-08-07 21:51:30,261: This will get logged to a file
-INFO - 2019-08-07 21:51:30,261: Hi, this is a test run.
-WARNING - 2019-08-07 21:51:30,276: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+WARNING - 2019-08-08 11:27:09,763: This will get logged to a file
+INFO - 2019-08-08 11:27:09,764: Hi, this is a test run.
+WARNING - 2019-08-08 11:27:09,776: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Colocations handled automatically by placer.
-INFO - 2019-08-07 21:51:30,327: Iterating over 5 epochs
-INFO - 2019-08-07 21:51:30,327: Iterating fitness over 5 individuals
-INFO - 2019-08-07 21:51:30,327: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:30,327: Generating keras layers
-INFO - 2019-08-07 21:51:30,327: Adding a Flatten() layer
-WARNING - 2019-08-07 21:51:30,402: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+INFO - 2019-08-08 11:27:09,818: Iterating over 5 epochs
+INFO - 2019-08-08 11:27:09,818: Iterating fitness over 5 individuals
+INFO - 2019-08-08 11:27:09,818: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:09,818: Generating keras layers
+INFO - 2019-08-08 11:27:09,819: Adding a Flatten() layer
+WARNING - 2019-08-08 11:27:09,880: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Use tf.cast instead.
-INFO - 2019-08-07 21:51:30,792: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:30,793: Generating keras layers
-INFO - 2019-08-07 21:51:30,793: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:31,229: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:31,229: Generating keras layers
-INFO - 2019-08-07 21:51:31,229: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:31,700: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:31,700: Generating keras layers
-INFO - 2019-08-07 21:51:31,700: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:32,182: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:32,182: Generating keras layers
-INFO - 2019-08-07 21:51:32,182: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:32,748: Iterating fitness over 5 individuals
-INFO - 2019-08-07 21:51:32,748: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:32,748: Generating keras layers
-INFO - 2019-08-07 21:51:32,749: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:33,280: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:33,280: Generating keras layers
-INFO - 2019-08-07 21:51:33,281: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:33,833: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:33,833: Generating keras layers
-INFO - 2019-08-07 21:51:33,833: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:34,427: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:34,427: Generating keras layers
-INFO - 2019-08-07 21:51:34,427: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:35,076: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:35,076: Generating keras layers
-INFO - 2019-08-07 21:51:35,076: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:35,803: Iterating fitness over 5 individuals
-INFO - 2019-08-07 21:51:35,804: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:35,804: Generating keras layers
-INFO - 2019-08-07 21:51:35,804: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:36,447: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:36,448: Generating keras layers
-INFO - 2019-08-07 21:51:36,448: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:37,116: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:37,116: Generating keras layers
-INFO - 2019-08-07 21:51:37,116: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:37,862: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:37,862: Generating keras layers
-INFO - 2019-08-07 21:51:37,862: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:38,636: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:38,636: Generating keras layers
-INFO - 2019-08-07 21:51:38,636: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:39,512: Iterating fitness over 5 individuals
-INFO - 2019-08-07 21:51:39,512: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:39,512: Generating keras layers
-INFO - 2019-08-07 21:51:39,512: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:40,367: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:40,367: Generating keras layers
-INFO - 2019-08-07 21:51:40,367: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:41,270: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:41,270: Generating keras layers
-INFO - 2019-08-07 21:51:41,270: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:42,135: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:42,136: Generating keras layers
-INFO - 2019-08-07 21:51:42,136: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:43,099: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:43,099: Generating keras layers
-INFO - 2019-08-07 21:51:43,099: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:44,116: Iterating fitness over 5 individuals
-INFO - 2019-08-07 21:51:44,117: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:44,117: Generating keras layers
-INFO - 2019-08-07 21:51:44,117: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:45,227: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:45,228: Generating keras layers
-INFO - 2019-08-07 21:51:45,228: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:46,225: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:46,226: Generating keras layers
-INFO - 2019-08-07 21:51:46,226: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:47,265: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:47,265: Generating keras layers
-INFO - 2019-08-07 21:51:47,265: Adding a Flatten() layer
-INFO - 2019-08-07 21:51:48,300: Fitting one individual for 1 epochs
-INFO - 2019-08-07 21:51:48,300: Generating keras layers
-INFO - 2019-08-07 21:51:48,300: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:10,231: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:10,231: Generating keras layers
+INFO - 2019-08-08 11:27:10,231: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:10,600: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:10,600: Generating keras layers
+INFO - 2019-08-08 11:27:10,600: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:11,026: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:11,026: Generating keras layers
+INFO - 2019-08-08 11:27:11,026: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:11,543: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:11,543: Generating keras layers
+INFO - 2019-08-08 11:27:11,543: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:12,012: Iterating fitness over 5 individuals
+INFO - 2019-08-08 11:27:12,013: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:12,013: Generating keras layers
+INFO - 2019-08-08 11:27:12,013: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:12,476: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:12,476: Generating keras layers
+INFO - 2019-08-08 11:27:12,476: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:12,940: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:12,940: Generating keras layers
+INFO - 2019-08-08 11:27:12,940: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:13,475: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:13,476: Generating keras layers
+INFO - 2019-08-08 11:27:13,476: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:14,015: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:14,015: Generating keras layers
+INFO - 2019-08-08 11:27:14,015: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:14,584: Iterating fitness over 5 individuals
+INFO - 2019-08-08 11:27:14,584: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:14,584: Generating keras layers
+INFO - 2019-08-08 11:27:14,584: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:15,163: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:15,163: Generating keras layers
+INFO - 2019-08-08 11:27:15,163: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:15,758: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:15,758: Generating keras layers
+INFO - 2019-08-08 11:27:15,758: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:16,364: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:16,364: Generating keras layers
+INFO - 2019-08-08 11:27:16,364: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:16,993: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:16,993: Generating keras layers
+INFO - 2019-08-08 11:27:16,993: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:17,700: Iterating fitness over 5 individuals
+INFO - 2019-08-08 11:27:17,700: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:17,700: Generating keras layers
+INFO - 2019-08-08 11:27:17,700: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:18,375: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:18,375: Generating keras layers
+INFO - 2019-08-08 11:27:18,375: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:19,070: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:19,070: Generating keras layers
+INFO - 2019-08-08 11:27:19,070: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:19,769: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:19,769: Generating keras layers
+INFO - 2019-08-08 11:27:19,769: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:20,475: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:20,475: Generating keras layers
+INFO - 2019-08-08 11:27:20,475: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:21,209: Iterating fitness over 5 individuals
+INFO - 2019-08-08 11:27:21,209: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:21,209: Generating keras layers
+INFO - 2019-08-08 11:27:21,209: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:22,016: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:22,016: Generating keras layers
+INFO - 2019-08-08 11:27:22,016: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:22,898: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:22,898: Generating keras layers
+INFO - 2019-08-08 11:27:22,898: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:23,709: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:23,709: Generating keras layers
+INFO - 2019-08-08 11:27:23,710: Adding a Flatten() layer
+INFO - 2019-08-08 11:27:24,525: Fitting one individual for 1 epochs
+INFO - 2019-08-08 11:27:24,526: Generating keras layers
+INFO - 2019-08-08 11:27:24,526: Adding a Flatten() layer

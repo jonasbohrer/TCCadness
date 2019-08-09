@@ -17,6 +17,7 @@ keras.models.Sequential([
 
 import keras, logging
 from enum import Enum, auto
+from typing import List
 
 class LayerPosition(Enum):
     INPUT = "input"
@@ -46,7 +47,7 @@ class Component:
     Represents a basic unit of a topology.
     keras_component: the keras component being represented
     """
-    def __init__(self, representation=None, keras_component=None):
+    def __init__(self, representation:str, keras_component=None):
         self.representation = representation
         self.keras_component = keras_component
 
@@ -55,7 +56,7 @@ class Module:
     Represents a set of one or more basic units of a topology.
     components: the most basic unit of a topology.
     """
-    def __init__(self, components=None, layer_type=LayerPosition.INPUT):
+    def __init__(self, components:List[Component], layer_type:LayerPosition=LayerPosition.INPUT):
         self.components = components
         self.layer_type = layer_type
     
@@ -67,7 +68,7 @@ class Genome:
     Represents a topology made of modules.
     modules: modules composing a topology.
     """
-    def __init__(self, modules=None, compiler=None):
+    def __init__(self, modules:List[Module], compiler=None):
         self.modules = modules
         self.compiler = compiler
 
@@ -77,10 +78,11 @@ class Genome:
 class Species:
     """
     Represents a group of topologies with similarities.
-    property: a set of common properties defining a species.
+    properties: a set of common properties defining a species.
     """
-    def __init__(self, group=None):
+    def __init__(self, group=None, properties=None):
         self.group = group
+        self.properties = properties
 
 class Individual:
     """
@@ -90,14 +92,14 @@ class Individual:
     birth: epoch the genome was created.
     parents: individuals used in crossover to generate this topology.
     """
-    def __init__(self, genome=None, species=None, birth=None, parents=None, model=None):
+       
+    def __init__(self, genome:Genome, species=None, birth=None, parents=None, model=None):
         self.genome = genome
         self.species = species
         self.birth = birth
         self.parents = parents
         self.model = None
 
-    @staticmethod
     def generate(self):
         """
         Returns the keras model representing of the topology.
@@ -138,13 +140,21 @@ class Population:
     """
     Represents the population containing multiple individual topologies and their correlations.
     """
-    def __init__(self, datasets=None, individuals=[], species=[], groups=[]):
+    def __init__(self, datasets=None, individuals=[], modules=[], hyperparameters=[], species=[], groups=[]):
         self.datasets = datasets
         self.individuals = individuals
+        self.modules = modules
+        self.hyperparameters = hyperparameters
         self.species = species
         self.groups = groups
 
     def create(self, size: int =1):
+        """
+        Creates a specific population of individuals.
+        """
+        pass
+
+    def create_random(self, size: int =1):
         """
         Creates a random population of individuals.
         """
