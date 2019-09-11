@@ -1,15 +1,42 @@
-WARNING - 2019-09-09 16:20:00,655: This will get logged to a file
-INFO - 2019-09-09 16:20:00,655: Hi, this is a test run.
-WARNING - 2019-09-09 16:20:00,680: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+WARNING - 2019-09-10 23:03:10,557: This will get logged to a file
+INFO - 2019-09-10 23:03:10,557: Hi, this is a test run.
+WARNING - 2019-09-10 23:03:10,570: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Colocations handled automatically by placer.
-INFO - 2019-09-09 16:20:00,797: Iterating over 5 epochs
-INFO - 2019-09-09 16:20:00,797: Iterating fitness over 5 individuals
-INFO - 2019-09-09 16:20:00,797: Fitting one individual for 5 epochs
-INFO - 2019-09-09 16:20:00,797: Generating keras layers
-INFO - 2019-09-09 16:20:00,797: Module level: 0; Layer level: 0
-INFO - 2019-09-09 16:20:00,797: Adding the Input() layer
-TOPOLOGY - 2019-09-09 16:20:00,798: 0: None, 1 - Added Tensor("input_1:0", shape=(?, 8, 8, 1), dtype=float32)
-TOPOLOGY - 2019-09-09 16:20:00,813: 0: None, 1 - Added Tensor("conv2d_1/BiasAdd:0", shape=(?, 3, 3, 33), dtype=float32)
-INFO - 2019-09-09 16:20:00,813: Module level: 0; Layer level: 1
-INFO - 2019-09-09 16:20:00,813: Adding the Intermediate layer
+INFO - 2019-09-10 23:03:10,579: Iterating over 1 epochs
+INFO - 2019-09-10 23:03:10,579: Iterating fitness over 1 individuals
+INFO - 2019-09-10 23:03:10,579: Fitting one individual for 1 epochs
+DEBUG - 2019-09-10 23:03:10,971: update_title_pos
+DEBUG - 2019-09-10 23:03:10,979: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=12.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
+TOPOLOGY - 2019-09-10 23:03:11,002: Generated the assembled graph
+INFO - 2019-09-10 23:03:11,002: Generating keras layers
+INFO - 2019-09-10 23:03:11,002: Adding the Input() layer
+TOPOLOGY - 2019-09-10 23:03:11,003: Added Tensor("input_1:0", shape=(?, 8, 8, 1), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,013: 0-0: Added Tensor("conv2d_1/Relu:0", shape=(?, 6, 6, 48), dtype=float32)
+INFO - 2019-09-10 23:03:11,013: Adding a Flatten() layer
+TOPOLOGY - 2019-09-10 23:03:11,018: 1-0: Added Tensor("flatten_1/Reshape:0", shape=(?, ?), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,025: 1-0: Added Tensor("dense_1/BiasAdd:0", shape=(?, 45), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,032: 1-1: Added Tensor("dense_2/BiasAdd:0", shape=(?, 18), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,040: 1-2: Added Tensor("dense_3/BiasAdd:0", shape=(?, 16), dtype=float32)
+INFO - 2019-09-10 23:03:11,040: Adding a Merge layer
+TOPOLOGY - 2019-09-10 23:03:11,041: 1-3: Added Tensor("concatenate_1/concat:0", shape=(?, 34), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,047: 1-3: Added Tensor("dense_4/BiasAdd:0", shape=(?, 8), dtype=float32)
+INFO - 2019-09-10 23:03:11,048: Adding a Flatten() layer
+TOPOLOGY - 2019-09-10 23:03:11,052: 2-0: Added Tensor("flatten_2/Reshape:0", shape=(?, ?), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,060: 2-0: Added Tensor("dense_5/BiasAdd:0", shape=(?, 21), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,097: 2-1: Added Tensor("dense_6/BiasAdd:0", shape=(?, 15), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,105: 2-2: Added Tensor("dense_7/BiasAdd:0", shape=(?, 44), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,121: 2-3: Added Tensor("dense_8/BiasAdd:0", shape=(?, 14), dtype=float32)
+INFO - 2019-09-10 23:03:11,121: Adding a Merge layer
+TOPOLOGY - 2019-09-10 23:03:11,122: 2-4: Added Tensor("concatenate_2/concat:0", shape=(?, 29), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,128: 2-4: Added Tensor("dense_9/BiasAdd:0", shape=(?, 39), dtype=float32)
+INFO - 2019-09-10 23:03:11,128: Adding a Merge layer
+TOPOLOGY - 2019-09-10 23:03:11,129: 2-5: Added Tensor("concatenate_3/concat:0", shape=(?, 83), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,137: 2-5: Added Tensor("dense_10/BiasAdd:0", shape=(?, 22), dtype=float32)
+INFO - 2019-09-10 23:03:11,137: Adding a Merge layer
+TOPOLOGY - 2019-09-10 23:03:11,138: 3-0: Added Tensor("concatenate_4/concat:0", shape=(?, 30), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,145: 3-0: Added Tensor("dense_11/Softmax:0", shape=(?, 2), dtype=float32)
+TOPOLOGY - 2019-09-10 23:03:11,145: {'0-0': <tf.Tensor 'conv2d_1/Relu:0' shape=(?, 6, 6, 48) dtype=float32>, '1-0': <tf.Tensor 'dense_1/BiasAdd:0' shape=(?, 45) dtype=float32>, '1-1': <tf.Tensor 'dense_2/BiasAdd:0' shape=(?, 18) dtype=float32>, '1-2': <tf.Tensor 'dense_3/BiasAdd:0' shape=(?, 16) dtype=float32>, '1-3': <tf.Tensor 'dense_4/BiasAdd:0' shape=(?, 8) dtype=float32>, '2-0': <tf.Tensor 'dense_5/BiasAdd:0' shape=(?, 21) dtype=float32>, '2-1': <tf.Tensor 'dense_6/BiasAdd:0' shape=(?, 15) dtype=float32>, '2-2': <tf.Tensor 'dense_7/BiasAdd:0' shape=(?, 44) dtype=float32>, '2-3': <tf.Tensor 'dense_8/BiasAdd:0' shape=(?, 14) dtype=float32>, '2-4': <tf.Tensor 'dense_9/BiasAdd:0' shape=(?, 39) dtype=float32>, '2-5': <tf.Tensor 'dense_10/BiasAdd:0' shape=(?, 22) dtype=float32>, '3-0': <tf.Tensor 'dense_11/Softmax:0' shape=(?, 2) dtype=float32>}
+WARNING - 2019-09-10 23:03:11,463: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
