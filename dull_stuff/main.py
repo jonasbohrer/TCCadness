@@ -1,20 +1,3 @@
-"""
-Blueprint example:
-
-keras.models.Sequential([
-            keras.layers.Conv2D(48, (3, 3), activation="relu", input_shape=input_shape),
-            keras.layers.MaxPooling2D((2, 2)),
-            keras.layers.Conv2D(32, (3, 3), activation="relu"),
-            keras.layers.MaxPooling2D((2, 2)),
-            keras.layers.Conv2D(24, (3, 3), activation="relu"),
-            keras.layers.MaxPooling2D((2, 2)),
-            keras.layers.Flatten(),
-            keras.layers.Dense(128, activation="relu"),
-            keras.layers.Dense(16, activation="softmax"),
-            ])
-
-"""
-
 import keras, logging, random, pydot
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -29,7 +12,7 @@ input_configs = {
 
 global_configs = {
     "module_range" : ([2, 4], 'int'),
-    "component_range" : ([4, 6], 'int')
+    "component_range" : ([2, 4], 'int')
 }
 
 output_configs = {
@@ -42,17 +25,17 @@ possible_inputs = {
 }
 
 possible_components = {
-    #"conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_first'], 'list'), "padding": (['same'], 'list')}),
-    "dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
+    "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
+    #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
 }
 
 possible_outputs = {
-    "dense": (keras.layers.Dense, {"units": ([2,2], 'int'), "activation": (["softmax"], 'list')})
+    "dense": (keras.layers.Dense, {"units": ([10,10], 'int'), "activation": (["softmax"], 'list')})
 }
 
 possible_complementary_components = {
-    "maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2, 3], 'list')}),
-    "dropout": (keras.layers.Dropout, {"rate": ([0, 0.5], 'float')})
+    #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2, 3], 'list')}),
+    "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
 }
 
 class HistoricalMarking:
@@ -63,9 +46,19 @@ class HistoricalMarking:
         counter += 1
         return counter
 
-class ModulePosition(Enum):
+class NameGenerator:
+    def __init__(self):
+        self.counter = 0
+    
+    def generate(self):
+        self.counter += 1
+        return self.counter
+
+class ModuleComposition(Enum):
     INPUT = "input"
     INTERMED = "intermed"
+    CONV = "conv2d"
+    DENSE = "dense"
     OUTPUT = "output"
     COMPILER = "compiler"
 
@@ -97,17 +90,19 @@ class Component(object):
     Represents a basic unit of a topology.
     keras_component: the keras component being represented
     """
-    def __init__(self, representation, keras_component=None):
+    def __init__(self, representation, keras_component=None, complementary_component=None, keras_complementary_component=None):
         self.representation = representation
         self.keras_component = keras_component
         self.historical_marking = 0
+        self.complementary_component = complementary_component
+        self.keras_complementary_component = keras_complementary_component
 
 class Module(object):
     """
     Represents a set of one or more basic units of a topology.
     components: the most basic unit of a topology.
     """
-    def __init__(self, components:dict, layer_type:ModulePosition=ModulePosition.INPUT, component_graph=None):
+    def __init__(self, components:dict, layer_type:ModuleComposition=ModuleComposition.INPUT, component_graph=None):
         self.components = components
         self.component_graph = component_graph
         self.layer_type = layer_type
@@ -124,11 +119,11 @@ class Blueprint:
     Represents a topology made of modules.
     modules: modules composing a topology.
     """
-    def __init__(self, modules:List[Module], compiler=None, input_shape=None, blueprint_graph=None):
+    def __init__(self, modules:List[Module], compiler=None, input_shape=None, module_graph=None):
         self.modules = modules
         self.compiler = compiler
         self.input_shape = input_shape
-        self.blueprint_graph = blueprint_graph
+        self.module_graph = module_graph
 
     def __getitem__(self, item):
         return self.modules[item]
@@ -151,85 +146,12 @@ class Individual:
     parents: individuals used in crossover to generate this topology.
     """
        
-    def __init__(self, blueprint:Blueprint, birth=None, parents=None, model=None):
+    def __init__(self, blueprint:Blueprint, birth=None, parents=None, model=None, name=None):
         self.blueprint = blueprint
         self.birth = birth
         self.parents = parents
-        self.model = None
-
-    def generate_old(self):
-        """
-        Returns the keras model representing of the topology.
-        """
-
-        logging.info(f"Generating keras layers")
-        module_map = {}
-        module_level = 0
-
-        for module in self.blueprint:
-            first_layer = None
-            last_layer = None
-            layer_map = {}
-            layer_level = 0
-                
-            for component_map in module:
-                logging.info(f"Module level: {module_level}; Layer level: {layer_level}")
-                input_connection, output_connection, component = component_map
-
-                """if output_connection == None:
-                    preceding_component = component.keras_component"""
-
-                if input_connection == None:
-                    #if module.layer_type == ModulePosition.INPUT:
-                    if module_level == 0 and layer_level == 0:
-                        logging.info(f"Adding the Input() layer")
-                        model_input = keras.layers.Input(shape=self.blueprint.input_shape)
-                        logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {model_input}")
-                        first_layer = component.keras_component(model_input)
-                        logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {first_layer}")
-                    else:
-                        logging.info(f"Adding first layer")
-                        preceding_layer = module_map[module_level-1][max(module_map[module_level-1])]
-                        #print(preceding_layer, (isinstance(preceding_component, keras.layers.Conv2D) or "conv2d" in preceding_layer.name), component.keras_component, isinstance(component.keras_component, keras.layers.Dense))
-                        #print(preceding_layer.name, preceding_component.name, "conv2d" in preceding_component.name)
-                        if ("conv2d" in preceding_layer.name) and isinstance(component.keras_component, keras.layers.Dense):
-                            logging.info(f"Adding a Flatten() layer")
-                            #preciding_layer = keras.layers.MaxPool2D((2,2))
-                            preceding_layer = keras.layers.Flatten()(preceding_layer)
-                            logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {preceding_layer}")
-                        first_layer = component.keras_component(preceding_layer)
-                        logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {first_layer}")
-                    layer_map[layer_level] = first_layer
-                elif isinstance(input_connection, tuple):
-                    logging.info(f"Adding a Merge layer")
-                    merge_layer = keras.layers.concatenate([layer_map[layer] for layer in input_connection])
-                    logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {merge_layer}")
-                    intermed_layer = component.keras_component(merge_layer)
-                    logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {intermed_layer}")
-                    layer_map[layer_level] = intermed_layer
-                else:
-                    print(layer_map[input_connection], isinstance(layer_map[input_connection], keras.layers.Conv2D), "conv2d" in layer_map[input_connection].name)
-                    preceding_layer = layer_map[input_connection]
-                    if (isinstance(layer_map[input_connection], keras.layers.Conv2D) or "conv2d" in layer_map[input_connection].name) and isinstance(component.keras_component, keras.layers.Dense):
-                        logging.info(f"Adding a Flatten() layer")
-                        preceding_layer = keras.layers.Flatten()(preceding_layer)
-                        logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {preceding_layer}")
-                    logging.info(f"Adding the Intermediate layer")
-                    intermed_layer = component.keras_component(layer_map[input_connection])
-                    logging.log(21, f"{layer_level}: {input_connection}, {output_connection} - Added {intermed_layer}")
-                    layer_map[layer_level] = intermed_layer
-                layer_level += 1
-                module_map[module_level] = layer_map
-
-                preceding_component = component.keras_component
-                
-            module_map[module_level] = layer_map
-            module_level += 1
-
-        print(module_map)
-        logging.log(21, module_map)
-        self.model = keras.models.Model(inputs=model_input, outputs=module_map[module_level-1][layer_level-1])
-        self.model.compile(**self.blueprint.compiler)
+        self.model = model
+        self.name = name
 
     def generate(self):
         """
@@ -237,77 +159,114 @@ class Individual:
         """
 
         layer_map = {}
-        blueprint_graph = self.blueprint.blueprint_graph
+        module_graph = self.blueprint.module_graph
 
-        assembled_blueprint_graph = nx.DiGraph()
-        output_nodes = []
+        assembled_module_graph = nx.DiGraph()
+        output_nodes = {}
 
-        for node in blueprint_graph.nodes():
-            assembled_blueprint_graph = nx.union(assembled_blueprint_graph, blueprint_graph.nodes[node]["module_def"].component_graph, rename=(None, f'{node}-'))
-            output_nodes.append(max(blueprint_graph.nodes[node]["module_def"].component_graph.nodes()))
+        for node in module_graph.nodes():
+            assembled_module_graph = nx.union(assembled_module_graph, module_graph.nodes[node]["node_def"].component_graph, rename=(None, f'{node}-'))
+            output_nodes[node] = (max(module_graph.nodes[node]["node_def"].component_graph.nodes()))
 
-        for node in blueprint_graph.nodes():
-            for successor in blueprint_graph.successors(node):
-                assembled_blueprint_graph.add_edge(f'{node}-{output_nodes[node]}', f'{successor}-0')
+        for node in module_graph.nodes():
+            for successor in module_graph.successors(node):
+                assembled_module_graph.add_edge(f'{node}-{output_nodes[node]}', f'{successor}-0')
 
         plt.subplot(121)
-        nx.draw(assembled_blueprint_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_blueprint_graph, prog='dot'), with_labels=True, font_weight='bold')
-        plt.savefig("Graph.png", format="PNG")
+        nx.draw(assembled_module_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_module_graph, prog='dot'), with_labels=True, font_weight='bold')
+        plt.get_current_fig_manager().full_screen_toggle()
+        plt.tight_layout()
+        plt.savefig("./images/2_component_level_graph.png", format="PNG")
+        plt.clf()
 
-        logging.log(21, f"Generated the assembled graph")
+        logging.log(21, f"Generated the assembled graph: {assembled_module_graph.nodes()}")
 
         logging.info(f"Generating keras layers")
         logging.info(f"Adding the Input() layer")
         model_input = keras.layers.Input(shape=self.blueprint.input_shape)
         logging.log(21, f"Added {model_input}")
 
-        component_graph = assembled_blueprint_graph
+        component_graph = assembled_module_graph
 
+        # Iterate over the graph including nodes
         for component_id in component_graph.nodes():
-            component = component_graph.nodes[component_id]["component_def"]
+            layer = []
+            component = component_graph.nodes[component_id]["node_def"]
 
+            # If the node has no inputs, then use the Model Input as layer input
             if component_graph.in_degree(component_id) == 0:
-                layer = component.keras_component(model_input)
+                layer.append(component.keras_component(model_input))
                 logging.log(21, f"{component_id}: Added {layer}")
+                if component.complementary_component != None:
+                    layer.append(component.keras_complementary_component(layer[0]))
+                    logging.log(21, f"{component_id}: Added complement {layer}")
             
+            # Else, if only one input, include it as layer input
             elif component_graph.in_degree(component_id) == 1:
                 predecessors = [layer_map[predecessor_id] for predecessor_id in component_graph.predecessors(component_id)][0]
-                print("conv2d" in predecessors.name, "dense" in component.keras_component.name)
-                if "conv2d" in predecessors.name and "dense" in component.keras_component.name:
+                logging.log(21, f"{component_id}: is {predecessors[0].name} conv2d: {'conv2d' in predecessors[0].name}. is {component.keras_component.name} dense: {'dense' in component.keras_component.name}")
+                if "conv2d" in predecessors[0].name and "dense" in component.keras_component.name:
                     logging.info(f"Adding a Flatten() layer")
-                    layer = keras.layers.Flatten()(predecessors)
+                    layer = [keras.layers.Flatten()(predecessors[-1])]
                     logging.log(21, f"{component_id}: Added {layer}")
                     predecessors = layer
-                layer = component.keras_component(predecessors)
+                layer = [component.keras_component(predecessors[-1])]
                 logging.log(21, f"{component_id}: Added {layer}")
-
+                if component.complementary_component != None:
+                    layer.append(component.keras_complementary_component(layer[0]))
+                    logging.log(21, f"{component_id}: Added complement {layer}")
+            
+            # Else, if two inputs, merge them and use the merge as layer input
             elif component_graph.in_degree(component_id) == 2:
                 predecessors = [layer_map[predecessor_id] for predecessor_id in component_graph.predecessors(component_id)]
-
+                for predecessor in range(len(predecessors[0])):
+                    if "conv2d" in predecessors[predecessor][0].name and "dense" in component.keras_component.name:
+                        logging.info(f"Adding a Flatten() layer")
+                        layer = [keras.layers.Flatten()(predecessors[predecessor][-1])]
+                        logging.log(21, f"{component_id}: Added {layer}")
+                        predecessors[predecessor] = layer
+                
                 logging.info(f"Adding a Merge layer")
-                merge_layer = keras.layers.concatenate(predecessors)
+                merge_layer = keras.layers.concatenate([predecessors[0][0], predecessors[1][0]])
                 logging.log(21, f"{component_id}: Added {merge_layer}")
-                layer = component.keras_component(merge_layer)
+                layer = [component.keras_component(merge_layer)]
                 logging.log(21, f"{component_id}: Added {layer}")
+                if component.complementary_component != None:
+                    layer.append(component.keras_complementary_component(layer[-1]))
+                    logging.log(21, f"{component_id}: Added complement {layer}")
 
+            # Store model layers as a reference while the model is still not assembled 
             layer_map[component_id] = layer
 
+        # Assemble model
         logging.log(21, layer_map)
         self.model = keras.models.Model(inputs=model_input, outputs=layer_map[max(layer_map)])
         self.model.compile(**self.blueprint.compiler)
-        plot_model(self.model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+        plot_model(self.model, to_file='./images/3_layer_level_graph.png', show_shapes=True, show_layer_names=True)
 
-    def fit(self, input_x, input_y, epochs=1):
+    def fit(self, input_x, input_y, epochs=1, validation_split=0.15):
         """
         Fits the keras model representing the topology.
         """
 
         logging.info(f"Fitting one individual for {epochs} epochs")
-
         self.generate()
-        fitness = self.model.fit(input_x, input_y, epochs=epochs)
+        fitness = self.model.fit(input_x, input_y, epochs=epochs, validation_split=validation_split, batch_size=512)
+        print(fitness)
 
         return fitness
+
+    def score(self, test_x, test_y):
+        """
+        Scores the keras model representing the topology.
+
+        returns test_loss, test_acc
+        """
+        
+        logging.info(f"Scoring one individual")
+        scores = self.model.evaluate(test_x, test_y, verbose=1)
+
+        return scores
 
     def extract_blueprint(self):
         """
@@ -319,13 +278,14 @@ class Population:
     """
     Represents the population containing multiple individual topologies and their correlations.
     """
-    def __init__(self, datasets=None, individuals=[], modules=[], hyperparameters=[], species=[], groups=[]):
+    def __init__(self, datasets=None, individuals=[], modules=[], hyperparameters=[], species=[], groups=[], input_shape=None):
         self.datasets = datasets
         self.individuals = individuals
         self.modules = modules
         self.hyperparameters = hyperparameters
         self.species = species
         self.groups = groups
+        self.input_shape = input_shape
 
     def create(self, size: int =1):
         """
@@ -339,9 +299,35 @@ class Population:
         """
         pass
 
-    def iterate_fitness(self, training_epochs=1):
+    def create_random_blueprints(self, size=1, compiler=None):
+
+        new_individuals = []
+
+        for n in range(size):
+
+            #Create a blueprint
+            input_shape = self.input_shape
+            new_compiler = compiler
+            new_blueprint = Generator().random_blueprint(global_configs, possible_components, possible_complementary_components, input_shape, new_compiler)
+
+            #Create individual with the Blueprint
+            new_individual = Individual(blueprint=new_blueprint, name=n)
+            new_individuals.append(new_individual)
+
+        self.individuals = new_individuals
+
+    def return_individual(self, name):
+        for individual in self.individuals:
+            if individual.name == name:
+                return individual
+
+        return False
+
+    def iterate_fitness(self, training_epochs=1, validation_split=0.15):
         """
         Fits the individuals and generates scores.
+
+        returns a list composed of [invidual name, test scores, training history]
         """
 
         logging.info(f"Iterating fitness over {len(self.individuals)} individuals")
@@ -350,10 +336,13 @@ class Population:
         #(batch, channels, rows, cols)
         input_x = self.datasets.training[0]
         input_y = self.datasets.training[1]
+        test_x = self.datasets.test[0]
+        test_y = self.datasets.test[1]
 
         for individual in self.individuals:
-            score = individual.fit(input_x, input_y, training_epochs)
-            iteration.append(score)
+            history = individual.fit(input_x, input_y, training_epochs, validation_split)
+            score = individual.score(test_x, test_y)
+            iteration.append([individual.name, score, history])
 
         return iteration
 
@@ -378,103 +367,169 @@ class Population:
         """
         pass
 
-    def iterate_epochs(self, epochs=1, training_epochs=1):
+    def iterate_epochs(self, epochs=1, training_epochs=1, validation_split=0.15):
         """
         Manages epoch iterations, applying the genetic algorithm in fact.
+
+        returns a list of epoch iterations
         """
 
         logging.info(f"Iterating over {epochs} epochs")
         iterations = []
-        for epoch in range(epochs):
-            iterations.append(self.iterate_fitness(training_epochs))
+        best_scores = []
 
-        return iterations
+        for epoch in range(epochs):
+            iteration = self.iterate_fitness(training_epochs, validation_split)
+            iterations.append(iteration)
+            # [name, score[test_loss, test_val], history]
+
+            best_fitting = max(iteration, key=lambda x: (x[1][1], x[1][0]))
+            print(best_fitting)
+            
+            self.return_individual(best_fitting[0]).model.save(f"./models/best_epoch_{epoch}.h5")
+
+            best_scores.append(best_fitting)
+
+        return best_scores
+
+class Generator():
+
+    count=0
+
+    @staticmethod
+    def random_parameter_def(possible_parameters, parameter_name):
+        parameter_def = {}
+        parameter_values, parameter_type = possible_parameters[parameter_name]
+        if parameter_type == 'int':
+            parameter_def = random.randint(parameter_values[0], parameter_values[1])
+        elif parameter_type == 'float':
+            parameter_def = ((parameter_values[1] - parameter_values[0]) * random.random()) + parameter_values[0]
+        elif parameter_type == 'list':
+            parameter_def = random.choice(parameter_values)
+
+        return parameter_def
+
+    @staticmethod
+    def save_graph_plot(filename, graph):
+        plt.subplot(121)
+        nx.draw(graph, nx.drawing.nx_agraph.graphviz_layout(graph, prog='dot'), with_labels=True, font_weight='bold')
+        plt.tight_layout()
+        plt.savefig(f"./images/{filename}", format="PNG", figsize=(8.0, 5.0))
+        plt.clf()
+
+    def random_component(self, possible_components, possible_complementary_components = None):
+        component_def, possible_parameters = possible_components[random.choice(list(possible_components))]
+
+        parameter_def = {}
+        for parameter_name in possible_parameters:
+            parameter_def[parameter_name] = self.random_parameter_def(possible_parameters, parameter_name)
+
+        if possible_complementary_components != None:
+            compl_component_def, possible_compl_parameters = possible_complementary_components[random.choice(list(possible_complementary_components))]
+
+            compl_parameter_def = {}
+            for parameter_name in possible_compl_parameters:
+                compl_parameter_def[parameter_name] = self.random_parameter_def(possible_compl_parameters, parameter_name)
+            complementary_component = [compl_component_def, compl_parameter_def]
+            keras_complementary_component = compl_component_def(**compl_parameter_def)
+        else:
+            complementary_component = None
+            keras_complementary_component = None
+
+        new_component = Component([component_def, parameter_def], component_def(**parameter_def), complementary_component=complementary_component, keras_complementary_component=keras_complementary_component)
+        return new_component
+
+    def random_graph(self, node_range, node_content_generator, args=None):
+
+        new_graph = nx.DiGraph()
+
+        for node in range(node_range):
+            node_def = node_content_generator(**args)
+            new_graph.add_node(node, node_def=node_def)
+
+            if node == 0:
+                pass
+            elif node > 0 and (node < node_range-1 or node_range <= 2):
+                precedent = random.randint(0, node-1)
+                new_graph.add_edge(precedent, node)
+            elif node == node_range-1:
+                leaf_nodes = [leaf_node for leaf_node in new_graph.nodes() if new_graph.out_degree(leaf_node)==0 or leaf_node==0]
+                leaf_nodes.remove(node)
+
+                while (len(leaf_nodes) > 0):
+                    if len(leaf_nodes) <= 2:
+                        leaf_node = random.choice(leaf_nodes)
+                        new_graph.add_edge(leaf_node, node)
+                    else:
+                        leaf_nodes.append(0)
+                        random_node1 = random.choice(leaf_nodes)
+                        leaf_nodes.remove(random_node1)
+                        random_node2 = random.choice(leaf_nodes)
+                        if (new_graph.in_degree(random_node2)>1 and random_node2 not in new_graph.successors(random_node1) and random_node2 != 0):
+                            new_graph.add_edge(random_node1, random_node2)
+                    leaf_nodes = [leaf_node for leaf_node in new_graph.nodes() if new_graph.out_degree(leaf_node)==0]
+                    leaf_nodes.remove(node)
+
+        return new_graph
+
+    def random_module(self, global_configs, possible_nodes, possible_complementary_components):
+
+        node_range = self.random_parameter_def(global_configs, "component_range")
+        logging.log(21, f"Generating {node_range} components")
+        print(f"Generating {node_range} components")
+
+        graph = self.random_graph(node_range=node_range,
+                                            node_content_generator=self.random_component,
+                                            args = {"possible_components": possible_nodes,
+                                                    "possible_complementary_components": possible_complementary_components})
+
+        self.save_graph_plot(f"0_{self.count}_module_internal_graph.png", graph)
+        self.count+=1
+        new_module = Module(None, ModuleComposition.INTERMED, component_graph=graph)
+
+        return new_module
+    
+    def random_blueprint(self, global_configs, possible_components, possible_complementary_components, input_shape, compiler):
+
+        node_range = self.random_parameter_def(global_configs, "module_range")
+        logging.log(21, f"Generating {node_range} modules")
+        print(f"Generating {node_range} modules")
+
+        input_node = self.random_graph(node_range=1,
+                                            node_content_generator=self.random_module,
+                                            args = {"global_configs": input_configs,
+                                                    "possible_nodes": possible_inputs,
+                                                    "possible_complementary_components": None})
+        self.save_graph_plot("1_1_input_module.png", input_node)
+
+        intermed_graph = self.random_graph(node_range=node_range,
+                                            node_content_generator=self.random_module,
+                                            args = {"global_configs": global_configs,
+                                                    "possible_nodes": possible_components,
+                                                    "possible_complementary_components": possible_complementary_components})
+        self.save_graph_plot("1_2_intermed_module.png", intermed_graph)
+
+        output_node = self.random_graph(node_range=1,
+                                            node_content_generator=self.random_module,
+                                            args = {"global_configs": output_configs,
+                                                    "possible_nodes": possible_outputs,
+                                                    "possible_complementary_components": None})
+        self.save_graph_plot("1_3_output_module.png", output_node)
+
+        graph = nx.union(input_node, intermed_graph, rename=("input-", "intermed-"))
+        graph = nx.union(graph, output_node, rename=(None, "output-"))
+        graph.add_edge("input-0", "intermed-0")
+        graph.add_edge(f"intermed-{max(intermed_graph.nodes())}", "output-0")
+        self.save_graph_plot("1_module_level_graph.png", graph)
+
+        new_blueprint = Blueprint(None, compiler, input_shape, module_graph=graph)
+
+        return new_blueprint
 
 def test_run(global_configs, possible_components):
     """
     A test run to verify the whole pipeline.
     """
-    class Generator():
-
-        @staticmethod
-        def random_parameter_def(possible_parameters, parameter_name):
-            parameter_def = {}
-            parameter_values, parameter_type = possible_parameters[parameter_name]
-            if parameter_type == 'int':
-                parameter_def = random.randint(parameter_values[0], parameter_values[1])
-            elif parameter_type == 'float':
-                parameter_def = ((parameter_values[1] - parameter_values[0]) * random.random()) + parameter_values[0]
-            elif parameter_type == 'list':
-                parameter_def = random.choice(parameter_values)
-
-            return parameter_def
-
-        def random_component(self, possible_components):
-            component_def, possible_parameters = possible_components[random.choice(list(possible_components))]
-            print(possible_parameters)
-
-            parameter_def = {}
-            for parameter_name in possible_parameters:
-                parameter_def[parameter_name] = self.random_parameter_def(possible_parameters, parameter_name)
-            print(parameter_def)
-
-            new_component = Component([component_def, parameter_def], component_def(**parameter_def))
-            return new_component
-
-        def random_module(self, global_configs, possible_components):
-
-            component_graph = nx.DiGraph()
-            components = []
-            
-            component_range = self.random_parameter_def(global_configs, "component_range")
-            print("global parameter def", component_range)
-
-            for component in range(component_range):
-                component_def = self.random_component(possible_components)
-
-                component_graph.add_node(component, component_def=component_def)
-                if component == 0:
-                    input_connection = None
-                    output_connection = None
-                elif component > 0 and component < component_range-1:
-                    precedent = random.randint(0, component-1)
-                    component_graph.add_edge(precedent, component)
-
-                    input_connection = precedent
-                    output_connection = None
-                elif component == component_range-1:
-                    leaf_nodes = [node for node in component_graph.nodes() if component_graph.out_degree(node)==0]
-                    leaf_nodes.remove(component)
-                    while (len(leaf_nodes) > 0):
-                        if len(leaf_nodes) <= 2:
-                            for node in leaf_nodes:
-                                component_graph.add_edge(node, component)
-
-                            input_connection = tuple(leaf_nodes)
-                            output_connection = None
-                        else:
-                            random_node1 = random.choice(leaf_nodes)
-                            leaf_nodes.remove(random_node1)
-
-                            random_node2 = random.choice(leaf_nodes)
-                            while (component_graph.in_degree(random_node2)>1):
-                                random_node2 = random.choice(leaf_nodes)
-                            component_graph.add_edge(random_node1, random_node2)
-                        leaf_nodes = [node for node in component_graph.nodes() if component_graph.out_degree(node)==0]
-                        leaf_nodes.remove(component)
-                    
-                components.append([input_connection, output_connection, component_def])
-            
-            """print(component_graph.nodes())
-            print("components def", components)
-            plt.subplot(121)
-            nx.draw(component_graph, nx.drawing.nx_agraph.graphviz_layout(component_graph, prog='dot'), with_labels=True, font_weight='bold')
-            plt.show()
-            exit(0)"""
-            new_module = Module(components, ModulePosition.INTERMED, component_graph=component_graph)
-
-            return new_module
-
 
     class MyPopulation(Population):
         """
@@ -492,9 +547,9 @@ def test_run(global_configs, possible_components):
                 new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
                 #Combine them in modules
-                new_input_module = Module([[None, None, new_input_conv_component]], ModulePosition.INPUT)
-                new_intermed_module = Module([[None, None, new_conv_component]], ModulePosition.INTERMED)
-                new_output_module = Module([[None, None, new_softmax_component]], ModulePosition.OUTPUT)
+                new_input_module = Module([[None, None, new_input_conv_component]], ModuleComposition.INPUT)
+                new_intermed_module = Module([[None, None, new_conv_component]], ModuleComposition.INTERMED)
+                new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
                 #Create the blueprint combining modules
                 input_shape = (8, 8, 1)
                 new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], new_compiler, input_shape)
@@ -511,7 +566,7 @@ def test_run(global_configs, possible_components):
             for n in range(size):
                 #Create input module
                 new_input_conv_component = Component(None, keras.layers.Conv2D(48, (3, 3), activation="relu"))
-                new_input_module = Module([[None, None, new_input_conv_component]], ModulePosition.INPUT)
+                new_input_module = Module([[None, None, new_input_conv_component]], ModuleComposition.INPUT)
                 
                 def new_module():
                     
@@ -528,7 +583,7 @@ def test_run(global_configs, possible_components):
                     new_module = Module([[None, 1, self.random_component()],
                                                     [0, 2, self.random_component()],
                                                     [1, 3, self.random_component()],
-                                                    [2, None, self.random_component()]], ModulePosition.INPUT)
+                                                    [2, None, self.random_component()]], ModuleComposition.INPUT)
                     return new_module
 
                 #new_input_module = new_module()
@@ -536,11 +591,11 @@ def test_run(global_configs, possible_components):
                 new_intermed_module = Module([[None, 1, self.random_component()],
                                                 [0, 2, self.random_component()],
                                                 [1, 3, self.random_component()],
-                                                [2, None, self.random_component()]], ModulePosition.INTERMED)
+                                                [2, None, self.random_component()]], ModuleComposition.INTERMED)
 
                 #Create output module
                 new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
-                new_output_module = Module([[None, None, new_softmax_component]], ModulePosition.OUTPUT)
+                new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
 
                 #Set the compiler
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
@@ -561,17 +616,17 @@ def test_run(global_configs, possible_components):
             for n in range(size):
                 #Create input module
                 new_input_conv_component = Component(None, keras.layers.Conv2D(48, (3, 3), activation="relu"))
-                new_input_module = Module([[None, None, new_input_conv_component]], ModulePosition.INPUT)
+                new_input_module = Module([[None, None, new_input_conv_component]], ModuleComposition.INPUT)
               
                 #Create intermediate module
                 new_intermed_module = Module([[None, 1, self.random_component()],
                                                 [0, 3, self.random_component()],
                                                 [0, 3, self.random_component()],
-                                                [(1,2), None, self.random_component()]], ModulePosition.INTERMED)
+                                                [(1,2), None, self.random_component()]], ModuleComposition.INTERMED)
 
                 #Create output module
                 new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
-                new_output_module = Module([[None, None, new_softmax_component]], ModulePosition.OUTPUT)
+                new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
 
                 #Set the compiler
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
@@ -585,7 +640,7 @@ def test_run(global_configs, possible_components):
 
             self.individuals = new_individuals
 
-        def create_random_modules(self, size=1):
+        def create_fixed_blueprints(self, size=1):
 
             new_individuals = []
 
@@ -602,20 +657,19 @@ def test_run(global_configs, possible_components):
 
                 #Set the compiler
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-                input_shape = (8, 8, 1)
                 #Create the blueprint combining modules
-                blueprint_graph = nx.DiGraph()
+                module_graph = nx.DiGraph()
                 
-                blueprint_graph.add_node(0, module_def=new_input_module)
-                blueprint_graph.add_node(1, module_def=new_intermed_module1)
-                blueprint_graph.add_node(2, module_def=new_intermed_module2)
-                blueprint_graph.add_node(3, module_def=new_output_module)
-                blueprint_graph.add_edge(0, 1)
-                blueprint_graph.add_edge(0, 2)
-                blueprint_graph.add_edge(1, 3)
-                blueprint_graph.add_edge(2, 3)
+                module_graph.add_node(0, module_def=new_input_module)
+                module_graph.add_node(1, module_def=new_intermed_module1)
+                module_graph.add_node(2, module_def=new_intermed_module2)
+                module_graph.add_node(3, module_def=new_output_module)
+                module_graph.add_edge(0, 1)
+                module_graph.add_edge(0, 2)
+                module_graph.add_edge(1, 3)
+                module_graph.add_edge(2, 3)
 
-                new_blueprint = Blueprint([new_input_module, new_intermed_module1, new_intermed_module2, new_output_module], new_compiler, input_shape, blueprint_graph=blueprint_graph)
+                new_blueprint = Blueprint([new_input_module, new_intermed_module1, new_intermed_module2, new_output_module], new_compiler, input_shape, module_graph=module_graph)
 
                 #Create individual with the Blueprint
                 new_individual = Individual(blueprint=new_blueprint)
@@ -683,16 +737,72 @@ def test_run(global_configs, possible_components):
     logging.warning('This will get logged to a file')
     logging.info(f"Hi, this is a test run.")
 
-    population = MyPopulation(my_dataset)
-    #population.create_random_straight(5)
-    #population.create_random_forked(5)
-    population.create_random_modules(1)
+    population = MyPopulation(my_dataset, input_shape = (8, 8, 1))
+    population.create_random_blueprints(1)
 
     iteration = population.iterate_epochs(epochs=1, training_epochs=5)
 
     print(iteration)
 
+def run_cifar10(global_configs, possible_components, population_size, epochs, training_epochs):
+    from keras.datasets import cifar10
 
+    possible_inputs = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([48,48], 'int'), "kernel_size": ([3], 'list'), "activation": (["relu"], 'list')})
+    }
+
+    possible_components = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
+        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
+    }
+
+    possible_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([1,1], 'int'), "activation": (["softmax"], 'list')})
+    }
+    
+    # The data, split between train and test sets:
+    (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+    (x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
+    print('x_train shape:', x_train.shape)
+    print(x_train.shape[0], 'train samples')
+    print(x_test.shape[0], 'test samples')
+
+    batch_size = 32
+    num_classes = 10
+    epochs = 100
+    data_augmentation = False
+    num_predictions = 20
+
+    # Convert class vectors to binary class matrices.
+    y_train = keras.utils.to_categorical(y_train, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
+
+    x_train = x_train.astype('float32')
+    x_test = x_test.astype('float32')
+    x_train /= 255
+    x_test /= 255
+
+    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+
+    logging.basicConfig(filename='test.log',
+                        filemode='w+', level=logging.DEBUG,
+                        format='%(levelname)s - %(asctime)s: %(message)s')
+    logging.addLevelName(21, "TOPOLOGY")
+
+    logging.warning('This will get logged to a file')
+    logging.info(f"Hi, this is a test run.")
+
+    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+
+    population = Population(my_dataset, input_shape=x_train.shape[1:])
+    population.create_random_blueprints(population_size, compiler)
+
+    iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
+
+    print("Best fitting: ", iteration)
+
+    
 if __name__ == "__main__":
     
-    test_run(global_configs, possible_components)
+    #test_run(global_configs, possible_components)
+    run_cifar10(global_configs, possible_components, population_size=10, epochs=5, training_epochs=10)
