@@ -11,8 +11,8 @@ input_configs = {
 }
 
 global_configs = {
-    "module_range" : ([2, 4], 'int'),
-    "component_range" : ([2, 4], 'int')
+    "module_range" : ([1, 3], 'int'),
+    "component_range" : ([1, 4], 'int')
 }
 
 output_configs = {
@@ -379,6 +379,9 @@ class Population:
         best_scores = []
 
         for epoch in range(epochs):
+            logging.info(f" -- Iterating epoch {epoch} -- ")
+            print(f" -- Iterating epoch {epoch} -- ")
+
             iteration = self.iterate_fitness(training_epochs, validation_split)
             iterations.append(iteration)
             # [name, score[test_loss, test_val], history]
@@ -769,7 +772,6 @@ def run_cifar10(global_configs, possible_components, population_size, epochs, tr
 
     batch_size = 32
     num_classes = 10
-    epochs = 100
     data_augmentation = False
     num_predictions = 20
 
@@ -805,4 +807,4 @@ def run_cifar10(global_configs, possible_components, population_size, epochs, tr
 if __name__ == "__main__":
     
     #test_run(global_configs, possible_components)
-    run_cifar10(global_configs, possible_components, population_size=10, epochs=5, training_epochs=10)
+    run_cifar10(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
