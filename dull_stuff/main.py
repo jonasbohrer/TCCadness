@@ -172,7 +172,6 @@ class Individual:
         output_nodes = {}
 
         for node in module_graph.nodes():
-            print("here",module_graph.nodes[node], module_graph.nodes[node]["node_def"])
             assembled_module_graph = nx.union(assembled_module_graph, module_graph.nodes[node]["node_def"].component_graph, rename=(None, f'{node}-'))
             output_nodes[node] = (max(module_graph.nodes[node]["node_def"].component_graph.nodes()))
 
@@ -180,11 +179,12 @@ class Individual:
             for successor in module_graph.successors(node):
                 assembled_module_graph.add_edge(f'{node}-{output_nodes[node]}', f'{successor}-0')
 
-        plt.subplot(121)
-        nx.draw(assembled_module_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_module_graph, prog='dot'), with_labels=True, font_weight='bold')
-        plt.get_current_fig_manager().full_screen_toggle()
         plt.tight_layout()
-        plt.savefig("./images/2_component_level_graph.png", format="PNG")
+        plt.subplot(121)
+        nx.draw(assembled_module_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_module_graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
+        l,r = plt.xlim()
+        plt.xlim(l-5,r+5)
+        plt.savefig("./images/2_component_level_graph.png", format="PNG", bbox_inches="tight")
         plt.clf()
 
         logging.log(21, f"Generated the assembled graph: {assembled_module_graph.nodes()}")
@@ -213,8 +213,8 @@ class Individual:
                 component.keras_complementary_component = component_def(**parameter_def)
                 component.keras_complementary_component.name = component.keras_complementary_component.name + "_" + uuid.uuid4().hex
 
-            logging.log(21, f"{component_id}: Working on {component.keras_component.name}.")
-            print(component.keras_component.name)
+            logging.log(21, f"{component_id}: Working on {component.keras_component.name}. Specs: {component.representation}")
+            print(f"{component_id}: Working on {component.keras_component.name}. Specs: {component.representation}")
 
             # If the node has no inputs, then use the Model Input as layer input
             if component_graph.in_degree(component_id) == 0:
@@ -493,9 +493,9 @@ class Generator:
     @staticmethod
     def save_graph_plot(filename, graph):
         plt.subplot(121)
-        nx.draw(graph, nx.drawing.nx_agraph.graphviz_layout(graph, prog='dot'), with_labels=True, font_weight='bold')
+        nx.draw(graph, nx.drawing.nx_agraph.graphviz_layout(graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
         plt.tight_layout()
-        plt.savefig(f"./images/{filename}", format="PNG", figsize=(8.0, 5.0))
+        plt.savefig(f"./images/{filename}", format="PNG", bbox_inches="tight")
         plt.clf()
 
     def random_component(self, possible_components, possible_complementary_components = None):
