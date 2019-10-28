@@ -1,301 +1,358 @@
-WARNING - 2019-09-11 21:17:07,371: This will get logged to a file
-INFO - 2019-09-11 21:17:07,371: Hi, this is a test run.
-WARNING - 2019-09-11 21:17:07,385: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+WARNING - 2019-10-28 14:30:14,998: This will get logged to a file
+INFO - 2019-10-28 14:30:14,998: Hi, this is a test run.
+WARNING - 2019-10-28 14:30:15,010: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Colocations handled automatically by placer.
-TOPOLOGY - 2019-09-11 21:17:07,394: Generating 4 modules
-TOPOLOGY - 2019-09-11 21:17:07,395: Generating 1 components
-DEBUG - 2019-09-11 21:17:07,772: update_title_pos
-DEBUG - 2019-09-11 21:17:07,777: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=12.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
-DEBUG - 2019-09-11 21:17:07,782: update_title_pos
-DEBUG - 2019-09-11 21:17:07,916: update_title_pos
-DEBUG - 2019-09-11 21:17:07,924: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:07,952: Generating 3 components
-DEBUG - 2019-09-11 21:17:08,068: update_title_pos
-DEBUG - 2019-09-11 21:17:08,078: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:08,106: Generating 3 components
-DEBUG - 2019-09-11 21:17:08,254: update_title_pos
-DEBUG - 2019-09-11 21:17:08,265: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:08,294: Generating 3 components
-DEBUG - 2019-09-11 21:17:08,411: update_title_pos
-DEBUG - 2019-09-11 21:17:08,421: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:08,449: Generating 3 components
-DEBUG - 2019-09-11 21:17:08,558: update_title_pos
-DEBUG - 2019-09-11 21:17:08,569: update_title_pos
-DEBUG - 2019-09-11 21:17:08,718: update_title_pos
-DEBUG - 2019-09-11 21:17:08,729: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:08,758: Generating 1 components
-DEBUG - 2019-09-11 21:17:08,968: update_title_pos
-DEBUG - 2019-09-11 21:17:08,976: update_title_pos
-DEBUG - 2019-09-11 21:17:09,112: update_title_pos
-DEBUG - 2019-09-11 21:17:09,120: update_title_pos
-DEBUG - 2019-09-11 21:17:09,257: update_title_pos
-DEBUG - 2019-09-11 21:17:09,272: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:09,302: Generating 4 modules
-TOPOLOGY - 2019-09-11 21:17:09,303: Generating 1 components
-DEBUG - 2019-09-11 21:17:09,410: update_title_pos
-DEBUG - 2019-09-11 21:17:09,419: update_title_pos
-DEBUG - 2019-09-11 21:17:09,554: update_title_pos
-DEBUG - 2019-09-11 21:17:09,562: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:09,589: Generating 4 components
-DEBUG - 2019-09-11 21:17:09,699: update_title_pos
-DEBUG - 2019-09-11 21:17:09,710: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:09,739: Generating 3 components
-DEBUG - 2019-09-11 21:17:09,950: update_title_pos
-DEBUG - 2019-09-11 21:17:09,960: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:09,988: Generating 4 components
-DEBUG - 2019-09-11 21:17:10,221: update_title_pos
-DEBUG - 2019-09-11 21:17:10,231: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:10,261: Generating 4 components
-DEBUG - 2019-09-11 21:17:10,472: update_title_pos
-DEBUG - 2019-09-11 21:17:10,482: update_title_pos
-DEBUG - 2019-09-11 21:17:10,715: update_title_pos
-DEBUG - 2019-09-11 21:17:10,725: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:10,755: Generating 1 components
-DEBUG - 2019-09-11 21:17:10,960: update_title_pos
-DEBUG - 2019-09-11 21:17:10,970: update_title_pos
-DEBUG - 2019-09-11 21:17:11,096: update_title_pos
-DEBUG - 2019-09-11 21:17:11,106: update_title_pos
-DEBUG - 2019-09-11 21:17:11,247: update_title_pos
-DEBUG - 2019-09-11 21:17:11,261: update_title_pos
-INFO - 2019-09-11 21:17:11,293: Iterating over 2 epochs
-INFO - 2019-09-11 21:17:11,293: Iterating fitness over 2 individuals
-INFO - 2019-09-11 21:17:11,293: Fitting one individual for 1 epochs
-DEBUG - 2019-09-11 21:17:11,532: update_title_pos
-DEBUG - 2019-09-11 21:17:11,560: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:11,604: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'intermed-3-0', 'intermed-3-1', 'intermed-3-2', 'output-0-0']
-INFO - 2019-09-11 21:17:11,604: Generating keras layers
-INFO - 2019-09-11 21:17:11,604: Adding the Input() layer
-TOPOLOGY - 2019-09-11 21:17:11,605: Added Tensor("input_1:0", shape=(?, 32, 32, 3), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:11,613: input-0-0: Added [<tf.Tensor 'conv2d_1/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,613: intermed-0-0: is conv2d_1/Relu:0 conv2d: True. is conv2d_2 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,623: intermed-0-0: Added [<tf.Tensor 'conv2d_2/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>]
-WARNING - 2019-09-11 21:17:11,626: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\keras\backend\tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+TOPOLOGY - 2019-10-28 14:30:15,018: Generating 3 components
+DEBUG - 2019-10-28 14:30:15,287: update_title_pos
+DEBUG - 2019-10-28 14:30:15,295: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=12.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
+DEBUG - 2019-10-28 14:30:15,299: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:15,327: Generating 3 components
+DEBUG - 2019-10-28 14:30:15,434: update_title_pos
+DEBUG - 2019-10-28 14:30:15,445: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:15,471: Generating 3 components
+DEBUG - 2019-10-28 14:30:15,579: update_title_pos
+DEBUG - 2019-10-28 14:30:15,623: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:15,653: Generating 3 components
+DEBUG - 2019-10-28 14:30:15,860: update_title_pos
+DEBUG - 2019-10-28 14:30:15,869: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:15,899: Generating 3 components
+DEBUG - 2019-10-28 14:30:16,002: update_title_pos
+DEBUG - 2019-10-28 14:30:16,011: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:16,038: Generating 3 modules
+TOPOLOGY - 2019-10-28 14:30:16,039: Generating 1 components
+DEBUG - 2019-10-28 14:30:16,141: update_title_pos
+DEBUG - 2019-10-28 14:30:16,150: update_title_pos
+DEBUG - 2019-10-28 14:30:16,272: update_title_pos
+DEBUG - 2019-10-28 14:30:16,280: update_title_pos
+DEBUG - 2019-10-28 14:30:16,408: update_title_pos
+DEBUG - 2019-10-28 14:30:16,419: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:16,447: Generating 1 components
+DEBUG - 2019-10-28 14:30:16,554: update_title_pos
+DEBUG - 2019-10-28 14:30:16,563: update_title_pos
+DEBUG - 2019-10-28 14:30:16,697: update_title_pos
+DEBUG - 2019-10-28 14:30:16,706: update_title_pos
+DEBUG - 2019-10-28 14:30:16,838: update_title_pos
+DEBUG - 2019-10-28 14:30:16,852: update_title_pos
+INFO - 2019-10-28 14:30:16,887: Iterating over 5 epochs
+INFO - 2019-10-28 14:30:16,888:  -- Iterating epoch 0 -- 
+INFO - 2019-10-28 14:30:16,888: Iterating fitness over 1 individuals
+INFO - 2019-10-28 14:30:16,889: Fitting one individual for 5 epochs
+DEBUG - 2019-10-28 14:30:17,010: update_title_pos
+DEBUG - 2019-10-28 14:30:17,032: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:17,076: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'output-0-0']
+INFO - 2019-10-28 14:30:17,076: Generating keras layers
+INFO - 2019-10-28 14:30:17,076: Adding the Input() layer
+TOPOLOGY - 2019-10-28 14:30:17,077: Added Tensor("input_1:0", shape=(?, 32, 32, 3), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:17,077: input-0-0: Working on conv2d_17_a2d966247941432c9a49ca8fc3804db7.
+TOPOLOGY - 2019-10-28 14:30:17,088: input-0-0: Added [<tf.Tensor 'conv2d_17_a2d966247941432c9a49ca8fc3804db7/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,088: intermed-0-0: Working on conv2d_18_818e25353aa143bb970a17b11d9e0513.
+TOPOLOGY - 2019-10-28 14:30:17,088: intermed-0-0: is conv2d_17_a2d966247941432c9a49ca8fc3804db7/Relu:0 conv2d: True. is conv2d_18_818e25353aa143bb970a17b11d9e0513 dense: False
+TOPOLOGY - 2019-10-28 14:30:17,097: intermed-0-0: Added [<tf.Tensor 'conv2d_18_818e25353aa143bb970a17b11d9e0513/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+WARNING - 2019-10-28 14:30:17,100: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\keras\backend\tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
 Instructions for updating:
 Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
-TOPOLOGY - 2019-09-11 21:17:11,634: intermed-0-0: Added complement [<tf.Tensor 'conv2d_2/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_1/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,634: intermed-0-1: is conv2d_2/BiasAdd:0 conv2d: True. is conv2d_3 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,642: intermed-0-1: Added [<tf.Tensor 'conv2d_3/BiasAdd:0' shape=(?, 30, 30, 20) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,653: intermed-0-1: Added complement [<tf.Tensor 'conv2d_3/BiasAdd:0' shape=(?, 30, 30, 20) dtype=float32>, <tf.Tensor 'dropout_2/cond/Merge:0' shape=(?, 30, 30, 20) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,653: intermed-0-2: is conv2d_3/BiasAdd:0 conv2d: True. is conv2d_4 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,662: intermed-0-2: Added [<tf.Tensor 'conv2d_4/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,672: intermed-0-2: Added complement [<tf.Tensor 'conv2d_4/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_3/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,673: intermed-1-0: is conv2d_4/BiasAdd:0 conv2d: True. is conv2d_5 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,680: intermed-1-0: Added [<tf.Tensor 'conv2d_5/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,691: intermed-1-0: Added complement [<tf.Tensor 'conv2d_5/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_4/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,692: intermed-1-1: is conv2d_5/BiasAdd:0 conv2d: True. is conv2d_6 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,700: intermed-1-1: Added [<tf.Tensor 'conv2d_6/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,710: intermed-1-1: Added complement [<tf.Tensor 'conv2d_6/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_5/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>]
-INFO - 2019-09-11 21:17:11,710: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:11,711: intermed-1-2: Added Tensor("concatenate_1/concat:0", shape=(?, 30, 30, 37), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:11,719: intermed-1-2: Added [<tf.Tensor 'conv2d_7/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,729: intermed-1-2: Added complement [<tf.Tensor 'conv2d_7/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_6/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,729: intermed-2-0: is conv2d_7/BiasAdd:0 conv2d: True. is conv2d_8 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,738: intermed-2-0: Added [<tf.Tensor 'conv2d_8/BiasAdd:0' shape=(?, 30, 30, 31) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,749: intermed-2-0: Added complement [<tf.Tensor 'conv2d_8/BiasAdd:0' shape=(?, 30, 30, 31) dtype=float32>, <tf.Tensor 'dropout_7/cond/Merge:0' shape=(?, 30, 30, 31) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,749: intermed-2-1: is conv2d_8/BiasAdd:0 conv2d: True. is conv2d_9 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,757: intermed-2-1: Added [<tf.Tensor 'conv2d_9/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,768: intermed-2-1: Added complement [<tf.Tensor 'conv2d_9/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_8/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
-INFO - 2019-09-11 21:17:11,768: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:11,770: intermed-2-2: Added Tensor("concatenate_2/concat:0", shape=(?, 30, 30, 77), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:11,778: intermed-2-2: Added [<tf.Tensor 'conv2d_10/BiasAdd:0' shape=(?, 30, 30, 35) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,788: intermed-2-2: Added complement [<tf.Tensor 'conv2d_10/BiasAdd:0' shape=(?, 30, 30, 35) dtype=float32>, <tf.Tensor 'dropout_9/cond/Merge:0' shape=(?, 30, 30, 35) dtype=float32>]
-INFO - 2019-09-11 21:17:11,788: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:11,789: intermed-3-0: Added Tensor("concatenate_3/concat:0", shape=(?, 30, 30, 81), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:11,796: intermed-3-0: Added [<tf.Tensor 'conv2d_11/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,810: intermed-3-0: Added complement [<tf.Tensor 'conv2d_11/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_10/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,810: intermed-3-1: is conv2d_11/BiasAdd:0 conv2d: True. is conv2d_12 dense: False
-TOPOLOGY - 2019-09-11 21:17:11,819: intermed-3-1: Added [<tf.Tensor 'conv2d_12/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,829: intermed-3-1: Added complement [<tf.Tensor 'conv2d_12/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_11/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
-INFO - 2019-09-11 21:17:11,829: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:11,830: intermed-3-2: Added Tensor("concatenate_4/concat:0", shape=(?, 30, 30, 36), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:11,838: intermed-3-2: Added [<tf.Tensor 'conv2d_13/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,848: intermed-3-2: Added complement [<tf.Tensor 'conv2d_13/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_12/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,848: output-0-0: is conv2d_13/BiasAdd:0 conv2d: True. is dense_1 dense: True
-INFO - 2019-09-11 21:17:11,848: Adding a Flatten() layer
-TOPOLOGY - 2019-09-11 21:17:11,854: output-0-0: Added [<tf.Tensor 'flatten_1/Reshape:0' shape=(?, ?) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,862: output-0-0: Added [<tf.Tensor 'dense_1/Softmax:0' shape=(?, 10) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:11,862: {'input-0-0': [<tf.Tensor 'conv2d_1/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_2/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_1/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_3/BiasAdd:0' shape=(?, 30, 30, 20) dtype=float32>, <tf.Tensor 'dropout_2/cond/Merge:0' shape=(?, 30, 30, 20) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_4/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_3/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_5/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_4/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_6/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_5/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_7/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_6/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_8/BiasAdd:0' shape=(?, 30, 30, 31) dtype=float32>, <tf.Tensor 'dropout_7/cond/Merge:0' shape=(?, 30, 30, 31) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_9/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_8/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_10/BiasAdd:0' shape=(?, 30, 30, 35) dtype=float32>, <tf.Tensor 'dropout_9/cond/Merge:0' shape=(?, 30, 30, 35) dtype=float32>], 'intermed-3-0': [<tf.Tensor 'conv2d_11/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_10/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-3-1': [<tf.Tensor 'conv2d_12/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_11/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-3-2': [<tf.Tensor 'conv2d_13/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_12/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_1/Softmax:0' shape=(?, 10) dtype=float32>]}
-WARNING - 2019-09-11 21:17:12,252: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+TOPOLOGY - 2019-10-28 14:30:17,109: intermed-0-0: Added complement [<tf.Tensor 'conv2d_18_818e25353aa143bb970a17b11d9e0513/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_16_709658ca3df047c794c361e721bf4bdc/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,110: intermed-0-1: Working on conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc.
+TOPOLOGY - 2019-10-28 14:30:17,110: intermed-0-1: is conv2d_18_818e25353aa143bb970a17b11d9e0513/BiasAdd:0 conv2d: True. is conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc dense: False
+TOPOLOGY - 2019-10-28 14:30:17,120: intermed-0-1: Added [<tf.Tensor 'conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,130: intermed-0-1: Added complement [<tf.Tensor 'conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_17_d1c34dfc87784a2c9186ba3b114e5665/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,130: intermed-0-2: Working on conv2d_20_b741428bb35b4409b30270db3bd0253f.
+TOPOLOGY - 2019-10-28 14:30:17,130: intermed-0-2: is conv2d_18_818e25353aa143bb970a17b11d9e0513/BiasAdd:0 conv2d: True. is conv2d_20_b741428bb35b4409b30270db3bd0253f dense: False
+TOPOLOGY - 2019-10-28 14:30:17,131: intermed-0-2: is conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc/BiasAdd:0 conv2d: True. is conv2d_20_b741428bb35b4409b30270db3bd0253f dense: False
+INFO - 2019-10-28 14:30:17,131: Adding a Merge layer between conv2d_18_818e25353aa143bb970a17b11d9e0513/BiasAdd:0 and conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:30:17,133: intermed-0-2: Added Tensor("concatenate_1/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:17,149: intermed-0-2: Added [<tf.Tensor 'conv2d_20_b741428bb35b4409b30270db3bd0253f/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,160: intermed-0-2: Added complement [<tf.Tensor 'conv2d_20_b741428bb35b4409b30270db3bd0253f/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_18_44759eb1c1bd4a6a802dd592378a2edf/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,161: intermed-1-0: Working on conv2d_21_3dd0653e941546e9899b9f83218d6e71.
+TOPOLOGY - 2019-10-28 14:30:17,161: intermed-1-0: is conv2d_20_b741428bb35b4409b30270db3bd0253f/BiasAdd:0 conv2d: True. is conv2d_21_3dd0653e941546e9899b9f83218d6e71 dense: False
+TOPOLOGY - 2019-10-28 14:30:17,173: intermed-1-0: Added [<tf.Tensor 'conv2d_21_3dd0653e941546e9899b9f83218d6e71/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,183: intermed-1-0: Added complement [<tf.Tensor 'conv2d_21_3dd0653e941546e9899b9f83218d6e71/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_19_a1f4489abea84d2390223f7165b8388f/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,184: intermed-1-1: Working on conv2d_22_4a855c85549a4601b9156b3c0d34d12a.
+TOPOLOGY - 2019-10-28 14:30:17,184: intermed-1-1: is conv2d_21_3dd0653e941546e9899b9f83218d6e71/BiasAdd:0 conv2d: True. is conv2d_22_4a855c85549a4601b9156b3c0d34d12a dense: False
+TOPOLOGY - 2019-10-28 14:30:17,194: intermed-1-1: Added [<tf.Tensor 'conv2d_22_4a855c85549a4601b9156b3c0d34d12a/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,205: intermed-1-1: Added complement [<tf.Tensor 'conv2d_22_4a855c85549a4601b9156b3c0d34d12a/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_20_e03f065e0a1644bca402012859414f7a/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,205: intermed-1-2: Working on conv2d_23_499a0328950b4b39ae404e5895196a58.
+TOPOLOGY - 2019-10-28 14:30:17,206: intermed-1-2: is conv2d_22_4a855c85549a4601b9156b3c0d34d12a/BiasAdd:0 conv2d: True. is conv2d_23_499a0328950b4b39ae404e5895196a58 dense: False
+TOPOLOGY - 2019-10-28 14:30:17,215: intermed-1-2: Added [<tf.Tensor 'conv2d_23_499a0328950b4b39ae404e5895196a58/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,226: intermed-1-2: Added complement [<tf.Tensor 'conv2d_23_499a0328950b4b39ae404e5895196a58/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_21_f47b47e683da4323b3efc2e616423d90/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,226: intermed-2-0: Working on conv2d_24_499cdc8bbf41438aba16f8508f04a602.
+TOPOLOGY - 2019-10-28 14:30:17,227: intermed-2-0: is conv2d_20_b741428bb35b4409b30270db3bd0253f/BiasAdd:0 conv2d: True. is conv2d_24_499cdc8bbf41438aba16f8508f04a602 dense: False
+TOPOLOGY - 2019-10-28 14:30:17,227: intermed-2-0: is conv2d_23_499a0328950b4b39ae404e5895196a58/BiasAdd:0 conv2d: True. is conv2d_24_499cdc8bbf41438aba16f8508f04a602 dense: False
+INFO - 2019-10-28 14:30:17,227: Adding a Merge layer between conv2d_20_b741428bb35b4409b30270db3bd0253f/BiasAdd:0 and conv2d_23_499a0328950b4b39ae404e5895196a58/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:30:17,228: intermed-2-0: Added Tensor("concatenate_2/concat:0", shape=(?, 30, 30, 69), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:17,236: intermed-2-0: Added [<tf.Tensor 'conv2d_24_499cdc8bbf41438aba16f8508f04a602/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,246: intermed-2-0: Added complement [<tf.Tensor 'conv2d_24_499cdc8bbf41438aba16f8508f04a602/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_22_d5c739afd8324a159ed6220d422f6489/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,246: intermed-2-1: Working on conv2d_25_3c32341e5e72463dbdf2047f76a9e93b.
+TOPOLOGY - 2019-10-28 14:30:17,247: intermed-2-1: is conv2d_24_499cdc8bbf41438aba16f8508f04a602/BiasAdd:0 conv2d: True. is conv2d_25_3c32341e5e72463dbdf2047f76a9e93b dense: False
+TOPOLOGY - 2019-10-28 14:30:17,258: intermed-2-1: Added [<tf.Tensor 'conv2d_25_3c32341e5e72463dbdf2047f76a9e93b/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,268: intermed-2-1: Added complement [<tf.Tensor 'conv2d_25_3c32341e5e72463dbdf2047f76a9e93b/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_23_2c74e49f011b48a0a47decfc3ca47095/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,268: intermed-2-2: Working on conv2d_26_31cae7976e744573b5b0b4366cd8de20.
+TOPOLOGY - 2019-10-28 14:30:17,268: intermed-2-2: is conv2d_24_499cdc8bbf41438aba16f8508f04a602/BiasAdd:0 conv2d: True. is conv2d_26_31cae7976e744573b5b0b4366cd8de20 dense: False
+TOPOLOGY - 2019-10-28 14:30:17,268: intermed-2-2: is conv2d_25_3c32341e5e72463dbdf2047f76a9e93b/BiasAdd:0 conv2d: True. is conv2d_26_31cae7976e744573b5b0b4366cd8de20 dense: False
+INFO - 2019-10-28 14:30:17,268: Adding a Merge layer between conv2d_24_499cdc8bbf41438aba16f8508f04a602/BiasAdd:0 and conv2d_25_3c32341e5e72463dbdf2047f76a9e93b/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:30:17,270: intermed-2-2: Added Tensor("concatenate_3/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:17,279: intermed-2-2: Added [<tf.Tensor 'conv2d_26_31cae7976e744573b5b0b4366cd8de20/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,289: intermed-2-2: Added complement [<tf.Tensor 'conv2d_26_31cae7976e744573b5b0b4366cd8de20/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_24_8de0d6242bc54040b81594f394f3296d/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,289: output-0-0: Working on dense_2_ac8b1d0587a24ab1a379490338e170f7.
+TOPOLOGY - 2019-10-28 14:30:17,289: output-0-0: is conv2d_26_31cae7976e744573b5b0b4366cd8de20/BiasAdd:0 conv2d: True. is dense_2_ac8b1d0587a24ab1a379490338e170f7 dense: True
+INFO - 2019-10-28 14:30:17,290: Adding a Flatten() layer between conv2d_26_31cae7976e744573b5b0b4366cd8de20/BiasAdd:0 and dense_2_ac8b1d0587a24ab1a379490338e170f7
+TOPOLOGY - 2019-10-28 14:30:17,297: output-0-0: Added [<tf.Tensor 'flatten_1/Reshape:0' shape=(?, ?) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,310: output-0-0: Added [<tf.Tensor 'dense_2_ac8b1d0587a24ab1a379490338e170f7/Softmax:0' shape=(?, 10) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:17,310: {'input-0-0': [<tf.Tensor 'conv2d_17_a2d966247941432c9a49ca8fc3804db7/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_18_818e25353aa143bb970a17b11d9e0513/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_16_709658ca3df047c794c361e721bf4bdc/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_19_4a0ad50eb98c4a8cb8f066b33c34cddc/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_17_d1c34dfc87784a2c9186ba3b114e5665/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_20_b741428bb35b4409b30270db3bd0253f/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_18_44759eb1c1bd4a6a802dd592378a2edf/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_21_3dd0653e941546e9899b9f83218d6e71/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_19_a1f4489abea84d2390223f7165b8388f/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_22_4a855c85549a4601b9156b3c0d34d12a/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_20_e03f065e0a1644bca402012859414f7a/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_23_499a0328950b4b39ae404e5895196a58/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_21_f47b47e683da4323b3efc2e616423d90/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_24_499cdc8bbf41438aba16f8508f04a602/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_22_d5c739afd8324a159ed6220d422f6489/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_25_3c32341e5e72463dbdf2047f76a9e93b/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_23_2c74e49f011b48a0a47decfc3ca47095/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_26_31cae7976e744573b5b0b4366cd8de20/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_24_8de0d6242bc54040b81594f394f3296d/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_2_ac8b1d0587a24ab1a379490338e170f7/Softmax:0' shape=(?, 10) dtype=float32>]}
+WARNING - 2019-10-28 14:30:17,660: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Use tf.cast instead.
-INFO - 2019-09-11 21:17:21,070: Scoring one individual
-INFO - 2019-09-11 21:17:21,247: Fitting one individual for 1 epochs
-DEBUG - 2019-09-11 21:17:21,495: update_title_pos
-DEBUG - 2019-09-11 21:17:21,526: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:21,570: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-0-3', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'intermed-2-3', 'intermed-3-0', 'intermed-3-1', 'intermed-3-2', 'intermed-3-3', 'output-0-0']
-INFO - 2019-09-11 21:17:21,570: Generating keras layers
-INFO - 2019-09-11 21:17:21,570: Adding the Input() layer
-TOPOLOGY - 2019-09-11 21:17:21,571: Added Tensor("input_2:0", shape=(?, 32, 32, 3), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:21,581: input-0-0: Added [<tf.Tensor 'conv2d_14/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,582: intermed-0-0: is conv2d_14/Relu:0 conv2d: True. is conv2d_15 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,590: intermed-0-0: Added [<tf.Tensor 'conv2d_15/BiasAdd:0' shape=(?, 30, 30, 28) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,600: intermed-0-0: Added complement [<tf.Tensor 'conv2d_15/BiasAdd:0' shape=(?, 30, 30, 28) dtype=float32>, <tf.Tensor 'dropout_13/cond/Merge:0' shape=(?, 30, 30, 28) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,600: intermed-0-1: is conv2d_15/BiasAdd:0 conv2d: True. is conv2d_16 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,611: intermed-0-1: Added [<tf.Tensor 'conv2d_16/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,621: intermed-0-1: Added complement [<tf.Tensor 'conv2d_16/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_14/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,621: intermed-0-2: is conv2d_15/BiasAdd:0 conv2d: True. is conv2d_17 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,629: intermed-0-2: Added [<tf.Tensor 'conv2d_17/BiasAdd:0' shape=(?, 30, 30, 43) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,638: intermed-0-2: Added complement [<tf.Tensor 'conv2d_17/BiasAdd:0' shape=(?, 30, 30, 43) dtype=float32>, <tf.Tensor 'dropout_15/cond/Merge:0' shape=(?, 30, 30, 43) dtype=float32>]
-INFO - 2019-09-11 21:17:21,638: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:21,640: intermed-0-3: Added Tensor("concatenate_5/concat:0", shape=(?, 30, 30, 73), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:21,649: intermed-0-3: Added [<tf.Tensor 'conv2d_18/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,706: intermed-0-3: Added complement [<tf.Tensor 'conv2d_18/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_16/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,707: intermed-1-0: is conv2d_18/BiasAdd:0 conv2d: True. is conv2d_19 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,716: intermed-1-0: Added [<tf.Tensor 'conv2d_19/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,727: intermed-1-0: Added complement [<tf.Tensor 'conv2d_19/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_17/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,727: intermed-1-1: is conv2d_19/BiasAdd:0 conv2d: True. is conv2d_20 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,735: intermed-1-1: Added [<tf.Tensor 'conv2d_20/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,744: intermed-1-1: Added complement [<tf.Tensor 'conv2d_20/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_18/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,744: intermed-1-2: is conv2d_20/BiasAdd:0 conv2d: True. is conv2d_21 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,752: intermed-1-2: Added [<tf.Tensor 'conv2d_21/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,764: intermed-1-2: Added complement [<tf.Tensor 'conv2d_21/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_19/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,764: intermed-2-0: is conv2d_18/BiasAdd:0 conv2d: True. is conv2d_22 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,772: intermed-2-0: Added [<tf.Tensor 'conv2d_22/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,782: intermed-2-0: Added complement [<tf.Tensor 'conv2d_22/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_20/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,782: intermed-2-1: is conv2d_22/BiasAdd:0 conv2d: True. is conv2d_23 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,790: intermed-2-1: Added [<tf.Tensor 'conv2d_23/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,800: intermed-2-1: Added complement [<tf.Tensor 'conv2d_23/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_21/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,800: intermed-2-2: is conv2d_23/BiasAdd:0 conv2d: True. is conv2d_24 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,809: intermed-2-2: Added [<tf.Tensor 'conv2d_24/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,819: intermed-2-2: Added complement [<tf.Tensor 'conv2d_24/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_22/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,819: intermed-2-3: is conv2d_24/BiasAdd:0 conv2d: True. is conv2d_25 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,827: intermed-2-3: Added [<tf.Tensor 'conv2d_25/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,836: intermed-2-3: Added complement [<tf.Tensor 'conv2d_25/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_23/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
-INFO - 2019-09-11 21:17:21,836: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:21,837: intermed-3-0: Added Tensor("concatenate_6/concat:0", shape=(?, 30, 30, 63), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:21,847: intermed-3-0: Added [<tf.Tensor 'conv2d_26/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,856: intermed-3-0: Added complement [<tf.Tensor 'conv2d_26/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_24/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,856: intermed-3-1: is conv2d_26/BiasAdd:0 conv2d: True. is conv2d_27 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,865: intermed-3-1: Added [<tf.Tensor 'conv2d_27/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,875: intermed-3-1: Added complement [<tf.Tensor 'conv2d_27/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_25/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,875: intermed-3-2: is conv2d_27/BiasAdd:0 conv2d: True. is conv2d_28 dense: False
-TOPOLOGY - 2019-09-11 21:17:21,883: intermed-3-2: Added [<tf.Tensor 'conv2d_28/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,894: intermed-3-2: Added complement [<tf.Tensor 'conv2d_28/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_26/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
-INFO - 2019-09-11 21:17:21,894: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:21,895: intermed-3-3: Added Tensor("concatenate_7/concat:0", shape=(?, 30, 30, 46), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:21,903: intermed-3-3: Added [<tf.Tensor 'conv2d_29/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,913: intermed-3-3: Added complement [<tf.Tensor 'conv2d_29/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_27/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,913: output-0-0: is conv2d_29/BiasAdd:0 conv2d: True. is dense_2 dense: True
-INFO - 2019-09-11 21:17:21,913: Adding a Flatten() layer
-TOPOLOGY - 2019-09-11 21:17:21,917: output-0-0: Added [<tf.Tensor 'flatten_2/Reshape:0' shape=(?, ?) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,925: output-0-0: Added [<tf.Tensor 'dense_2/Softmax:0' shape=(?, 10) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:21,926: {'input-0-0': [<tf.Tensor 'conv2d_14/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_15/BiasAdd:0' shape=(?, 30, 30, 28) dtype=float32>, <tf.Tensor 'dropout_13/cond/Merge:0' shape=(?, 30, 30, 28) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_16/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_14/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_17/BiasAdd:0' shape=(?, 30, 30, 43) dtype=float32>, <tf.Tensor 'dropout_15/cond/Merge:0' shape=(?, 30, 30, 43) dtype=float32>], 'intermed-0-3': [<tf.Tensor 'conv2d_18/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_16/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_19/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_17/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_20/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_18/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_21/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_19/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_22/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_20/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_23/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_21/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_24/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_22/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-2-3': [<tf.Tensor 'conv2d_25/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_23/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-3-0': [<tf.Tensor 'conv2d_26/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_24/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>], 'intermed-3-1': [<tf.Tensor 'conv2d_27/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_25/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>], 'intermed-3-2': [<tf.Tensor 'conv2d_28/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_26/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-3-3': [<tf.Tensor 'conv2d_29/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_27/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_2/Softmax:0' shape=(?, 10) dtype=float32>]}
-INFO - 2019-09-11 21:17:32,937: Scoring one individual
-INFO - 2019-09-11 21:17:34,382: Iterating fitness over 2 individuals
-INFO - 2019-09-11 21:17:34,382: Fitting one individual for 1 epochs
-DEBUG - 2019-09-11 21:17:34,515: update_title_pos
-DEBUG - 2019-09-11 21:17:34,535: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:34,577: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'intermed-3-0', 'intermed-3-1', 'intermed-3-2', 'output-0-0']
-INFO - 2019-09-11 21:17:34,577: Generating keras layers
-INFO - 2019-09-11 21:17:34,578: Adding the Input() layer
-TOPOLOGY - 2019-09-11 21:17:34,578: Added Tensor("input_3:0", shape=(?, 32, 32, 3), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:34,581: input-0-0: Added [<tf.Tensor 'conv2d_1_1/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,581: intermed-0-0: is conv2d_1_1/Relu:0 conv2d: True. is conv2d_2 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,583: intermed-0-0: Added [<tf.Tensor 'conv2d_2_1/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,593: intermed-0-0: Added complement [<tf.Tensor 'conv2d_2_1/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_1_1/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,593: intermed-0-1: is conv2d_2_1/BiasAdd:0 conv2d: True. is conv2d_3 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,594: intermed-0-1: Added [<tf.Tensor 'conv2d_3_1/BiasAdd:0' shape=(?, 30, 30, 20) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,606: intermed-0-1: Added complement [<tf.Tensor 'conv2d_3_1/BiasAdd:0' shape=(?, 30, 30, 20) dtype=float32>, <tf.Tensor 'dropout_2_1/cond/Merge:0' shape=(?, 30, 30, 20) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,606: intermed-0-2: is conv2d_3_1/BiasAdd:0 conv2d: True. is conv2d_4 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,608: intermed-0-2: Added [<tf.Tensor 'conv2d_4_1/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,617: intermed-0-2: Added complement [<tf.Tensor 'conv2d_4_1/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_3_1/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,618: intermed-1-0: is conv2d_4_1/BiasAdd:0 conv2d: True. is conv2d_5 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,619: intermed-1-0: Added [<tf.Tensor 'conv2d_5_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,630: intermed-1-0: Added complement [<tf.Tensor 'conv2d_5_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_4_1/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,630: intermed-1-1: is conv2d_5_1/BiasAdd:0 conv2d: True. is conv2d_6 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,632: intermed-1-1: Added [<tf.Tensor 'conv2d_6_1/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,641: intermed-1-1: Added complement [<tf.Tensor 'conv2d_6_1/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_5_1/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>]
-INFO - 2019-09-11 21:17:34,641: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:34,642: intermed-1-2: Added Tensor("concatenate_8/concat:0", shape=(?, 30, 30, 37), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:34,644: intermed-1-2: Added [<tf.Tensor 'conv2d_7_1/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,654: intermed-1-2: Added complement [<tf.Tensor 'conv2d_7_1/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_6_1/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,654: intermed-2-0: is conv2d_7_1/BiasAdd:0 conv2d: True. is conv2d_8 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,656: intermed-2-0: Added [<tf.Tensor 'conv2d_8_1/BiasAdd:0' shape=(?, 30, 30, 31) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,667: intermed-2-0: Added complement [<tf.Tensor 'conv2d_8_1/BiasAdd:0' shape=(?, 30, 30, 31) dtype=float32>, <tf.Tensor 'dropout_7_1/cond/Merge:0' shape=(?, 30, 30, 31) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,667: intermed-2-1: is conv2d_8_1/BiasAdd:0 conv2d: True. is conv2d_9 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,670: intermed-2-1: Added [<tf.Tensor 'conv2d_9_1/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,679: intermed-2-1: Added complement [<tf.Tensor 'conv2d_9_1/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_8_1/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
-INFO - 2019-09-11 21:17:34,679: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:34,680: intermed-2-2: Added Tensor("concatenate_9/concat:0", shape=(?, 30, 30, 77), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:34,682: intermed-2-2: Added [<tf.Tensor 'conv2d_10_1/BiasAdd:0' shape=(?, 30, 30, 35) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,693: intermed-2-2: Added complement [<tf.Tensor 'conv2d_10_1/BiasAdd:0' shape=(?, 30, 30, 35) dtype=float32>, <tf.Tensor 'dropout_9_1/cond/Merge:0' shape=(?, 30, 30, 35) dtype=float32>]
-INFO - 2019-09-11 21:17:34,693: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:34,694: intermed-3-0: Added Tensor("concatenate_10/concat:0", shape=(?, 30, 30, 81), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:34,696: intermed-3-0: Added [<tf.Tensor 'conv2d_11_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,706: intermed-3-0: Added complement [<tf.Tensor 'conv2d_11_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_10_1/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,706: intermed-3-1: is conv2d_11_1/BiasAdd:0 conv2d: True. is conv2d_12 dense: False
-TOPOLOGY - 2019-09-11 21:17:34,707: intermed-3-1: Added [<tf.Tensor 'conv2d_12_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,717: intermed-3-1: Added complement [<tf.Tensor 'conv2d_12_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_11_1/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
-INFO - 2019-09-11 21:17:34,717: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:34,718: intermed-3-2: Added Tensor("concatenate_11/concat:0", shape=(?, 30, 30, 36), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:34,721: intermed-3-2: Added [<tf.Tensor 'conv2d_13_1/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,730: intermed-3-2: Added complement [<tf.Tensor 'conv2d_13_1/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_12_1/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,730: output-0-0: is conv2d_13_1/BiasAdd:0 conv2d: True. is dense_1 dense: True
-INFO - 2019-09-11 21:17:34,730: Adding a Flatten() layer
-TOPOLOGY - 2019-09-11 21:17:34,735: output-0-0: Added [<tf.Tensor 'flatten_3/Reshape:0' shape=(?, ?) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,736: output-0-0: Added [<tf.Tensor 'dense_1_1/Softmax:0' shape=(?, 10) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:34,737: {'input-0-0': [<tf.Tensor 'conv2d_1_1/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_2_1/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_1_1/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_3_1/BiasAdd:0' shape=(?, 30, 30, 20) dtype=float32>, <tf.Tensor 'dropout_2_1/cond/Merge:0' shape=(?, 30, 30, 20) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_4_1/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_3_1/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_5_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_4_1/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_6_1/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_5_1/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_7_1/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_6_1/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_8_1/BiasAdd:0' shape=(?, 30, 30, 31) dtype=float32>, <tf.Tensor 'dropout_7_1/cond/Merge:0' shape=(?, 30, 30, 31) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_9_1/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_8_1/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_10_1/BiasAdd:0' shape=(?, 30, 30, 35) dtype=float32>, <tf.Tensor 'dropout_9_1/cond/Merge:0' shape=(?, 30, 30, 35) dtype=float32>], 'intermed-3-0': [<tf.Tensor 'conv2d_11_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_10_1/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-3-1': [<tf.Tensor 'conv2d_12_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_11_1/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-3-2': [<tf.Tensor 'conv2d_13_1/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_12_1/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_1_1/Softmax:0' shape=(?, 10) dtype=float32>]}
-INFO - 2019-09-11 21:17:45,035: Scoring one individual
-INFO - 2019-09-11 21:17:45,222: Fitting one individual for 1 epochs
-DEBUG - 2019-09-11 21:17:45,474: update_title_pos
-DEBUG - 2019-09-11 21:17:45,494: update_title_pos
-TOPOLOGY - 2019-09-11 21:17:45,538: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-0-3', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'intermed-2-3', 'intermed-3-0', 'intermed-3-1', 'intermed-3-2', 'intermed-3-3', 'output-0-0']
-INFO - 2019-09-11 21:17:45,539: Generating keras layers
-INFO - 2019-09-11 21:17:45,539: Adding the Input() layer
-TOPOLOGY - 2019-09-11 21:17:45,539: Added Tensor("input_4:0", shape=(?, 32, 32, 3), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:45,541: input-0-0: Added [<tf.Tensor 'conv2d_14_1/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,541: intermed-0-0: is conv2d_14_1/Relu:0 conv2d: True. is conv2d_15 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,543: intermed-0-0: Added [<tf.Tensor 'conv2d_15_1/BiasAdd:0' shape=(?, 30, 30, 28) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,553: intermed-0-0: Added complement [<tf.Tensor 'conv2d_15_1/BiasAdd:0' shape=(?, 30, 30, 28) dtype=float32>, <tf.Tensor 'dropout_13_1/cond/Merge:0' shape=(?, 30, 30, 28) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,553: intermed-0-1: is conv2d_15_1/BiasAdd:0 conv2d: True. is conv2d_16 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,554: intermed-0-1: Added [<tf.Tensor 'conv2d_16_1/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,565: intermed-0-1: Added complement [<tf.Tensor 'conv2d_16_1/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_14_1/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,565: intermed-0-2: is conv2d_15_1/BiasAdd:0 conv2d: True. is conv2d_17 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,567: intermed-0-2: Added [<tf.Tensor 'conv2d_17_1/BiasAdd:0' shape=(?, 30, 30, 43) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,578: intermed-0-2: Added complement [<tf.Tensor 'conv2d_17_1/BiasAdd:0' shape=(?, 30, 30, 43) dtype=float32>, <tf.Tensor 'dropout_15_1/cond/Merge:0' shape=(?, 30, 30, 43) dtype=float32>]
-INFO - 2019-09-11 21:17:45,579: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:45,580: intermed-0-3: Added Tensor("concatenate_12/concat:0", shape=(?, 30, 30, 73), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:45,582: intermed-0-3: Added [<tf.Tensor 'conv2d_18_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,593: intermed-0-3: Added complement [<tf.Tensor 'conv2d_18_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_16_1/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,593: intermed-1-0: is conv2d_18_1/BiasAdd:0 conv2d: True. is conv2d_19 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,596: intermed-1-0: Added [<tf.Tensor 'conv2d_19_1/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,606: intermed-1-0: Added complement [<tf.Tensor 'conv2d_19_1/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_17_1/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,607: intermed-1-1: is conv2d_19_1/BiasAdd:0 conv2d: True. is conv2d_20 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,609: intermed-1-1: Added [<tf.Tensor 'conv2d_20_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,620: intermed-1-1: Added complement [<tf.Tensor 'conv2d_20_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_18_1/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,620: intermed-1-2: is conv2d_20_1/BiasAdd:0 conv2d: True. is conv2d_21 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,622: intermed-1-2: Added [<tf.Tensor 'conv2d_21_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,632: intermed-1-2: Added complement [<tf.Tensor 'conv2d_21_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_19_1/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,632: intermed-2-0: is conv2d_18_1/BiasAdd:0 conv2d: True. is conv2d_22 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,634: intermed-2-0: Added [<tf.Tensor 'conv2d_22_1/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,643: intermed-2-0: Added complement [<tf.Tensor 'conv2d_22_1/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_20_1/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,643: intermed-2-1: is conv2d_22_1/BiasAdd:0 conv2d: True. is conv2d_23 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,646: intermed-2-1: Added [<tf.Tensor 'conv2d_23_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,656: intermed-2-1: Added complement [<tf.Tensor 'conv2d_23_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_21_1/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,656: intermed-2-2: is conv2d_23_1/BiasAdd:0 conv2d: True. is conv2d_24 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,657: intermed-2-2: Added [<tf.Tensor 'conv2d_24_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,667: intermed-2-2: Added complement [<tf.Tensor 'conv2d_24_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_22_1/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,667: intermed-2-3: is conv2d_24_1/BiasAdd:0 conv2d: True. is conv2d_25 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,669: intermed-2-3: Added [<tf.Tensor 'conv2d_25_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,678: intermed-2-3: Added complement [<tf.Tensor 'conv2d_25_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_23_1/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
-INFO - 2019-09-11 21:17:45,679: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:45,680: intermed-3-0: Added Tensor("concatenate_13/concat:0", shape=(?, 30, 30, 63), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:45,682: intermed-3-0: Added [<tf.Tensor 'conv2d_26_1/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,691: intermed-3-0: Added complement [<tf.Tensor 'conv2d_26_1/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_24_1/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,691: intermed-3-1: is conv2d_26_1/BiasAdd:0 conv2d: True. is conv2d_27 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,693: intermed-3-1: Added [<tf.Tensor 'conv2d_27_1/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,704: intermed-3-1: Added complement [<tf.Tensor 'conv2d_27_1/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_25_1/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,704: intermed-3-2: is conv2d_27_1/BiasAdd:0 conv2d: True. is conv2d_28 dense: False
-TOPOLOGY - 2019-09-11 21:17:45,706: intermed-3-2: Added [<tf.Tensor 'conv2d_28_1/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,715: intermed-3-2: Added complement [<tf.Tensor 'conv2d_28_1/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_26_1/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
-INFO - 2019-09-11 21:17:45,715: Adding a Merge layer
-TOPOLOGY - 2019-09-11 21:17:45,716: intermed-3-3: Added Tensor("concatenate_14/concat:0", shape=(?, 30, 30, 46), dtype=float32)
-TOPOLOGY - 2019-09-11 21:17:45,718: intermed-3-3: Added [<tf.Tensor 'conv2d_29_1/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,727: intermed-3-3: Added complement [<tf.Tensor 'conv2d_29_1/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_27_1/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,727: output-0-0: is conv2d_29_1/BiasAdd:0 conv2d: True. is dense_2 dense: True
-INFO - 2019-09-11 21:17:45,727: Adding a Flatten() layer
-TOPOLOGY - 2019-09-11 21:17:45,733: output-0-0: Added [<tf.Tensor 'flatten_4/Reshape:0' shape=(?, ?) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,734: output-0-0: Added [<tf.Tensor 'dense_2_1/Softmax:0' shape=(?, 10) dtype=float32>]
-TOPOLOGY - 2019-09-11 21:17:45,734: {'input-0-0': [<tf.Tensor 'conv2d_14_1/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_15_1/BiasAdd:0' shape=(?, 30, 30, 28) dtype=float32>, <tf.Tensor 'dropout_13_1/cond/Merge:0' shape=(?, 30, 30, 28) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_16_1/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_14_1/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_17_1/BiasAdd:0' shape=(?, 30, 30, 43) dtype=float32>, <tf.Tensor 'dropout_15_1/cond/Merge:0' shape=(?, 30, 30, 43) dtype=float32>], 'intermed-0-3': [<tf.Tensor 'conv2d_18_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_16_1/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_19_1/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_17_1/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_20_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_18_1/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_21_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_19_1/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_22_1/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_20_1/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_23_1/BiasAdd:0' shape=(?, 30, 30, 39) dtype=float32>, <tf.Tensor 'dropout_21_1/cond/Merge:0' shape=(?, 30, 30, 39) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_24_1/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_22_1/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-2-3': [<tf.Tensor 'conv2d_25_1/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_23_1/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-3-0': [<tf.Tensor 'conv2d_26_1/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_24_1/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>], 'intermed-3-1': [<tf.Tensor 'conv2d_27_1/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_25_1/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>], 'intermed-3-2': [<tf.Tensor 'conv2d_28_1/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_26_1/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-3-3': [<tf.Tensor 'conv2d_29_1/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_27_1/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_2_1/Softmax:0' shape=(?, 10) dtype=float32>]}
-INFO - 2019-09-11 21:17:56,198: Scoring one individual
+INFO - 2019-10-28 14:30:46,446: Scoring one individual
+INFO - 2019-10-28 14:30:47,044:  -- Iterating epoch 1 -- 
+INFO - 2019-10-28 14:30:47,044: Iterating fitness over 1 individuals
+INFO - 2019-10-28 14:30:47,044: Fitting one individual for 5 epochs
+DEBUG - 2019-10-28 14:30:47,171: update_title_pos
+DEBUG - 2019-10-28 14:30:47,189: update_title_pos
+TOPOLOGY - 2019-10-28 14:30:47,227: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'output-0-0']
+INFO - 2019-10-28 14:30:47,227: Generating keras layers
+INFO - 2019-10-28 14:30:47,227: Adding the Input() layer
+TOPOLOGY - 2019-10-28 14:30:47,228: Added Tensor("input_2:0", shape=(?, 32, 32, 3), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:47,229: input-0-0: Working on conv2d_27_e1c4bab0435b47a8801140a5dd3fae6f.
+TOPOLOGY - 2019-10-28 14:30:47,238: input-0-0: Added [<tf.Tensor 'conv2d_27_e1c4bab0435b47a8801140a5dd3fae6f/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,238: intermed-0-0: Working on conv2d_28_7626acec7e1646cb875330521a8b65a3.
+TOPOLOGY - 2019-10-28 14:30:47,238: intermed-0-0: is conv2d_27_e1c4bab0435b47a8801140a5dd3fae6f/Relu:0 conv2d: True. is conv2d_28_7626acec7e1646cb875330521a8b65a3 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,248: intermed-0-0: Added [<tf.Tensor 'conv2d_28_7626acec7e1646cb875330521a8b65a3/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,258: intermed-0-0: Added complement [<tf.Tensor 'conv2d_28_7626acec7e1646cb875330521a8b65a3/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_25_8dd236e28d854bf4b34bc8bf2938dbfa/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,259: intermed-0-1: Working on conv2d_29_1a015aba6a424a9296f888953a9ec0d4.
+TOPOLOGY - 2019-10-28 14:30:47,259: intermed-0-1: is conv2d_28_7626acec7e1646cb875330521a8b65a3/BiasAdd:0 conv2d: True. is conv2d_29_1a015aba6a424a9296f888953a9ec0d4 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,267: intermed-0-1: Added [<tf.Tensor 'conv2d_29_1a015aba6a424a9296f888953a9ec0d4/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,278: intermed-0-1: Added complement [<tf.Tensor 'conv2d_29_1a015aba6a424a9296f888953a9ec0d4/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_26_59d340fc82b1457a9383071289917b23/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,278: intermed-0-2: Working on conv2d_30_54229d878a0940b7bb39973371f63ed5.
+TOPOLOGY - 2019-10-28 14:30:47,279: intermed-0-2: is conv2d_28_7626acec7e1646cb875330521a8b65a3/BiasAdd:0 conv2d: True. is conv2d_30_54229d878a0940b7bb39973371f63ed5 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,279: intermed-0-2: is conv2d_29_1a015aba6a424a9296f888953a9ec0d4/BiasAdd:0 conv2d: True. is conv2d_30_54229d878a0940b7bb39973371f63ed5 dense: False
+INFO - 2019-10-28 14:30:47,279: Adding a Merge layer between conv2d_28_7626acec7e1646cb875330521a8b65a3/BiasAdd:0 and conv2d_29_1a015aba6a424a9296f888953a9ec0d4/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:30:47,280: intermed-0-2: Added Tensor("concatenate_4/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:47,288: intermed-0-2: Added [<tf.Tensor 'conv2d_30_54229d878a0940b7bb39973371f63ed5/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,299: intermed-0-2: Added complement [<tf.Tensor 'conv2d_30_54229d878a0940b7bb39973371f63ed5/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_27_e5cb3f05c2154972ab906f3082ba6c20/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,299: intermed-1-0: Working on conv2d_31_b2c69c20a6dc4fa8973a38fffb8f83a6.
+TOPOLOGY - 2019-10-28 14:30:47,299: intermed-1-0: is conv2d_30_54229d878a0940b7bb39973371f63ed5/BiasAdd:0 conv2d: True. is conv2d_31_b2c69c20a6dc4fa8973a38fffb8f83a6 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,314: intermed-1-0: Added [<tf.Tensor 'conv2d_31_b2c69c20a6dc4fa8973a38fffb8f83a6/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,332: intermed-1-0: Added complement [<tf.Tensor 'conv2d_31_b2c69c20a6dc4fa8973a38fffb8f83a6/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_28_a086996159df4990b2af56b5083d1a77/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,333: intermed-1-1: Working on conv2d_32_d0c574908ec44cb6a884df2ed5ade399.
+TOPOLOGY - 2019-10-28 14:30:47,333: intermed-1-1: is conv2d_31_b2c69c20a6dc4fa8973a38fffb8f83a6/BiasAdd:0 conv2d: True. is conv2d_32_d0c574908ec44cb6a884df2ed5ade399 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,341: intermed-1-1: Added [<tf.Tensor 'conv2d_32_d0c574908ec44cb6a884df2ed5ade399/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,352: intermed-1-1: Added complement [<tf.Tensor 'conv2d_32_d0c574908ec44cb6a884df2ed5ade399/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_29_d0bccee6b62444f5b403a144dd6290cf/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,352: intermed-1-2: Working on conv2d_33_89e2f315e228430cbfa29d1595be1013.
+TOPOLOGY - 2019-10-28 14:30:47,352: intermed-1-2: is conv2d_32_d0c574908ec44cb6a884df2ed5ade399/BiasAdd:0 conv2d: True. is conv2d_33_89e2f315e228430cbfa29d1595be1013 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,361: intermed-1-2: Added [<tf.Tensor 'conv2d_33_89e2f315e228430cbfa29d1595be1013/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,377: intermed-1-2: Added complement [<tf.Tensor 'conv2d_33_89e2f315e228430cbfa29d1595be1013/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_30_6b1c51c611614db9ab281fa967b37a78/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,377: intermed-2-0: Working on conv2d_34_641b8afd99794ef7ac2329c76c55fd83.
+TOPOLOGY - 2019-10-28 14:30:47,378: intermed-2-0: is conv2d_30_54229d878a0940b7bb39973371f63ed5/BiasAdd:0 conv2d: True. is conv2d_34_641b8afd99794ef7ac2329c76c55fd83 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,378: intermed-2-0: is conv2d_33_89e2f315e228430cbfa29d1595be1013/BiasAdd:0 conv2d: True. is conv2d_34_641b8afd99794ef7ac2329c76c55fd83 dense: False
+INFO - 2019-10-28 14:30:47,378: Adding a Merge layer between conv2d_30_54229d878a0940b7bb39973371f63ed5/BiasAdd:0 and conv2d_33_89e2f315e228430cbfa29d1595be1013/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:30:47,379: intermed-2-0: Added Tensor("concatenate_5/concat:0", shape=(?, 30, 30, 69), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:47,387: intermed-2-0: Added [<tf.Tensor 'conv2d_34_641b8afd99794ef7ac2329c76c55fd83/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,397: intermed-2-0: Added complement [<tf.Tensor 'conv2d_34_641b8afd99794ef7ac2329c76c55fd83/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_31_79749afeacc04a9d9a61f806e6bb2275/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,398: intermed-2-1: Working on conv2d_35_2e4c8666d93742d98a3f8f3549080333.
+TOPOLOGY - 2019-10-28 14:30:47,398: intermed-2-1: is conv2d_34_641b8afd99794ef7ac2329c76c55fd83/BiasAdd:0 conv2d: True. is conv2d_35_2e4c8666d93742d98a3f8f3549080333 dense: False
+TOPOLOGY - 2019-10-28 14:30:47,407: intermed-2-1: Added [<tf.Tensor 'conv2d_35_2e4c8666d93742d98a3f8f3549080333/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,419: intermed-2-1: Added complement [<tf.Tensor 'conv2d_35_2e4c8666d93742d98a3f8f3549080333/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_32_f2e386803ac641e2a5b7b07809e96237/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,419: intermed-2-2: Working on conv2d_36_e52166f50c1f47b69493b9e6f2247a8f.
+TOPOLOGY - 2019-10-28 14:30:47,419: intermed-2-2: is conv2d_34_641b8afd99794ef7ac2329c76c55fd83/BiasAdd:0 conv2d: True. is conv2d_36_e52166f50c1f47b69493b9e6f2247a8f dense: False
+TOPOLOGY - 2019-10-28 14:30:47,420: intermed-2-2: is conv2d_35_2e4c8666d93742d98a3f8f3549080333/BiasAdd:0 conv2d: True. is conv2d_36_e52166f50c1f47b69493b9e6f2247a8f dense: False
+INFO - 2019-10-28 14:30:47,420: Adding a Merge layer between conv2d_34_641b8afd99794ef7ac2329c76c55fd83/BiasAdd:0 and conv2d_35_2e4c8666d93742d98a3f8f3549080333/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:30:47,421: intermed-2-2: Added Tensor("concatenate_6/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:30:47,431: intermed-2-2: Added [<tf.Tensor 'conv2d_36_e52166f50c1f47b69493b9e6f2247a8f/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,442: intermed-2-2: Added complement [<tf.Tensor 'conv2d_36_e52166f50c1f47b69493b9e6f2247a8f/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_33_07f6988390f04c06b4407ec7951f447c/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,442: output-0-0: Working on dense_3_64e2156605334c8a9fb0b7500a01ad37.
+TOPOLOGY - 2019-10-28 14:30:47,443: output-0-0: is conv2d_36_e52166f50c1f47b69493b9e6f2247a8f/BiasAdd:0 conv2d: True. is dense_3_64e2156605334c8a9fb0b7500a01ad37 dense: True
+INFO - 2019-10-28 14:30:47,443: Adding a Flatten() layer between conv2d_36_e52166f50c1f47b69493b9e6f2247a8f/BiasAdd:0 and dense_3_64e2156605334c8a9fb0b7500a01ad37
+TOPOLOGY - 2019-10-28 14:30:47,448: output-0-0: Added [<tf.Tensor 'flatten_2/Reshape:0' shape=(?, ?) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,456: output-0-0: Added [<tf.Tensor 'dense_3_64e2156605334c8a9fb0b7500a01ad37/Softmax:0' shape=(?, 10) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:30:47,456: {'input-0-0': [<tf.Tensor 'conv2d_27_e1c4bab0435b47a8801140a5dd3fae6f/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_28_7626acec7e1646cb875330521a8b65a3/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_25_8dd236e28d854bf4b34bc8bf2938dbfa/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_29_1a015aba6a424a9296f888953a9ec0d4/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_26_59d340fc82b1457a9383071289917b23/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_30_54229d878a0940b7bb39973371f63ed5/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_27_e5cb3f05c2154972ab906f3082ba6c20/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_31_b2c69c20a6dc4fa8973a38fffb8f83a6/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_28_a086996159df4990b2af56b5083d1a77/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_32_d0c574908ec44cb6a884df2ed5ade399/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_29_d0bccee6b62444f5b403a144dd6290cf/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_33_89e2f315e228430cbfa29d1595be1013/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_30_6b1c51c611614db9ab281fa967b37a78/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_34_641b8afd99794ef7ac2329c76c55fd83/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_31_79749afeacc04a9d9a61f806e6bb2275/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_35_2e4c8666d93742d98a3f8f3549080333/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_32_f2e386803ac641e2a5b7b07809e96237/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_36_e52166f50c1f47b69493b9e6f2247a8f/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_33_07f6988390f04c06b4407ec7951f447c/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_3_64e2156605334c8a9fb0b7500a01ad37/Softmax:0' shape=(?, 10) dtype=float32>]}
+INFO - 2019-10-28 14:31:15,867: Scoring one individual
+INFO - 2019-10-28 14:31:16,507:  -- Iterating epoch 2 -- 
+INFO - 2019-10-28 14:31:16,507: Iterating fitness over 1 individuals
+INFO - 2019-10-28 14:31:16,507: Fitting one individual for 5 epochs
+DEBUG - 2019-10-28 14:31:16,628: update_title_pos
+DEBUG - 2019-10-28 14:31:16,645: update_title_pos
+TOPOLOGY - 2019-10-28 14:31:16,682: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'output-0-0']
+INFO - 2019-10-28 14:31:16,682: Generating keras layers
+INFO - 2019-10-28 14:31:16,682: Adding the Input() layer
+TOPOLOGY - 2019-10-28 14:31:16,683: Added Tensor("input_3:0", shape=(?, 32, 32, 3), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:16,683: input-0-0: Working on conv2d_37_47a02b64f6af48e8bb58d129ac5c865e.
+TOPOLOGY - 2019-10-28 14:31:16,692: input-0-0: Added [<tf.Tensor 'conv2d_37_47a02b64f6af48e8bb58d129ac5c865e/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,692: intermed-0-0: Working on conv2d_38_49673aa9c9274430adbcd093abb71141.
+TOPOLOGY - 2019-10-28 14:31:16,692: intermed-0-0: is conv2d_37_47a02b64f6af48e8bb58d129ac5c865e/Relu:0 conv2d: True. is conv2d_38_49673aa9c9274430adbcd093abb71141 dense: False
+TOPOLOGY - 2019-10-28 14:31:16,700: intermed-0-0: Added [<tf.Tensor 'conv2d_38_49673aa9c9274430adbcd093abb71141/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,710: intermed-0-0: Added complement [<tf.Tensor 'conv2d_38_49673aa9c9274430adbcd093abb71141/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_34_cc7729933a0042cc92c6c97ea6fda2cb/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,710: intermed-0-1: Working on conv2d_39_84c397d729ce4eed893734cb85abae22.
+TOPOLOGY - 2019-10-28 14:31:16,710: intermed-0-1: is conv2d_38_49673aa9c9274430adbcd093abb71141/BiasAdd:0 conv2d: True. is conv2d_39_84c397d729ce4eed893734cb85abae22 dense: False
+TOPOLOGY - 2019-10-28 14:31:16,719: intermed-0-1: Added [<tf.Tensor 'conv2d_39_84c397d729ce4eed893734cb85abae22/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,728: intermed-0-1: Added complement [<tf.Tensor 'conv2d_39_84c397d729ce4eed893734cb85abae22/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_35_f7fe3ca5f5df4dc38c50df922730525b/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,729: intermed-0-2: Working on conv2d_40_7025e5e6a0a3437293fe6970c89dcc53.
+TOPOLOGY - 2019-10-28 14:31:16,729: intermed-0-2: is conv2d_38_49673aa9c9274430adbcd093abb71141/BiasAdd:0 conv2d: True. is conv2d_40_7025e5e6a0a3437293fe6970c89dcc53 dense: False
+TOPOLOGY - 2019-10-28 14:31:16,729: intermed-0-2: is conv2d_39_84c397d729ce4eed893734cb85abae22/BiasAdd:0 conv2d: True. is conv2d_40_7025e5e6a0a3437293fe6970c89dcc53 dense: False
+INFO - 2019-10-28 14:31:16,729: Adding a Merge layer between conv2d_38_49673aa9c9274430adbcd093abb71141/BiasAdd:0 and conv2d_39_84c397d729ce4eed893734cb85abae22/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:31:16,730: intermed-0-2: Added Tensor("concatenate_7/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:16,738: intermed-0-2: Added [<tf.Tensor 'conv2d_40_7025e5e6a0a3437293fe6970c89dcc53/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,748: intermed-0-2: Added complement [<tf.Tensor 'conv2d_40_7025e5e6a0a3437293fe6970c89dcc53/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_36_87ab129d4e4041509762f249ba976759/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,748: intermed-1-0: Working on conv2d_41_12841c0f3701446b91acd3b1dbfae93f.
+TOPOLOGY - 2019-10-28 14:31:16,749: intermed-1-0: is conv2d_40_7025e5e6a0a3437293fe6970c89dcc53/BiasAdd:0 conv2d: True. is conv2d_41_12841c0f3701446b91acd3b1dbfae93f dense: False
+TOPOLOGY - 2019-10-28 14:31:16,757: intermed-1-0: Added [<tf.Tensor 'conv2d_41_12841c0f3701446b91acd3b1dbfae93f/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,766: intermed-1-0: Added complement [<tf.Tensor 'conv2d_41_12841c0f3701446b91acd3b1dbfae93f/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_37_322f45779e5f4dd6ae5e244fd1b271a7/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,767: intermed-1-1: Working on conv2d_42_0e17b3ea0ad64677a404df75c0908968.
+TOPOLOGY - 2019-10-28 14:31:16,767: intermed-1-1: is conv2d_41_12841c0f3701446b91acd3b1dbfae93f/BiasAdd:0 conv2d: True. is conv2d_42_0e17b3ea0ad64677a404df75c0908968 dense: False
+TOPOLOGY - 2019-10-28 14:31:16,776: intermed-1-1: Added [<tf.Tensor 'conv2d_42_0e17b3ea0ad64677a404df75c0908968/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,786: intermed-1-1: Added complement [<tf.Tensor 'conv2d_42_0e17b3ea0ad64677a404df75c0908968/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_38_a7153b7c799242cab1735d5703d10e36/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,788: intermed-1-2: Working on conv2d_43_cdab240da4944514b2673f6d06c76c86.
+TOPOLOGY - 2019-10-28 14:31:16,788: intermed-1-2: is conv2d_42_0e17b3ea0ad64677a404df75c0908968/BiasAdd:0 conv2d: True. is conv2d_43_cdab240da4944514b2673f6d06c76c86 dense: False
+TOPOLOGY - 2019-10-28 14:31:16,796: intermed-1-2: Added [<tf.Tensor 'conv2d_43_cdab240da4944514b2673f6d06c76c86/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,805: intermed-1-2: Added complement [<tf.Tensor 'conv2d_43_cdab240da4944514b2673f6d06c76c86/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_39_3be147715f46408183716d21d2ed30bf/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,806: intermed-2-0: Working on conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c.
+TOPOLOGY - 2019-10-28 14:31:16,806: intermed-2-0: is conv2d_40_7025e5e6a0a3437293fe6970c89dcc53/BiasAdd:0 conv2d: True. is conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c dense: False
+TOPOLOGY - 2019-10-28 14:31:16,806: intermed-2-0: is conv2d_43_cdab240da4944514b2673f6d06c76c86/BiasAdd:0 conv2d: True. is conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c dense: False
+INFO - 2019-10-28 14:31:16,806: Adding a Merge layer between conv2d_40_7025e5e6a0a3437293fe6970c89dcc53/BiasAdd:0 and conv2d_43_cdab240da4944514b2673f6d06c76c86/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:31:16,807: intermed-2-0: Added Tensor("concatenate_8/concat:0", shape=(?, 30, 30, 69), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:16,815: intermed-2-0: Added [<tf.Tensor 'conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,825: intermed-2-0: Added complement [<tf.Tensor 'conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_40_05c3c7837ac3473aa0ae43c18dcf4d82/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,825: intermed-2-1: Working on conv2d_45_2b70dcf563024f179829408b27d4358e.
+TOPOLOGY - 2019-10-28 14:31:16,825: intermed-2-1: is conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c/BiasAdd:0 conv2d: True. is conv2d_45_2b70dcf563024f179829408b27d4358e dense: False
+TOPOLOGY - 2019-10-28 14:31:16,833: intermed-2-1: Added [<tf.Tensor 'conv2d_45_2b70dcf563024f179829408b27d4358e/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,843: intermed-2-1: Added complement [<tf.Tensor 'conv2d_45_2b70dcf563024f179829408b27d4358e/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_41_9b60a91284b6463382f52ce114eb81eb/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,843: intermed-2-2: Working on conv2d_46_522a13e6d9e24d5c9f8219f468eec219.
+TOPOLOGY - 2019-10-28 14:31:16,844: intermed-2-2: is conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c/BiasAdd:0 conv2d: True. is conv2d_46_522a13e6d9e24d5c9f8219f468eec219 dense: False
+TOPOLOGY - 2019-10-28 14:31:16,844: intermed-2-2: is conv2d_45_2b70dcf563024f179829408b27d4358e/BiasAdd:0 conv2d: True. is conv2d_46_522a13e6d9e24d5c9f8219f468eec219 dense: False
+INFO - 2019-10-28 14:31:16,844: Adding a Merge layer between conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c/BiasAdd:0 and conv2d_45_2b70dcf563024f179829408b27d4358e/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:31:16,845: intermed-2-2: Added Tensor("concatenate_9/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:16,853: intermed-2-2: Added [<tf.Tensor 'conv2d_46_522a13e6d9e24d5c9f8219f468eec219/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,862: intermed-2-2: Added complement [<tf.Tensor 'conv2d_46_522a13e6d9e24d5c9f8219f468eec219/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_42_2add186f446e486f99c29d68aad64dad/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,862: output-0-0: Working on dense_4_9b096b6daf2f46d39c68fe996aaa763c.
+TOPOLOGY - 2019-10-28 14:31:16,863: output-0-0: is conv2d_46_522a13e6d9e24d5c9f8219f468eec219/BiasAdd:0 conv2d: True. is dense_4_9b096b6daf2f46d39c68fe996aaa763c dense: True
+INFO - 2019-10-28 14:31:16,863: Adding a Flatten() layer between conv2d_46_522a13e6d9e24d5c9f8219f468eec219/BiasAdd:0 and dense_4_9b096b6daf2f46d39c68fe996aaa763c
+TOPOLOGY - 2019-10-28 14:31:16,867: output-0-0: Added [<tf.Tensor 'flatten_3/Reshape:0' shape=(?, ?) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,874: output-0-0: Added [<tf.Tensor 'dense_4_9b096b6daf2f46d39c68fe996aaa763c/Softmax:0' shape=(?, 10) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:16,875: {'input-0-0': [<tf.Tensor 'conv2d_37_47a02b64f6af48e8bb58d129ac5c865e/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_38_49673aa9c9274430adbcd093abb71141/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_34_cc7729933a0042cc92c6c97ea6fda2cb/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_39_84c397d729ce4eed893734cb85abae22/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_35_f7fe3ca5f5df4dc38c50df922730525b/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_40_7025e5e6a0a3437293fe6970c89dcc53/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_36_87ab129d4e4041509762f249ba976759/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_41_12841c0f3701446b91acd3b1dbfae93f/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_37_322f45779e5f4dd6ae5e244fd1b271a7/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_42_0e17b3ea0ad64677a404df75c0908968/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_38_a7153b7c799242cab1735d5703d10e36/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_43_cdab240da4944514b2673f6d06c76c86/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_39_3be147715f46408183716d21d2ed30bf/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_44_28a84badae3f4ebe9b8aab78a75dc04c/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_40_05c3c7837ac3473aa0ae43c18dcf4d82/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_45_2b70dcf563024f179829408b27d4358e/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_41_9b60a91284b6463382f52ce114eb81eb/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_46_522a13e6d9e24d5c9f8219f468eec219/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_42_2add186f446e486f99c29d68aad64dad/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_4_9b096b6daf2f46d39c68fe996aaa763c/Softmax:0' shape=(?, 10) dtype=float32>]}
+INFO - 2019-10-28 14:31:44,925: Scoring one individual
+INFO - 2019-10-28 14:31:45,771:  -- Iterating epoch 3 -- 
+INFO - 2019-10-28 14:31:45,772: Iterating fitness over 1 individuals
+INFO - 2019-10-28 14:31:45,772: Fitting one individual for 5 epochs
+DEBUG - 2019-10-28 14:31:45,903: update_title_pos
+DEBUG - 2019-10-28 14:31:45,922: update_title_pos
+TOPOLOGY - 2019-10-28 14:31:45,960: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'output-0-0']
+INFO - 2019-10-28 14:31:45,960: Generating keras layers
+INFO - 2019-10-28 14:31:45,960: Adding the Input() layer
+TOPOLOGY - 2019-10-28 14:31:45,961: Added Tensor("input_4:0", shape=(?, 32, 32, 3), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:45,961: input-0-0: Working on conv2d_47_f2abc1287b3642778f84f986d2a86e2b.
+TOPOLOGY - 2019-10-28 14:31:45,970: input-0-0: Added [<tf.Tensor 'conv2d_47_f2abc1287b3642778f84f986d2a86e2b/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:45,970: intermed-0-0: Working on conv2d_48_95d2b77e45144841ae07f674c79518c8.
+TOPOLOGY - 2019-10-28 14:31:45,970: intermed-0-0: is conv2d_47_f2abc1287b3642778f84f986d2a86e2b/Relu:0 conv2d: True. is conv2d_48_95d2b77e45144841ae07f674c79518c8 dense: False
+TOPOLOGY - 2019-10-28 14:31:45,979: intermed-0-0: Added [<tf.Tensor 'conv2d_48_95d2b77e45144841ae07f674c79518c8/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:45,990: intermed-0-0: Added complement [<tf.Tensor 'conv2d_48_95d2b77e45144841ae07f674c79518c8/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_43_5b02dddbe78a433d8a1aa88108458cd5/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:45,990: intermed-0-1: Working on conv2d_49_b2750257eb74444ebe60d16a193be691.
+TOPOLOGY - 2019-10-28 14:31:45,991: intermed-0-1: is conv2d_48_95d2b77e45144841ae07f674c79518c8/BiasAdd:0 conv2d: True. is conv2d_49_b2750257eb74444ebe60d16a193be691 dense: False
+TOPOLOGY - 2019-10-28 14:31:45,999: intermed-0-1: Added [<tf.Tensor 'conv2d_49_b2750257eb74444ebe60d16a193be691/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,010: intermed-0-1: Added complement [<tf.Tensor 'conv2d_49_b2750257eb74444ebe60d16a193be691/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_44_f70417f595d741c28d1d8f4620465663/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,010: intermed-0-2: Working on conv2d_50_83cac5355b8a473f88918fbaddaf6636.
+TOPOLOGY - 2019-10-28 14:31:46,011: intermed-0-2: is conv2d_48_95d2b77e45144841ae07f674c79518c8/BiasAdd:0 conv2d: True. is conv2d_50_83cac5355b8a473f88918fbaddaf6636 dense: False
+TOPOLOGY - 2019-10-28 14:31:46,011: intermed-0-2: is conv2d_49_b2750257eb74444ebe60d16a193be691/BiasAdd:0 conv2d: True. is conv2d_50_83cac5355b8a473f88918fbaddaf6636 dense: False
+INFO - 2019-10-28 14:31:46,011: Adding a Merge layer between conv2d_48_95d2b77e45144841ae07f674c79518c8/BiasAdd:0 and conv2d_49_b2750257eb74444ebe60d16a193be691/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:31:46,012: intermed-0-2: Added Tensor("concatenate_10/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:46,021: intermed-0-2: Added [<tf.Tensor 'conv2d_50_83cac5355b8a473f88918fbaddaf6636/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,032: intermed-0-2: Added complement [<tf.Tensor 'conv2d_50_83cac5355b8a473f88918fbaddaf6636/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_45_1712c450f9b94aa388953963207d44ca/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,033: intermed-1-0: Working on conv2d_51_25d7601682934dd49dbc50723940d426.
+TOPOLOGY - 2019-10-28 14:31:46,033: intermed-1-0: is conv2d_50_83cac5355b8a473f88918fbaddaf6636/BiasAdd:0 conv2d: True. is conv2d_51_25d7601682934dd49dbc50723940d426 dense: False
+TOPOLOGY - 2019-10-28 14:31:46,042: intermed-1-0: Added [<tf.Tensor 'conv2d_51_25d7601682934dd49dbc50723940d426/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,052: intermed-1-0: Added complement [<tf.Tensor 'conv2d_51_25d7601682934dd49dbc50723940d426/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_46_4708a5a67b214c49826449862221095c/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,052: intermed-1-1: Working on conv2d_52_38d0526d83e64c7cb7f3305c0512c244.
+TOPOLOGY - 2019-10-28 14:31:46,053: intermed-1-1: is conv2d_51_25d7601682934dd49dbc50723940d426/BiasAdd:0 conv2d: True. is conv2d_52_38d0526d83e64c7cb7f3305c0512c244 dense: False
+TOPOLOGY - 2019-10-28 14:31:46,061: intermed-1-1: Added [<tf.Tensor 'conv2d_52_38d0526d83e64c7cb7f3305c0512c244/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,070: intermed-1-1: Added complement [<tf.Tensor 'conv2d_52_38d0526d83e64c7cb7f3305c0512c244/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_47_3e1b0953ab324ef686e82d9b5b7ad60a/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,071: intermed-1-2: Working on conv2d_53_aa958f402b944bc386125db2bae5b331.
+TOPOLOGY - 2019-10-28 14:31:46,071: intermed-1-2: is conv2d_52_38d0526d83e64c7cb7f3305c0512c244/BiasAdd:0 conv2d: True. is conv2d_53_aa958f402b944bc386125db2bae5b331 dense: False
+TOPOLOGY - 2019-10-28 14:31:46,080: intermed-1-2: Added [<tf.Tensor 'conv2d_53_aa958f402b944bc386125db2bae5b331/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,089: intermed-1-2: Added complement [<tf.Tensor 'conv2d_53_aa958f402b944bc386125db2bae5b331/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_48_6ea022ab927c4051a64fd6ea24083e10/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,089: intermed-2-0: Working on conv2d_54_4a382972c62c49d0baedd3028f42acf8.
+TOPOLOGY - 2019-10-28 14:31:46,090: intermed-2-0: is conv2d_50_83cac5355b8a473f88918fbaddaf6636/BiasAdd:0 conv2d: True. is conv2d_54_4a382972c62c49d0baedd3028f42acf8 dense: False
+TOPOLOGY - 2019-10-28 14:31:46,090: intermed-2-0: is conv2d_53_aa958f402b944bc386125db2bae5b331/BiasAdd:0 conv2d: True. is conv2d_54_4a382972c62c49d0baedd3028f42acf8 dense: False
+INFO - 2019-10-28 14:31:46,090: Adding a Merge layer between conv2d_50_83cac5355b8a473f88918fbaddaf6636/BiasAdd:0 and conv2d_53_aa958f402b944bc386125db2bae5b331/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:31:46,091: intermed-2-0: Added Tensor("concatenate_11/concat:0", shape=(?, 30, 30, 69), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:46,099: intermed-2-0: Added [<tf.Tensor 'conv2d_54_4a382972c62c49d0baedd3028f42acf8/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,108: intermed-2-0: Added complement [<tf.Tensor 'conv2d_54_4a382972c62c49d0baedd3028f42acf8/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_49_5074c38a044e4dd08fc30854daee0db8/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,109: intermed-2-1: Working on conv2d_55_24d9231671974eb591d8bf4ebf15ea5c.
+TOPOLOGY - 2019-10-28 14:31:46,109: intermed-2-1: is conv2d_54_4a382972c62c49d0baedd3028f42acf8/BiasAdd:0 conv2d: True. is conv2d_55_24d9231671974eb591d8bf4ebf15ea5c dense: False
+TOPOLOGY - 2019-10-28 14:31:46,117: intermed-2-1: Added [<tf.Tensor 'conv2d_55_24d9231671974eb591d8bf4ebf15ea5c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,127: intermed-2-1: Added complement [<tf.Tensor 'conv2d_55_24d9231671974eb591d8bf4ebf15ea5c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_50_9034bb45792b42a68ae66c3e39c2c162/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,127: intermed-2-2: Working on conv2d_56_a9986c8699fa4dd0b78645993732cc89.
+TOPOLOGY - 2019-10-28 14:31:46,127: intermed-2-2: is conv2d_54_4a382972c62c49d0baedd3028f42acf8/BiasAdd:0 conv2d: True. is conv2d_56_a9986c8699fa4dd0b78645993732cc89 dense: False
+TOPOLOGY - 2019-10-28 14:31:46,127: intermed-2-2: is conv2d_55_24d9231671974eb591d8bf4ebf15ea5c/BiasAdd:0 conv2d: True. is conv2d_56_a9986c8699fa4dd0b78645993732cc89 dense: False
+INFO - 2019-10-28 14:31:46,127: Adding a Merge layer between conv2d_54_4a382972c62c49d0baedd3028f42acf8/BiasAdd:0 and conv2d_55_24d9231671974eb591d8bf4ebf15ea5c/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:31:46,128: intermed-2-2: Added Tensor("concatenate_12/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:31:46,136: intermed-2-2: Added [<tf.Tensor 'conv2d_56_a9986c8699fa4dd0b78645993732cc89/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,148: intermed-2-2: Added complement [<tf.Tensor 'conv2d_56_a9986c8699fa4dd0b78645993732cc89/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_51_313f2c8b47d74ecf99162c13f5c1a674/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,148: output-0-0: Working on dense_5_2c5d4fe2f2ee4086bce087a8e5742fa6.
+TOPOLOGY - 2019-10-28 14:31:46,148: output-0-0: is conv2d_56_a9986c8699fa4dd0b78645993732cc89/BiasAdd:0 conv2d: True. is dense_5_2c5d4fe2f2ee4086bce087a8e5742fa6 dense: True
+INFO - 2019-10-28 14:31:46,149: Adding a Flatten() layer between conv2d_56_a9986c8699fa4dd0b78645993732cc89/BiasAdd:0 and dense_5_2c5d4fe2f2ee4086bce087a8e5742fa6
+TOPOLOGY - 2019-10-28 14:31:46,153: output-0-0: Added [<tf.Tensor 'flatten_4/Reshape:0' shape=(?, ?) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,161: output-0-0: Added [<tf.Tensor 'dense_5_2c5d4fe2f2ee4086bce087a8e5742fa6/Softmax:0' shape=(?, 10) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:31:46,161: {'input-0-0': [<tf.Tensor 'conv2d_47_f2abc1287b3642778f84f986d2a86e2b/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_48_95d2b77e45144841ae07f674c79518c8/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_43_5b02dddbe78a433d8a1aa88108458cd5/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_49_b2750257eb74444ebe60d16a193be691/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_44_f70417f595d741c28d1d8f4620465663/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_50_83cac5355b8a473f88918fbaddaf6636/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_45_1712c450f9b94aa388953963207d44ca/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_51_25d7601682934dd49dbc50723940d426/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_46_4708a5a67b214c49826449862221095c/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_52_38d0526d83e64c7cb7f3305c0512c244/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_47_3e1b0953ab324ef686e82d9b5b7ad60a/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_53_aa958f402b944bc386125db2bae5b331/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_48_6ea022ab927c4051a64fd6ea24083e10/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_54_4a382972c62c49d0baedd3028f42acf8/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_49_5074c38a044e4dd08fc30854daee0db8/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_55_24d9231671974eb591d8bf4ebf15ea5c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_50_9034bb45792b42a68ae66c3e39c2c162/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_56_a9986c8699fa4dd0b78645993732cc89/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_51_313f2c8b47d74ecf99162c13f5c1a674/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_5_2c5d4fe2f2ee4086bce087a8e5742fa6/Softmax:0' shape=(?, 10) dtype=float32>]}
+INFO - 2019-10-28 14:32:14,621: Scoring one individual
+INFO - 2019-10-28 14:32:15,637:  -- Iterating epoch 4 -- 
+INFO - 2019-10-28 14:32:15,637: Iterating fitness over 1 individuals
+INFO - 2019-10-28 14:32:15,637: Fitting one individual for 5 epochs
+DEBUG - 2019-10-28 14:32:15,750: update_title_pos
+DEBUG - 2019-10-28 14:32:15,767: update_title_pos
+TOPOLOGY - 2019-10-28 14:32:15,803: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'output-0-0']
+INFO - 2019-10-28 14:32:15,803: Generating keras layers
+INFO - 2019-10-28 14:32:15,803: Adding the Input() layer
+TOPOLOGY - 2019-10-28 14:32:15,804: Added Tensor("input_5:0", shape=(?, 32, 32, 3), dtype=float32)
+TOPOLOGY - 2019-10-28 14:32:15,804: input-0-0: Working on conv2d_57_d3cd07694d8f4548a7ed83159eed171e.
+TOPOLOGY - 2019-10-28 14:32:15,815: input-0-0: Added [<tf.Tensor 'conv2d_57_d3cd07694d8f4548a7ed83159eed171e/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,815: intermed-0-0: Working on conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164.
+TOPOLOGY - 2019-10-28 14:32:15,816: intermed-0-0: is conv2d_57_d3cd07694d8f4548a7ed83159eed171e/Relu:0 conv2d: True. is conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164 dense: False
+TOPOLOGY - 2019-10-28 14:32:15,823: intermed-0-0: Added [<tf.Tensor 'conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,832: intermed-0-0: Added complement [<tf.Tensor 'conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_52_f9410ae0c446476c9dc79bd3e09d67a9/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,833: intermed-0-1: Working on conv2d_59_31805ad64b3e4e37817712c2d772c93c.
+TOPOLOGY - 2019-10-28 14:32:15,833: intermed-0-1: is conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164/BiasAdd:0 conv2d: True. is conv2d_59_31805ad64b3e4e37817712c2d772c93c dense: False
+TOPOLOGY - 2019-10-28 14:32:15,841: intermed-0-1: Added [<tf.Tensor 'conv2d_59_31805ad64b3e4e37817712c2d772c93c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,850: intermed-0-1: Added complement [<tf.Tensor 'conv2d_59_31805ad64b3e4e37817712c2d772c93c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_53_459cf867b2034e8a922f2ea0b2e9f378/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,851: intermed-0-2: Working on conv2d_60_add03c0299ba47f69475bcde318d4194.
+TOPOLOGY - 2019-10-28 14:32:15,851: intermed-0-2: is conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164/BiasAdd:0 conv2d: True. is conv2d_60_add03c0299ba47f69475bcde318d4194 dense: False
+TOPOLOGY - 2019-10-28 14:32:15,851: intermed-0-2: is conv2d_59_31805ad64b3e4e37817712c2d772c93c/BiasAdd:0 conv2d: True. is conv2d_60_add03c0299ba47f69475bcde318d4194 dense: False
+INFO - 2019-10-28 14:32:15,851: Adding a Merge layer between conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164/BiasAdd:0 and conv2d_59_31805ad64b3e4e37817712c2d772c93c/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:32:15,852: intermed-0-2: Added Tensor("concatenate_13/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:32:15,860: intermed-0-2: Added [<tf.Tensor 'conv2d_60_add03c0299ba47f69475bcde318d4194/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,870: intermed-0-2: Added complement [<tf.Tensor 'conv2d_60_add03c0299ba47f69475bcde318d4194/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_54_1f008e27b51749288c72040b0ba959ff/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,871: intermed-1-0: Working on conv2d_61_01ca26f0c4d9443ca6a6504ecf04a60b.
+TOPOLOGY - 2019-10-28 14:32:15,871: intermed-1-0: is conv2d_60_add03c0299ba47f69475bcde318d4194/BiasAdd:0 conv2d: True. is conv2d_61_01ca26f0c4d9443ca6a6504ecf04a60b dense: False
+TOPOLOGY - 2019-10-28 14:32:15,879: intermed-1-0: Added [<tf.Tensor 'conv2d_61_01ca26f0c4d9443ca6a6504ecf04a60b/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,888: intermed-1-0: Added complement [<tf.Tensor 'conv2d_61_01ca26f0c4d9443ca6a6504ecf04a60b/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_55_16d1165fc49e4925b834e473a16ec893/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,889: intermed-1-1: Working on conv2d_62_1f52de9a18fc4fa7ad6d679128bdf553.
+TOPOLOGY - 2019-10-28 14:32:15,889: intermed-1-1: is conv2d_61_01ca26f0c4d9443ca6a6504ecf04a60b/BiasAdd:0 conv2d: True. is conv2d_62_1f52de9a18fc4fa7ad6d679128bdf553 dense: False
+TOPOLOGY - 2019-10-28 14:32:15,899: intermed-1-1: Added [<tf.Tensor 'conv2d_62_1f52de9a18fc4fa7ad6d679128bdf553/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,921: intermed-1-1: Added complement [<tf.Tensor 'conv2d_62_1f52de9a18fc4fa7ad6d679128bdf553/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_56_760ea105c88c45cfa736c9fb3306e705/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,922: intermed-1-2: Working on conv2d_63_15a462614d7942179ec782d9187a78d9.
+TOPOLOGY - 2019-10-28 14:32:15,923: intermed-1-2: is conv2d_62_1f52de9a18fc4fa7ad6d679128bdf553/BiasAdd:0 conv2d: True. is conv2d_63_15a462614d7942179ec782d9187a78d9 dense: False
+TOPOLOGY - 2019-10-28 14:32:15,934: intermed-1-2: Added [<tf.Tensor 'conv2d_63_15a462614d7942179ec782d9187a78d9/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,944: intermed-1-2: Added complement [<tf.Tensor 'conv2d_63_15a462614d7942179ec782d9187a78d9/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_57_4c28f8b7e9bf48cc9021d8d2e4075768/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,944: intermed-2-0: Working on conv2d_64_e2d49b79b0774d98997e395823160b60.
+TOPOLOGY - 2019-10-28 14:32:15,945: intermed-2-0: is conv2d_60_add03c0299ba47f69475bcde318d4194/BiasAdd:0 conv2d: True. is conv2d_64_e2d49b79b0774d98997e395823160b60 dense: False
+TOPOLOGY - 2019-10-28 14:32:15,945: intermed-2-0: is conv2d_63_15a462614d7942179ec782d9187a78d9/BiasAdd:0 conv2d: True. is conv2d_64_e2d49b79b0774d98997e395823160b60 dense: False
+INFO - 2019-10-28 14:32:15,945: Adding a Merge layer between conv2d_60_add03c0299ba47f69475bcde318d4194/BiasAdd:0 and conv2d_63_15a462614d7942179ec782d9187a78d9/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:32:15,946: intermed-2-0: Added Tensor("concatenate_14/concat:0", shape=(?, 30, 30, 69), dtype=float32)
+TOPOLOGY - 2019-10-28 14:32:15,954: intermed-2-0: Added [<tf.Tensor 'conv2d_64_e2d49b79b0774d98997e395823160b60/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,968: intermed-2-0: Added complement [<tf.Tensor 'conv2d_64_e2d49b79b0774d98997e395823160b60/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_58_fff670fc761e4648ab6845394466e0a3/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,968: intermed-2-1: Working on conv2d_65_3cdd8db87982476dbcb2b9998c10576c.
+TOPOLOGY - 2019-10-28 14:32:15,969: intermed-2-1: is conv2d_64_e2d49b79b0774d98997e395823160b60/BiasAdd:0 conv2d: True. is conv2d_65_3cdd8db87982476dbcb2b9998c10576c dense: False
+TOPOLOGY - 2019-10-28 14:32:15,976: intermed-2-1: Added [<tf.Tensor 'conv2d_65_3cdd8db87982476dbcb2b9998c10576c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,986: intermed-2-1: Added complement [<tf.Tensor 'conv2d_65_3cdd8db87982476dbcb2b9998c10576c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_59_78c7e3f5311a4c4f8a1db72df5a4fad0/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:15,987: intermed-2-2: Working on conv2d_66_933b94896c8b49619e8b68d2e10bcc9b.
+TOPOLOGY - 2019-10-28 14:32:15,987: intermed-2-2: is conv2d_64_e2d49b79b0774d98997e395823160b60/BiasAdd:0 conv2d: True. is conv2d_66_933b94896c8b49619e8b68d2e10bcc9b dense: False
+TOPOLOGY - 2019-10-28 14:32:15,987: intermed-2-2: is conv2d_65_3cdd8db87982476dbcb2b9998c10576c/BiasAdd:0 conv2d: True. is conv2d_66_933b94896c8b49619e8b68d2e10bcc9b dense: False
+INFO - 2019-10-28 14:32:15,987: Adding a Merge layer between conv2d_64_e2d49b79b0774d98997e395823160b60/BiasAdd:0 and conv2d_65_3cdd8db87982476dbcb2b9998c10576c/BiasAdd:0
+TOPOLOGY - 2019-10-28 14:32:15,988: intermed-2-2: Added Tensor("concatenate_15/concat:0", shape=(?, 30, 30, 40), dtype=float32)
+TOPOLOGY - 2019-10-28 14:32:15,996: intermed-2-2: Added [<tf.Tensor 'conv2d_66_933b94896c8b49619e8b68d2e10bcc9b/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:16,005: intermed-2-2: Added complement [<tf.Tensor 'conv2d_66_933b94896c8b49619e8b68d2e10bcc9b/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_60_b084ce1a87124f32b95a1c751d192146/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:16,006: output-0-0: Working on dense_6_cff3dcbc97b04c578e109f45cb97a649.
+TOPOLOGY - 2019-10-28 14:32:16,006: output-0-0: is conv2d_66_933b94896c8b49619e8b68d2e10bcc9b/BiasAdd:0 conv2d: True. is dense_6_cff3dcbc97b04c578e109f45cb97a649 dense: True
+INFO - 2019-10-28 14:32:16,006: Adding a Flatten() layer between conv2d_66_933b94896c8b49619e8b68d2e10bcc9b/BiasAdd:0 and dense_6_cff3dcbc97b04c578e109f45cb97a649
+TOPOLOGY - 2019-10-28 14:32:16,016: output-0-0: Added [<tf.Tensor 'flatten_5/Reshape:0' shape=(?, ?) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:16,023: output-0-0: Added [<tf.Tensor 'dense_6_cff3dcbc97b04c578e109f45cb97a649/Softmax:0' shape=(?, 10) dtype=float32>]
+TOPOLOGY - 2019-10-28 14:32:16,023: {'input-0-0': [<tf.Tensor 'conv2d_57_d3cd07694d8f4548a7ed83159eed171e/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_58_576deeb8f6cb4cb497b2bb6e1409e164/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_52_f9410ae0c446476c9dc79bd3e09d67a9/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_59_31805ad64b3e4e37817712c2d772c93c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_53_459cf867b2034e8a922f2ea0b2e9f378/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_60_add03c0299ba47f69475bcde318d4194/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_54_1f008e27b51749288c72040b0ba959ff/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_61_01ca26f0c4d9443ca6a6504ecf04a60b/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_55_16d1165fc49e4925b834e473a16ec893/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_62_1f52de9a18fc4fa7ad6d679128bdf553/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_56_760ea105c88c45cfa736c9fb3306e705/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_63_15a462614d7942179ec782d9187a78d9/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_57_4c28f8b7e9bf48cc9021d8d2e4075768/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_64_e2d49b79b0774d98997e395823160b60/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_58_fff670fc761e4648ab6845394466e0a3/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_65_3cdd8db87982476dbcb2b9998c10576c/BiasAdd:0' shape=(?, 30, 30, 23) dtype=float32>, <tf.Tensor 'dropout_59_78c7e3f5311a4c4f8a1db72df5a4fad0/cond/Merge:0' shape=(?, 30, 30, 23) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_66_933b94896c8b49619e8b68d2e10bcc9b/BiasAdd:0' shape=(?, 30, 30, 46) dtype=float32>, <tf.Tensor 'dropout_60_b084ce1a87124f32b95a1c751d192146/cond/Merge:0' shape=(?, 30, 30, 46) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_6_cff3dcbc97b04c578e109f45cb97a649/Softmax:0' shape=(?, 10) dtype=float32>]}
+INFO - 2019-10-28 14:32:44,904: Scoring one individual

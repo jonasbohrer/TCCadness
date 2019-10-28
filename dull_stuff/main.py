@@ -1,4 +1,4 @@
-import keras, logging, random, pydot
+import keras, logging, random, pydot, copy, uuid
 import networkx as nx
 import matplotlib.pyplot as plt
 from enum import Enum, auto
@@ -11,8 +11,8 @@ input_configs = {
 }
 
 global_configs = {
-    "module_range" : ([1, 3], 'int'),
-    "component_range" : ([1, 4], 'int')
+    "module_range" : ([3, 3], 'int'),
+    "component_range" : ([3, 3], 'int')
 }
 
 output_configs = {
@@ -38,13 +38,19 @@ possible_complementary_components = {
     "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
 }
 
-class HistoricalMarking:
-    def __init__(self):
-        counter = 0
+class HistoricalMarker:
     
-    def generate(self):
-        counter += 1
-        return counter
+    def __init__(self):
+        self.module_counter = 0
+        self.blueprint_counter = 0
+    
+    def mark_module(self):
+        self.module_counter += 1
+        return self.module_counter
+
+    def mark_blueprint(self):
+        self.blueprint_counter += 1
+        return self.blueprint_counter
 
 class NameGenerator:
     def __init__(self):
@@ -102,11 +108,12 @@ class Module(object):
     Represents a set of one or more basic units of a topology.
     components: the most basic unit of a topology.
     """
-    def __init__(self, components:dict, layer_type:ModuleComposition=ModuleComposition.INPUT, component_graph=None):
+    def __init__(self, components:dict, layer_type:ModuleComposition=ModuleComposition.INPUT, mark=None, component_graph=None):
         self.components = components
         self.component_graph = component_graph
         self.layer_type = layer_type
         self.species = None
+        self.mark = None
     
     def __getitem__(self, item):
         return self.components[item]
@@ -119,9 +126,8 @@ class Blueprint:
     Represents a topology made of modules.
     modules: modules composing a topology.
     """
-    def __init__(self, modules:List[Module], compiler=None, input_shape=None, module_graph=None):
+    def __init__(self, modules:List[Module], input_shape=None, module_graph=None):
         self.modules = modules
-        self.compiler = compiler
         self.input_shape = input_shape
         self.module_graph = module_graph
 
@@ -146,8 +152,9 @@ class Individual:
     parents: individuals used in crossover to generate this topology.
     """
        
-    def __init__(self, blueprint:Blueprint, birth=None, parents=None, model=None, name=None):
+    def __init__(self, blueprint:Blueprint, compiler=None, birth=None, parents=None, model=None, name=None):
         self.blueprint = blueprint
+        self.compiler = compiler
         self.birth = birth
         self.parents = parents
         self.model = model
@@ -165,6 +172,7 @@ class Individual:
         output_nodes = {}
 
         for node in module_graph.nodes():
+            print("here",module_graph.nodes[node], module_graph.nodes[node]["node_def"])
             assembled_module_graph = nx.union(assembled_module_graph, module_graph.nodes[node]["node_def"].component_graph, rename=(None, f'{node}-'))
             output_nodes[node] = (max(module_graph.nodes[node]["node_def"].component_graph.nodes()))
 
@@ -191,7 +199,22 @@ class Individual:
         # Iterate over the graph including nodes
         for component_id in component_graph.nodes():
             layer = []
-            component = component_graph.nodes[component_id]["node_def"]
+
+            # Create a copy of the original layer so we don't have duplicate layers in the model in the future.
+            component = copy.deepcopy(component_graph.nodes[component_id]["node_def"])
+            component_def = component.representation[0]
+            parameter_def = component.representation[1]
+            component.keras_component = component_def(**parameter_def)
+            component.keras_component.name = component.keras_component.name + "_" + uuid.uuid4().hex
+
+            if component.complementary_component != None:
+                component_def = component.complementary_component[0]
+                parameter_def = component.complementary_component[1]
+                component.keras_complementary_component = component_def(**parameter_def)
+                component.keras_complementary_component.name = component.keras_complementary_component.name + "_" + uuid.uuid4().hex
+
+            logging.log(21, f"{component_id}: Working on {component.keras_component.name}.")
+            print(component.keras_component.name)
 
             # If the node has no inputs, then use the Model Input as layer input
             if component_graph.in_degree(component_id) == 0:
@@ -205,8 +228,9 @@ class Individual:
             elif component_graph.in_degree(component_id) == 1:
                 predecessors = [layer_map[predecessor_id] for predecessor_id in component_graph.predecessors(component_id)][0]
                 logging.log(21, f"{component_id}: is {predecessors[0].name} conv2d: {'conv2d' in predecessors[0].name}. is {component.keras_component.name} dense: {'dense' in component.keras_component.name}")
+                # If dense connecting to previous conv, flatten
                 if "conv2d" in predecessors[0].name and "dense" in component.keras_component.name:
-                    logging.info(f"Adding a Flatten() layer")
+                    logging.info(f"Adding a Flatten() layer between {predecessors[0].name} and {component.keras_component.name}")
                     layer = [keras.layers.Flatten()(predecessors[-1])]
                     logging.log(21, f"{component_id}: Added {layer}")
                     predecessors = layer
@@ -220,14 +244,15 @@ class Individual:
             elif component_graph.in_degree(component_id) == 2:
                 predecessors = [layer_map[predecessor_id] for predecessor_id in component_graph.predecessors(component_id)]
                 for predecessor in range(len(predecessors[0])):
+                    logging.log(21, f"{component_id}: is {predecessors[predecessor][0].name} conv2d: {'conv2d' in predecessors[predecessor][0].name}. is {component.keras_component.name} dense: {'dense' in component.keras_component.name}")
                     if "conv2d" in predecessors[predecessor][0].name and "dense" in component.keras_component.name:
-                        logging.info(f"Adding a Flatten() layer")
+                        logging.info(f"Adding a Flatten() layer between {predecessors[predecessor][0].name} and {component.keras_component.name}")
                         layer = [keras.layers.Flatten()(predecessors[predecessor][-1])]
                         logging.log(21, f"{component_id}: Added {layer}")
                         predecessors[predecessor] = layer
                 
-                logging.info(f"Adding a Merge layer")
-                merge_layer = keras.layers.concatenate([predecessors[0][0], predecessors[1][0]])
+                logging.info(f"Adding a Merge layer between {predecessors[0][0].name} and {predecessors[1][0].name}")
+                merge_layer = keras.layers.concatenate([predecessors[0][-1], predecessors[1][-1]])
                 logging.log(21, f"{component_id}: Added {merge_layer}")
                 layer = [component.keras_component(merge_layer)]
                 logging.log(21, f"{component_id}: Added {layer}")
@@ -241,7 +266,7 @@ class Individual:
         # Assemble model
         logging.log(21, layer_map)
         self.model = keras.models.Model(inputs=model_input, outputs=layer_map[max(layer_map)])
-        self.model.compile(**self.blueprint.compiler)
+        self.model.compile(**self.compiler)
         plot_model(self.model, to_file='./images/3_layer_level_graph.png', show_shapes=True, show_layer_names=True)
 
     def fit(self, input_x, input_y, epochs=1, validation_split=0.15):
@@ -278,10 +303,12 @@ class Population:
     """
     Represents the population containing multiple individual topologies and their correlations.
     """
-    def __init__(self, datasets=None, individuals=[], modules=[], hyperparameters=[], species=[], groups=[], input_shape=None):
+    def __init__(self, datasets=None, individuals=[], blueprints=[], modules=[], hyperparameters=[], species=[], groups=[], input_shape=None):
         self.datasets = datasets
         self.individuals = individuals
+        self.blueprints = blueprints
         self.modules = modules
+        self.historical_marker = HistoricalMarker()
         self.hyperparameters = hyperparameters
         self.species = species
         self.groups = groups
@@ -307,14 +334,65 @@ class Population:
 
             #Create a blueprint
             input_shape = self.input_shape
-            new_compiler = compiler
-            new_blueprint = Generator().random_blueprint(global_configs, possible_components, possible_complementary_components, input_shape, new_compiler)
+            new_blueprint = Generator().random_blueprint(global_configs, possible_components, possible_complementary_components, input_shape)
 
             #Create individual with the Blueprint
-            new_individual = Individual(blueprint=new_blueprint, name=n)
+            new_individual = Individual(blueprint=new_blueprint, name=n, compiler=compiler)
             new_individuals.append(new_individual)
 
         self.individuals = new_individuals
+
+    def create_module_population(self, size=1):
+
+        new_modules = []
+
+        for n in range(size):
+            new_module = Generator().random_module(global_configs, possible_components, possible_complementary_components)
+            new_module.historical_marking = self.historical_marker.mark_module()
+            new_modules.append(new_module)
+
+        print(new_modules)
+        self.modules = new_modules
+
+    def create_blueprint_population(self, size=1):
+
+        new_blueprints = []
+
+        for n in range(size):
+
+            #Create a blueprint
+            input_shape = self.input_shape
+            new_blueprint = Generator().random_blueprint(global_configs,
+                                                            possible_components, 
+                                                            possible_complementary_components, 
+                                                            input_shape,
+                                                            node_content_generator=self.return_random_module)
+            new_blueprints.append(new_blueprint)
+
+        print(new_blueprints)
+        self.blueprints = new_blueprints
+    
+    def create_individual_population(self, size=1, compiler=None):
+
+        new_individuals = []
+
+        for n in range(size):
+
+            #Create a blueprint
+            input_shape = self.input_shape
+            new_blueprint = self.return_random_blueprint()
+
+            #Create individual with the Blueprint
+            new_individual = Individual(blueprint=new_blueprint, name=n, compiler=compiler)
+            new_individuals.append(new_individual)
+
+        self.individuals = new_individuals
+
+    def return_random_module(self):
+        return random.choice(self.modules)
+
+    def return_random_blueprint(self):
+        return random.choice(self.blueprints)
 
     def return_individual(self, name):
         for individual in self.individuals:
@@ -395,7 +473,7 @@ class Population:
 
         return best_scores
 
-class Generator():
+class Generator:
 
     count=0
 
@@ -475,7 +553,7 @@ class Generator():
 
         return new_graph
 
-    def random_module(self, global_configs, possible_nodes, possible_complementary_components):
+    def random_module(self, global_configs, possible_nodes, possible_complementary_components, name=0):
 
         node_range = self.random_parameter_def(global_configs, "component_range")
         logging.log(21, f"Generating {node_range} components")
@@ -486,17 +564,24 @@ class Generator():
                                             args = {"possible_components": possible_nodes,
                                                     "possible_complementary_components": possible_complementary_components})
 
-        self.save_graph_plot(f"0_{self.count}_module_internal_graph.png", graph)
+        self.save_graph_plot(f"{name}_{self.count}_module_internal_graph.png", graph)
         self.count+=1
         new_module = Module(None, ModuleComposition.INTERMED, component_graph=graph)
 
         return new_module
-    
-    def random_blueprint(self, global_configs, possible_components, possible_complementary_components, input_shape, compiler):
+
+    def random_blueprint(self, global_configs, possible_components, possible_complementary_components, input_shape, node_content_generator=None, args={}):
 
         node_range = self.random_parameter_def(global_configs, "module_range")
         logging.log(21, f"Generating {node_range} modules")
         print(f"Generating {node_range} modules")
+
+        if (node_content_generator == None):
+            node_content_generator = self.random_module
+            args = {"global_configs": global_configs,
+                                                    "possible_nodes": possible_components,
+                                                    "possible_complementary_components": possible_complementary_components}
+
 
         input_node = self.random_graph(node_range=1,
                                             node_content_generator=self.random_module,
@@ -506,10 +591,8 @@ class Generator():
         self.save_graph_plot("1_1_input_module.png", input_node)
 
         intermed_graph = self.random_graph(node_range=node_range,
-                                            node_content_generator=self.random_module,
-                                            args = {"global_configs": global_configs,
-                                                    "possible_nodes": possible_components,
-                                                    "possible_complementary_components": possible_complementary_components})
+                                            node_content_generator=node_content_generator,
+                                            args = args)
         self.save_graph_plot("1_2_intermed_module.png", intermed_graph)
 
         output_node = self.random_graph(node_range=1,
@@ -525,7 +608,7 @@ class Generator():
         graph.add_edge(f"intermed-{max(intermed_graph.nodes())}", "output-0")
         self.save_graph_plot("1_module_level_graph.png", graph)
 
-        new_blueprint = Blueprint(None, compiler, input_shape, module_graph=graph)
+        new_blueprint = Blueprint(None, input_shape, module_graph=graph)
 
         return new_blueprint
 
@@ -555,9 +638,9 @@ def test_run(global_configs, possible_components):
                 new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
                 #Create the blueprint combining modules
                 input_shape = (8, 8, 1)
-                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], new_compiler, input_shape)
+                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], input_shape)
                 #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint)
+                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
                 new_individuals.append(new_individual)
 
             self.individuals = new_individuals
@@ -604,10 +687,10 @@ def test_run(global_configs, possible_components):
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
                 input_shape = (8, 8, 1)
                 #Create the blueprint combining modules
-                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], new_compiler, input_shape)
+                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], input_shape)
 
                 #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint)
+                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
                 new_individuals.append(new_individual)
 
             self.individuals = new_individuals
@@ -635,10 +718,10 @@ def test_run(global_configs, possible_components):
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
                 input_shape = (8, 8, 1)
                 #Create the blueprint combining modules
-                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], new_compiler, input_shape)
+                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], input_shape)
 
                 #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint)
+                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
                 new_individuals.append(new_individual)
 
             self.individuals = new_individuals
@@ -672,10 +755,10 @@ def test_run(global_configs, possible_components):
                 module_graph.add_edge(1, 3)
                 module_graph.add_edge(2, 3)
 
-                new_blueprint = Blueprint([new_input_module, new_intermed_module1, new_intermed_module2, new_output_module], new_compiler, input_shape, module_graph=module_graph)
+                new_blueprint = Blueprint([new_input_module, new_intermed_module1, new_intermed_module2, new_output_module], input_shape, module_graph=module_graph)
 
                 #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint)
+                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
                 new_individuals.append(new_individual)
 
             self.individuals = new_individuals
@@ -747,6 +830,62 @@ def test_run(global_configs, possible_components):
 
     print(iteration)
 
+def run_cifar10_nopop(global_configs, possible_components, population_size, epochs, training_epochs):
+    from keras.datasets import cifar10
+
+    possible_inputs = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([48,48], 'int'), "kernel_size": ([3], 'list'), "activation": (["relu"], 'list')})
+    }
+
+    possible_components = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
+        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
+    }
+
+    possible_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([1,1], 'int'), "activation": (["softmax"], 'list')})
+    }
+    
+    # The data, split between train and test sets:
+    (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+    (x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
+    print('x_train shape:', x_train.shape)
+    print(x_train.shape[0], 'train samples')
+    print(x_test.shape[0], 'test samples')
+
+    batch_size = 32
+    num_classes = 10
+    data_augmentation = False
+    num_predictions = 20
+
+    # Convert class vectors to binary class matrices.
+    y_train = keras.utils.to_categorical(y_train, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
+
+    x_train = x_train.astype('float32')
+    x_test = x_test.astype('float32')
+    x_train /= 255
+    x_test /= 255
+
+    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+
+    logging.basicConfig(filename='test.log',
+                        filemode='w+', level=logging.DEBUG,
+                        format='%(levelname)s - %(asctime)s: %(message)s')
+    logging.addLevelName(21, "TOPOLOGY")
+
+    logging.warning('This will get logged to a file')
+    logging.info(f"Hi, this is a test run.")
+
+    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+
+    population = Population(my_dataset, input_shape=x_train.shape[1:])
+    population.create_random_blueprints(population_size, compiler=compiler)
+
+    iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
+
+    print("Best fitting: ", iteration)
+
 def run_cifar10(global_configs, possible_components, population_size, epochs, training_epochs):
     from keras.datasets import cifar10
 
@@ -797,14 +936,18 @@ def run_cifar10(global_configs, possible_components, population_size, epochs, tr
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
 
     population = Population(my_dataset, input_shape=x_train.shape[1:])
-    population.create_random_blueprints(population_size, compiler)
+    #population.create_random_blueprints(population_size, compiler=compiler)
+    population.create_module_population(5)
+    population.create_blueprint_population(1)
+    population.create_individual_population(1, compiler)
 
+    #exit(0)
     iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
 
     print("Best fitting: ", iteration)
-
-    
+  
 if __name__ == "__main__":
     
     #test_run(global_configs, possible_components)
+    #run_cifar10_nopop(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
     run_cifar10(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
