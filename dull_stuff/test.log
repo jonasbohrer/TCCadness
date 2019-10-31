@@ -1,137 +1,336 @@
-WARNING - 2019-10-28 15:24:54,204: This will get logged to a file
-INFO - 2019-10-28 15:24:54,205: Hi, this is a test run.
-WARNING - 2019-10-28 15:24:54,218: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+WARNING - 2019-10-29 19:40:37,546: This will get logged to a file
+INFO - 2019-10-29 19:40:37,547: Hi, this is a test run.
+WARNING - 2019-10-29 19:40:37,560: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Colocations handled automatically by placer.
-TOPOLOGY - 2019-10-28 15:24:54,226: Generating 3 components
-DEBUG - 2019-10-28 15:24:54,515: update_title_pos
-DEBUG - 2019-10-28 15:24:54,527: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=6.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
-DEBUG - 2019-10-28 15:24:54,537: update_title_pos
-DEBUG - 2019-10-28 15:24:54,562: update_title_pos
-DEBUG - 2019-10-28 15:24:54,571: update_title_pos
-DEBUG - 2019-10-28 15:24:54,577: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:54,603: Generating 3 components
-DEBUG - 2019-10-28 15:24:54,711: update_title_pos
-DEBUG - 2019-10-28 15:24:54,722: update_title_pos
-DEBUG - 2019-10-28 15:24:54,739: update_title_pos
-DEBUG - 2019-10-28 15:24:54,748: update_title_pos
-DEBUG - 2019-10-28 15:24:54,753: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:54,776: Generating 3 components
-DEBUG - 2019-10-28 15:24:54,886: update_title_pos
-DEBUG - 2019-10-28 15:24:54,929: update_title_pos
-DEBUG - 2019-10-28 15:24:54,947: update_title_pos
-DEBUG - 2019-10-28 15:24:54,954: update_title_pos
-DEBUG - 2019-10-28 15:24:54,959: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:54,981: Generating 3 components
-DEBUG - 2019-10-28 15:24:55,096: update_title_pos
-DEBUG - 2019-10-28 15:24:55,106: update_title_pos
-DEBUG - 2019-10-28 15:24:55,123: update_title_pos
-DEBUG - 2019-10-28 15:24:55,131: update_title_pos
-DEBUG - 2019-10-28 15:24:55,137: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:55,161: Generating 3 components
-DEBUG - 2019-10-28 15:24:55,295: update_title_pos
-DEBUG - 2019-10-28 15:24:55,307: update_title_pos
-DEBUG - 2019-10-28 15:24:55,324: update_title_pos
-DEBUG - 2019-10-28 15:24:55,334: update_title_pos
-DEBUG - 2019-10-28 15:24:55,342: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:55,368: Generating 3 modules
-TOPOLOGY - 2019-10-28 15:24:55,368: Generating 1 components
-DEBUG - 2019-10-28 15:24:55,589: update_title_pos
-DEBUG - 2019-10-28 15:24:55,600: update_title_pos
-DEBUG - 2019-10-28 15:24:55,616: update_title_pos
-DEBUG - 2019-10-28 15:24:55,622: update_title_pos
-DEBUG - 2019-10-28 15:24:55,625: update_title_pos
-DEBUG - 2019-10-28 15:24:55,862: update_title_pos
-DEBUG - 2019-10-28 15:24:55,871: update_title_pos
-DEBUG - 2019-10-28 15:24:55,886: update_title_pos
-DEBUG - 2019-10-28 15:24:55,891: update_title_pos
-DEBUG - 2019-10-28 15:24:55,895: update_title_pos
-DEBUG - 2019-10-28 15:24:56,031: update_title_pos
-DEBUG - 2019-10-28 15:24:56,043: update_title_pos
-DEBUG - 2019-10-28 15:24:56,063: update_title_pos
-DEBUG - 2019-10-28 15:24:56,073: update_title_pos
-DEBUG - 2019-10-28 15:24:56,080: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:56,105: Generating 1 components
-DEBUG - 2019-10-28 15:24:56,312: update_title_pos
-DEBUG - 2019-10-28 15:24:56,322: update_title_pos
-DEBUG - 2019-10-28 15:24:56,337: update_title_pos
-DEBUG - 2019-10-28 15:24:56,343: update_title_pos
-DEBUG - 2019-10-28 15:24:56,347: update_title_pos
-DEBUG - 2019-10-28 15:24:56,468: update_title_pos
-DEBUG - 2019-10-28 15:24:56,478: update_title_pos
-DEBUG - 2019-10-28 15:24:56,495: update_title_pos
-DEBUG - 2019-10-28 15:24:56,500: update_title_pos
-DEBUG - 2019-10-28 15:24:56,504: update_title_pos
-DEBUG - 2019-10-28 15:24:56,676: update_title_pos
-DEBUG - 2019-10-28 15:24:56,695: update_title_pos
-DEBUG - 2019-10-28 15:24:56,719: update_title_pos
-DEBUG - 2019-10-28 15:24:56,733: update_title_pos
-DEBUG - 2019-10-28 15:24:56,740: update_title_pos
-INFO - 2019-10-28 15:24:56,776: Iterating over 5 epochs
-INFO - 2019-10-28 15:24:56,777:  -- Iterating epoch 0 -- 
-INFO - 2019-10-28 15:24:56,777: Iterating fitness over 1 individuals
-INFO - 2019-10-28 15:24:56,777: Fitting one individual for 5 epochs
-DEBUG - 2019-10-28 15:24:56,899: update_title_pos
-DEBUG - 2019-10-28 15:24:56,932: update_title_pos
-DEBUG - 2019-10-28 15:24:56,956: update_title_pos
-DEBUG - 2019-10-28 15:24:56,968: update_title_pos
-TOPOLOGY - 2019-10-28 15:24:57,008: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'output-0-0']
-INFO - 2019-10-28 15:24:57,009: Generating keras layers
-INFO - 2019-10-28 15:24:57,009: Adding the Input() layer
-TOPOLOGY - 2019-10-28 15:24:57,009: Added Tensor("input_1:0", shape=(?, 32, 32, 3), dtype=float32)
-TOPOLOGY - 2019-10-28 15:24:57,010: input-0-0: Working on conv2d_17_24a64e7e0a244d12900fdf022a512646. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 48, 'kernel_size': 3, 'activation': 'relu'}]
-TOPOLOGY - 2019-10-28 15:24:57,021: input-0-0: Added [<tf.Tensor 'conv2d_17_24a64e7e0a244d12900fdf022a512646/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,021: intermed-0-0: Working on conv2d_18_85bd466049fc44989c748ce7fe18220d. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 17, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,022: intermed-0-0: is conv2d_17_24a64e7e0a244d12900fdf022a512646/Relu:0 conv2d: True. is conv2d_18_85bd466049fc44989c748ce7fe18220d dense: False
-TOPOLOGY - 2019-10-28 15:24:57,030: intermed-0-0: Added [<tf.Tensor 'conv2d_18_85bd466049fc44989c748ce7fe18220d/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>]
-WARNING - 2019-10-28 15:24:57,034: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\keras\backend\tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+TOPOLOGY - 2019-10-29 19:40:37,568: Generating 5 components
+DEBUG - 2019-10-29 19:40:37,852: update_title_pos
+DEBUG - 2019-10-29 19:40:37,861: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=6.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
+DEBUG - 2019-10-29 19:40:37,866: update_title_pos
+DEBUG - 2019-10-29 19:40:37,884: update_title_pos
+DEBUG - 2019-10-29 19:40:37,896: update_title_pos
+DEBUG - 2019-10-29 19:40:37,903: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:37,929: Generating 5 components
+DEBUG - 2019-10-29 19:40:38,030: update_title_pos
+DEBUG - 2019-10-29 19:40:38,041: update_title_pos
+DEBUG - 2019-10-29 19:40:38,060: update_title_pos
+DEBUG - 2019-10-29 19:40:38,071: update_title_pos
+DEBUG - 2019-10-29 19:40:38,077: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:38,103: Generating 5 components
+DEBUG - 2019-10-29 19:40:38,233: update_title_pos
+DEBUG - 2019-10-29 19:40:38,244: update_title_pos
+DEBUG - 2019-10-29 19:40:38,264: update_title_pos
+DEBUG - 2019-10-29 19:40:38,276: update_title_pos
+DEBUG - 2019-10-29 19:40:38,282: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:38,308: Generating 5 components
+DEBUG - 2019-10-29 19:40:38,508: update_title_pos
+DEBUG - 2019-10-29 19:40:38,522: update_title_pos
+DEBUG - 2019-10-29 19:40:38,544: update_title_pos
+DEBUG - 2019-10-29 19:40:38,554: update_title_pos
+DEBUG - 2019-10-29 19:40:38,560: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:38,586: Generating 5 components
+DEBUG - 2019-10-29 19:40:38,784: update_title_pos
+DEBUG - 2019-10-29 19:40:38,796: update_title_pos
+DEBUG - 2019-10-29 19:40:38,816: update_title_pos
+DEBUG - 2019-10-29 19:40:38,827: update_title_pos
+DEBUG - 2019-10-29 19:40:38,834: update_title_pos
+DEBUG - 2019-10-29 19:40:38,961: update_title_pos
+DEBUG - 2019-10-29 19:40:38,971: update_title_pos
+DEBUG - 2019-10-29 19:40:38,990: update_title_pos
+DEBUG - 2019-10-29 19:40:39,000: update_title_pos
+DEBUG - 2019-10-29 19:40:39,006: update_title_pos
+DEBUG - 2019-10-29 19:40:39,243: update_title_pos
+DEBUG - 2019-10-29 19:40:39,253: update_title_pos
+DEBUG - 2019-10-29 19:40:39,272: update_title_pos
+DEBUG - 2019-10-29 19:40:39,282: update_title_pos
+DEBUG - 2019-10-29 19:40:39,287: update_title_pos
+DEBUG - 2019-10-29 19:40:39,413: update_title_pos
+DEBUG - 2019-10-29 19:40:39,426: update_title_pos
+DEBUG - 2019-10-29 19:40:39,446: update_title_pos
+DEBUG - 2019-10-29 19:40:39,458: update_title_pos
+DEBUG - 2019-10-29 19:40:39,465: update_title_pos
+DEBUG - 2019-10-29 19:40:39,589: update_title_pos
+DEBUG - 2019-10-29 19:40:39,603: update_title_pos
+DEBUG - 2019-10-29 19:40:39,623: update_title_pos
+DEBUG - 2019-10-29 19:40:39,635: update_title_pos
+DEBUG - 2019-10-29 19:40:39,643: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:39,668: Generating 3 modules
+TOPOLOGY - 2019-10-29 19:40:39,669: Generating 1 components
+DEBUG - 2019-10-29 19:40:39,761: update_title_pos
+DEBUG - 2019-10-29 19:40:39,770: update_title_pos
+DEBUG - 2019-10-29 19:40:39,786: update_title_pos
+DEBUG - 2019-10-29 19:40:39,792: update_title_pos
+DEBUG - 2019-10-29 19:40:39,795: update_title_pos
+DEBUG - 2019-10-29 19:40:39,906: update_title_pos
+DEBUG - 2019-10-29 19:40:39,914: update_title_pos
+DEBUG - 2019-10-29 19:40:39,929: update_title_pos
+DEBUG - 2019-10-29 19:40:39,934: update_title_pos
+DEBUG - 2019-10-29 19:40:39,937: update_title_pos
+DEBUG - 2019-10-29 19:40:40,052: update_title_pos
+DEBUG - 2019-10-29 19:40:40,062: update_title_pos
+DEBUG - 2019-10-29 19:40:40,079: update_title_pos
+DEBUG - 2019-10-29 19:40:40,086: update_title_pos
+DEBUG - 2019-10-29 19:40:40,090: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:40,115: Generating 1 components
+DEBUG - 2019-10-29 19:40:40,206: update_title_pos
+DEBUG - 2019-10-29 19:40:40,215: update_title_pos
+DEBUG - 2019-10-29 19:40:40,229: update_title_pos
+DEBUG - 2019-10-29 19:40:40,234: update_title_pos
+DEBUG - 2019-10-29 19:40:40,237: update_title_pos
+DEBUG - 2019-10-29 19:40:40,349: update_title_pos
+DEBUG - 2019-10-29 19:40:40,359: update_title_pos
+DEBUG - 2019-10-29 19:40:40,374: update_title_pos
+DEBUG - 2019-10-29 19:40:40,379: update_title_pos
+DEBUG - 2019-10-29 19:40:40,382: update_title_pos
+DEBUG - 2019-10-29 19:40:40,498: update_title_pos
+DEBUG - 2019-10-29 19:40:40,510: update_title_pos
+DEBUG - 2019-10-29 19:40:40,530: update_title_pos
+DEBUG - 2019-10-29 19:40:40,539: update_title_pos
+DEBUG - 2019-10-29 19:40:40,545: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:40,571: Generating 3 modules
+TOPOLOGY - 2019-10-29 19:40:40,571: Generating 1 components
+DEBUG - 2019-10-29 19:40:40,660: update_title_pos
+DEBUG - 2019-10-29 19:40:40,671: update_title_pos
+DEBUG - 2019-10-29 19:40:40,686: update_title_pos
+DEBUG - 2019-10-29 19:40:40,691: update_title_pos
+DEBUG - 2019-10-29 19:40:40,695: update_title_pos
+DEBUG - 2019-10-29 19:40:40,804: update_title_pos
+DEBUG - 2019-10-29 19:40:40,814: update_title_pos
+DEBUG - 2019-10-29 19:40:40,828: update_title_pos
+DEBUG - 2019-10-29 19:40:40,833: update_title_pos
+DEBUG - 2019-10-29 19:40:40,836: update_title_pos
+DEBUG - 2019-10-29 19:40:41,044: update_title_pos
+DEBUG - 2019-10-29 19:40:41,055: update_title_pos
+DEBUG - 2019-10-29 19:40:41,071: update_title_pos
+DEBUG - 2019-10-29 19:40:41,078: update_title_pos
+DEBUG - 2019-10-29 19:40:41,083: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:41,105: Generating 1 components
+DEBUG - 2019-10-29 19:40:41,196: update_title_pos
+DEBUG - 2019-10-29 19:40:41,205: update_title_pos
+DEBUG - 2019-10-29 19:40:41,220: update_title_pos
+DEBUG - 2019-10-29 19:40:41,225: update_title_pos
+DEBUG - 2019-10-29 19:40:41,228: update_title_pos
+DEBUG - 2019-10-29 19:40:41,458: update_title_pos
+DEBUG - 2019-10-29 19:40:41,467: update_title_pos
+DEBUG - 2019-10-29 19:40:41,483: update_title_pos
+DEBUG - 2019-10-29 19:40:41,487: update_title_pos
+DEBUG - 2019-10-29 19:40:41,491: update_title_pos
+DEBUG - 2019-10-29 19:40:41,612: update_title_pos
+DEBUG - 2019-10-29 19:40:41,624: update_title_pos
+DEBUG - 2019-10-29 19:40:41,643: update_title_pos
+DEBUG - 2019-10-29 19:40:41,653: update_title_pos
+DEBUG - 2019-10-29 19:40:41,659: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:41,684: Generating 3 modules
+TOPOLOGY - 2019-10-29 19:40:41,684: Generating 1 components
+DEBUG - 2019-10-29 19:40:41,777: update_title_pos
+DEBUG - 2019-10-29 19:40:41,786: update_title_pos
+DEBUG - 2019-10-29 19:40:41,801: update_title_pos
+DEBUG - 2019-10-29 19:40:41,806: update_title_pos
+DEBUG - 2019-10-29 19:40:41,809: update_title_pos
+DEBUG - 2019-10-29 19:40:41,916: update_title_pos
+DEBUG - 2019-10-29 19:40:41,925: update_title_pos
+DEBUG - 2019-10-29 19:40:41,940: update_title_pos
+DEBUG - 2019-10-29 19:40:41,945: update_title_pos
+DEBUG - 2019-10-29 19:40:41,948: update_title_pos
+DEBUG - 2019-10-29 19:40:42,069: update_title_pos
+DEBUG - 2019-10-29 19:40:42,080: update_title_pos
+DEBUG - 2019-10-29 19:40:42,096: update_title_pos
+DEBUG - 2019-10-29 19:40:42,103: update_title_pos
+DEBUG - 2019-10-29 19:40:42,108: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:42,129: Generating 1 components
+DEBUG - 2019-10-29 19:40:42,221: update_title_pos
+DEBUG - 2019-10-29 19:40:42,230: update_title_pos
+DEBUG - 2019-10-29 19:40:42,244: update_title_pos
+DEBUG - 2019-10-29 19:40:42,249: update_title_pos
+DEBUG - 2019-10-29 19:40:42,252: update_title_pos
+DEBUG - 2019-10-29 19:40:42,363: update_title_pos
+DEBUG - 2019-10-29 19:40:42,372: update_title_pos
+DEBUG - 2019-10-29 19:40:42,386: update_title_pos
+DEBUG - 2019-10-29 19:40:42,391: update_title_pos
+DEBUG - 2019-10-29 19:40:42,395: update_title_pos
+DEBUG - 2019-10-29 19:40:42,514: update_title_pos
+DEBUG - 2019-10-29 19:40:42,526: update_title_pos
+DEBUG - 2019-10-29 19:40:42,546: update_title_pos
+DEBUG - 2019-10-29 19:40:42,556: update_title_pos
+DEBUG - 2019-10-29 19:40:42,562: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:42,587: Generating 3 modules
+TOPOLOGY - 2019-10-29 19:40:42,587: Generating 1 components
+DEBUG - 2019-10-29 19:40:42,677: update_title_pos
+DEBUG - 2019-10-29 19:40:42,686: update_title_pos
+DEBUG - 2019-10-29 19:40:42,701: update_title_pos
+DEBUG - 2019-10-29 19:40:42,705: update_title_pos
+DEBUG - 2019-10-29 19:40:42,709: update_title_pos
+DEBUG - 2019-10-29 19:40:42,817: update_title_pos
+DEBUG - 2019-10-29 19:40:42,826: update_title_pos
+DEBUG - 2019-10-29 19:40:42,840: update_title_pos
+DEBUG - 2019-10-29 19:40:42,846: update_title_pos
+DEBUG - 2019-10-29 19:40:42,849: update_title_pos
+DEBUG - 2019-10-29 19:40:42,963: update_title_pos
+DEBUG - 2019-10-29 19:40:42,974: update_title_pos
+DEBUG - 2019-10-29 19:40:42,991: update_title_pos
+DEBUG - 2019-10-29 19:40:42,998: update_title_pos
+DEBUG - 2019-10-29 19:40:43,003: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:43,025: Generating 1 components
+DEBUG - 2019-10-29 19:40:43,116: update_title_pos
+DEBUG - 2019-10-29 19:40:43,125: update_title_pos
+DEBUG - 2019-10-29 19:40:43,139: update_title_pos
+DEBUG - 2019-10-29 19:40:43,145: update_title_pos
+DEBUG - 2019-10-29 19:40:43,148: update_title_pos
+DEBUG - 2019-10-29 19:40:43,255: update_title_pos
+DEBUG - 2019-10-29 19:40:43,267: update_title_pos
+DEBUG - 2019-10-29 19:40:43,282: update_title_pos
+DEBUG - 2019-10-29 19:40:43,287: update_title_pos
+DEBUG - 2019-10-29 19:40:43,290: update_title_pos
+DEBUG - 2019-10-29 19:40:43,406: update_title_pos
+DEBUG - 2019-10-29 19:40:43,419: update_title_pos
+DEBUG - 2019-10-29 19:40:43,438: update_title_pos
+DEBUG - 2019-10-29 19:40:43,448: update_title_pos
+DEBUG - 2019-10-29 19:40:43,454: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:43,480: Generating 3 modules
+TOPOLOGY - 2019-10-29 19:40:43,481: Generating 1 components
+DEBUG - 2019-10-29 19:40:43,577: update_title_pos
+DEBUG - 2019-10-29 19:40:43,586: update_title_pos
+DEBUG - 2019-10-29 19:40:43,601: update_title_pos
+DEBUG - 2019-10-29 19:40:43,606: update_title_pos
+DEBUG - 2019-10-29 19:40:43,609: update_title_pos
+DEBUG - 2019-10-29 19:40:43,718: update_title_pos
+DEBUG - 2019-10-29 19:40:43,726: update_title_pos
+DEBUG - 2019-10-29 19:40:43,741: update_title_pos
+DEBUG - 2019-10-29 19:40:43,747: update_title_pos
+DEBUG - 2019-10-29 19:40:43,751: update_title_pos
+DEBUG - 2019-10-29 19:40:43,866: update_title_pos
+DEBUG - 2019-10-29 19:40:43,877: update_title_pos
+DEBUG - 2019-10-29 19:40:43,894: update_title_pos
+DEBUG - 2019-10-29 19:40:43,901: update_title_pos
+DEBUG - 2019-10-29 19:40:43,906: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:43,928: Generating 1 components
+DEBUG - 2019-10-29 19:40:44,017: update_title_pos
+DEBUG - 2019-10-29 19:40:44,026: update_title_pos
+DEBUG - 2019-10-29 19:40:44,041: update_title_pos
+DEBUG - 2019-10-29 19:40:44,046: update_title_pos
+DEBUG - 2019-10-29 19:40:44,050: update_title_pos
+DEBUG - 2019-10-29 19:40:44,161: update_title_pos
+DEBUG - 2019-10-29 19:40:44,171: update_title_pos
+DEBUG - 2019-10-29 19:40:44,185: update_title_pos
+DEBUG - 2019-10-29 19:40:44,190: update_title_pos
+DEBUG - 2019-10-29 19:40:44,194: update_title_pos
+DEBUG - 2019-10-29 19:40:44,322: update_title_pos
+DEBUG - 2019-10-29 19:40:44,335: update_title_pos
+DEBUG - 2019-10-29 19:40:44,354: update_title_pos
+DEBUG - 2019-10-29 19:40:44,364: update_title_pos
+DEBUG - 2019-10-29 19:40:44,370: update_title_pos
+DEBUG - 2019-10-29 19:40:44,497: update_title_pos
+DEBUG - 2019-10-29 19:40:44,507: update_title_pos
+DEBUG - 2019-10-29 19:40:44,527: update_title_pos
+DEBUG - 2019-10-29 19:40:44,537: update_title_pos
+DEBUG - 2019-10-29 19:40:44,543: update_title_pos
+DEBUG - 2019-10-29 19:40:44,665: update_title_pos
+DEBUG - 2019-10-29 19:40:44,675: update_title_pos
+DEBUG - 2019-10-29 19:40:44,694: update_title_pos
+DEBUG - 2019-10-29 19:40:44,702: update_title_pos
+DEBUG - 2019-10-29 19:40:44,707: update_title_pos
+DEBUG - 2019-10-29 19:40:44,866: update_title_pos
+DEBUG - 2019-10-29 19:40:44,880: update_title_pos
+DEBUG - 2019-10-29 19:40:44,902: update_title_pos
+DEBUG - 2019-10-29 19:40:44,912: update_title_pos
+DEBUG - 2019-10-29 19:40:44,919: update_title_pos
+DEBUG - 2019-10-29 19:40:45,044: update_title_pos
+DEBUG - 2019-10-29 19:40:45,059: update_title_pos
+DEBUG - 2019-10-29 19:40:45,081: update_title_pos
+DEBUG - 2019-10-29 19:40:45,093: update_title_pos
+DEBUG - 2019-10-29 19:40:45,100: update_title_pos
+INFO - 2019-10-29 19:40:45,128: Iterating over 5 epochs
+INFO - 2019-10-29 19:40:45,128:  -- Iterating epoch 0 -- 
+INFO - 2019-10-29 19:40:45,129: Iterating fitness over 1 individuals
+INFO - 2019-10-29 19:40:45,129: Fitting one individual for 5 epochs
+DEBUG - 2019-10-29 19:40:45,236: update_title_pos
+DEBUG - 2019-10-29 19:40:45,276: update_title_pos
+DEBUG - 2019-10-29 19:40:45,305: update_title_pos
+DEBUG - 2019-10-29 19:40:45,320: update_title_pos
+TOPOLOGY - 2019-10-29 19:40:45,365: Generated the assembled graph: ['input-0-0', 'intermed-0-0', 'intermed-0-1', 'intermed-0-2', 'intermed-0-3', 'intermed-0-4', 'intermed-1-0', 'intermed-1-1', 'intermed-1-2', 'intermed-1-3', 'intermed-1-4', 'intermed-2-0', 'intermed-2-1', 'intermed-2-2', 'intermed-2-3', 'intermed-2-4', 'output-0-0']
+INFO - 2019-10-29 19:40:45,365: Generating keras layers
+INFO - 2019-10-29 19:40:45,365: Adding the Input() layer
+TOPOLOGY - 2019-10-29 19:40:45,367: Added Tensor("input_1:0", shape=(?, 32, 32, 3), dtype=float32)
+TOPOLOGY - 2019-10-29 19:40:45,367: input-0-0: Working on conv2d_35_a2799d96f9d141d6bb8f9e45e65d191c. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 48, 'kernel_size': 3, 'activation': 'relu'}]
+TOPOLOGY - 2019-10-29 19:40:45,389: input-0-0: Added [<tf.Tensor 'conv2d_35_a2799d96f9d141d6bb8f9e45e65d191c/Relu:0' shape=(?, 30, 30, 48) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,390: intermed-0-0: Working on conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 42, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,390: intermed-0-0: is conv2d_35_a2799d96f9d141d6bb8f9e45e65d191c/Relu:0 conv2d: True. is conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f dense: False
+TOPOLOGY - 2019-10-29 19:40:45,399: intermed-0-0: Added [<tf.Tensor 'conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f/BiasAdd:0' shape=(?, 30, 30, 42) dtype=float32>]
+WARNING - 2019-10-29 19:40:45,405: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\keras\backend\tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
 Instructions for updating:
 Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
-TOPOLOGY - 2019-10-28 15:24:57,044: intermed-0-0: Added complement [<tf.Tensor 'conv2d_18_85bd466049fc44989c748ce7fe18220d/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_16_8f01e36c100344dfa99afec0c5a08d5d/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,045: intermed-0-1: Working on conv2d_19_2865db3ff0cd46f0b762430b390b1655. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 14, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,045: intermed-0-1: is conv2d_18_85bd466049fc44989c748ce7fe18220d/BiasAdd:0 conv2d: True. is conv2d_19_2865db3ff0cd46f0b762430b390b1655 dense: False
-TOPOLOGY - 2019-10-28 15:24:57,054: intermed-0-1: Added [<tf.Tensor 'conv2d_19_2865db3ff0cd46f0b762430b390b1655/BiasAdd:0' shape=(?, 30, 30, 14) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,066: intermed-0-1: Added complement [<tf.Tensor 'conv2d_19_2865db3ff0cd46f0b762430b390b1655/BiasAdd:0' shape=(?, 30, 30, 14) dtype=float32>, <tf.Tensor 'dropout_17_4c15fd60a76b4e90b66333ce3cc7e394/cond/Merge:0' shape=(?, 30, 30, 14) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,067: intermed-0-2: Working on conv2d_20_3d78e47b0fbf4631abb8d05024278a65. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 10, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,067: intermed-0-2: is conv2d_19_2865db3ff0cd46f0b762430b390b1655/BiasAdd:0 conv2d: True. is conv2d_20_3d78e47b0fbf4631abb8d05024278a65 dense: False
-TOPOLOGY - 2019-10-28 15:24:57,076: intermed-0-2: Added [<tf.Tensor 'conv2d_20_3d78e47b0fbf4631abb8d05024278a65/BiasAdd:0' shape=(?, 30, 30, 10) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,088: intermed-0-2: Added complement [<tf.Tensor 'conv2d_20_3d78e47b0fbf4631abb8d05024278a65/BiasAdd:0' shape=(?, 30, 30, 10) dtype=float32>, <tf.Tensor 'dropout_18_ee75497f715d42d282321541906795e6/cond/Merge:0' shape=(?, 30, 30, 10) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,088: intermed-1-0: Working on conv2d_21_9c72cac7a2f542aaaac01d5e964f8301. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 8, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,089: intermed-1-0: is conv2d_20_3d78e47b0fbf4631abb8d05024278a65/BiasAdd:0 conv2d: True. is conv2d_21_9c72cac7a2f542aaaac01d5e964f8301 dense: False
-TOPOLOGY - 2019-10-28 15:24:57,098: intermed-1-0: Added [<tf.Tensor 'conv2d_21_9c72cac7a2f542aaaac01d5e964f8301/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,108: intermed-1-0: Added complement [<tf.Tensor 'conv2d_21_9c72cac7a2f542aaaac01d5e964f8301/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_19_17ea53ad2a19406a85a0c02e24284074/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,108: intermed-1-1: Working on conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 22, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,109: intermed-1-1: is conv2d_21_9c72cac7a2f542aaaac01d5e964f8301/BiasAdd:0 conv2d: True. is conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2 dense: False
-TOPOLOGY - 2019-10-28 15:24:57,118: intermed-1-1: Added [<tf.Tensor 'conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2/BiasAdd:0' shape=(?, 30, 30, 22) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,129: intermed-1-1: Added complement [<tf.Tensor 'conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2/BiasAdd:0' shape=(?, 30, 30, 22) dtype=float32>, <tf.Tensor 'dropout_20_4fe3f735814a4dffb29f105fb96d3483/cond/Merge:0' shape=(?, 30, 30, 22) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,130: intermed-1-2: Working on conv2d_23_13700cf9e0284af3a7f119091930bfdb. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 16, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,130: intermed-1-2: is conv2d_21_9c72cac7a2f542aaaac01d5e964f8301/BiasAdd:0 conv2d: True. is conv2d_23_13700cf9e0284af3a7f119091930bfdb dense: False
-TOPOLOGY - 2019-10-28 15:24:57,130: intermed-1-2: is conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2/BiasAdd:0 conv2d: True. is conv2d_23_13700cf9e0284af3a7f119091930bfdb dense: False
-INFO - 2019-10-28 15:24:57,130: Adding a Merge layer between conv2d_21_9c72cac7a2f542aaaac01d5e964f8301/BiasAdd:0 and conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2/BiasAdd:0
-TOPOLOGY - 2019-10-28 15:24:57,131: intermed-1-2: Added Tensor("concatenate_1/concat:0", shape=(?, 30, 30, 30), dtype=float32)
-TOPOLOGY - 2019-10-28 15:24:57,139: intermed-1-2: Added [<tf.Tensor 'conv2d_23_13700cf9e0284af3a7f119091930bfdb/BiasAdd:0' shape=(?, 30, 30, 16) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,150: intermed-1-2: Added complement [<tf.Tensor 'conv2d_23_13700cf9e0284af3a7f119091930bfdb/BiasAdd:0' shape=(?, 30, 30, 16) dtype=float32>, <tf.Tensor 'dropout_21_2052d0c0e5834b41a9ef0d494aa41333/cond/Merge:0' shape=(?, 30, 30, 16) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,151: intermed-2-0: Working on conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 33, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,151: intermed-2-0: is conv2d_20_3d78e47b0fbf4631abb8d05024278a65/BiasAdd:0 conv2d: True. is conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f dense: False
-TOPOLOGY - 2019-10-28 15:24:57,151: intermed-2-0: is conv2d_23_13700cf9e0284af3a7f119091930bfdb/BiasAdd:0 conv2d: True. is conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f dense: False
-INFO - 2019-10-28 15:24:57,151: Adding a Merge layer between conv2d_20_3d78e47b0fbf4631abb8d05024278a65/BiasAdd:0 and conv2d_23_13700cf9e0284af3a7f119091930bfdb/BiasAdd:0
-TOPOLOGY - 2019-10-28 15:24:57,153: intermed-2-0: Added Tensor("concatenate_2/concat:0", shape=(?, 30, 30, 26), dtype=float32)
-TOPOLOGY - 2019-10-28 15:24:57,162: intermed-2-0: Added [<tf.Tensor 'conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,171: intermed-2-0: Added complement [<tf.Tensor 'conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_22_49a25602e9844c838f00a4aa051c8ce1/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,172: intermed-2-1: Working on conv2d_25_a3605815257241c78043430d06d61810. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 37, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,172: intermed-2-1: is conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f/BiasAdd:0 conv2d: True. is conv2d_25_a3605815257241c78043430d06d61810 dense: False
-TOPOLOGY - 2019-10-28 15:24:57,180: intermed-2-1: Added [<tf.Tensor 'conv2d_25_a3605815257241c78043430d06d61810/BiasAdd:0' shape=(?, 30, 30, 37) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,190: intermed-2-1: Added complement [<tf.Tensor 'conv2d_25_a3605815257241c78043430d06d61810/BiasAdd:0' shape=(?, 30, 30, 37) dtype=float32>, <tf.Tensor 'dropout_23_138bcea3d7444c72b5ec986c6c873940/cond/Merge:0' shape=(?, 30, 30, 37) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,190: intermed-2-2: Working on conv2d_26_c6981c9af2384858ab139834519715a5. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 33, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
-TOPOLOGY - 2019-10-28 15:24:57,190: intermed-2-2: is conv2d_25_a3605815257241c78043430d06d61810/BiasAdd:0 conv2d: True. is conv2d_26_c6981c9af2384858ab139834519715a5 dense: False
-TOPOLOGY - 2019-10-28 15:24:57,199: intermed-2-2: Added [<tf.Tensor 'conv2d_26_c6981c9af2384858ab139834519715a5/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,213: intermed-2-2: Added complement [<tf.Tensor 'conv2d_26_c6981c9af2384858ab139834519715a5/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_24_76d9ca0c1f114e7d98497373fb73644a/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,213: output-0-0: Working on dense_2_53f13a8212c042baa2ba6bc6941d7683. Specs: [<class 'keras.layers.core.Dense'>, {'units': 10, 'activation': 'softmax'}]
-TOPOLOGY - 2019-10-28 15:24:57,213: output-0-0: is conv2d_26_c6981c9af2384858ab139834519715a5/BiasAdd:0 conv2d: True. is dense_2_53f13a8212c042baa2ba6bc6941d7683 dense: True
-INFO - 2019-10-28 15:24:57,213: Adding a Flatten() layer between conv2d_26_c6981c9af2384858ab139834519715a5/BiasAdd:0 and dense_2_53f13a8212c042baa2ba6bc6941d7683
-TOPOLOGY - 2019-10-28 15:24:57,218: output-0-0: Added [<tf.Tensor 'flatten_1/Reshape:0' shape=(?, ?) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,227: output-0-0: Added [<tf.Tensor 'dense_2_53f13a8212c042baa2ba6bc6941d7683/Softmax:0' shape=(?, 10) dtype=float32>]
-TOPOLOGY - 2019-10-28 15:24:57,227: {'input-0-0': [<tf.Tensor 'conv2d_17_24a64e7e0a244d12900fdf022a512646/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_18_85bd466049fc44989c748ce7fe18220d/BiasAdd:0' shape=(?, 30, 30, 17) dtype=float32>, <tf.Tensor 'dropout_16_8f01e36c100344dfa99afec0c5a08d5d/cond/Merge:0' shape=(?, 30, 30, 17) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_19_2865db3ff0cd46f0b762430b390b1655/BiasAdd:0' shape=(?, 30, 30, 14) dtype=float32>, <tf.Tensor 'dropout_17_4c15fd60a76b4e90b66333ce3cc7e394/cond/Merge:0' shape=(?, 30, 30, 14) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_20_3d78e47b0fbf4631abb8d05024278a65/BiasAdd:0' shape=(?, 30, 30, 10) dtype=float32>, <tf.Tensor 'dropout_18_ee75497f715d42d282321541906795e6/cond/Merge:0' shape=(?, 30, 30, 10) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_21_9c72cac7a2f542aaaac01d5e964f8301/BiasAdd:0' shape=(?, 30, 30, 8) dtype=float32>, <tf.Tensor 'dropout_19_17ea53ad2a19406a85a0c02e24284074/cond/Merge:0' shape=(?, 30, 30, 8) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_22_6c8cd1fe06584756a503c2c09a67fcd2/BiasAdd:0' shape=(?, 30, 30, 22) dtype=float32>, <tf.Tensor 'dropout_20_4fe3f735814a4dffb29f105fb96d3483/cond/Merge:0' shape=(?, 30, 30, 22) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_23_13700cf9e0284af3a7f119091930bfdb/BiasAdd:0' shape=(?, 30, 30, 16) dtype=float32>, <tf.Tensor 'dropout_21_2052d0c0e5834b41a9ef0d494aa41333/cond/Merge:0' shape=(?, 30, 30, 16) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_24_a6fe24e2ac344eb1b7b8ecf2db3f4d0f/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_22_49a25602e9844c838f00a4aa051c8ce1/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_25_a3605815257241c78043430d06d61810/BiasAdd:0' shape=(?, 30, 30, 37) dtype=float32>, <tf.Tensor 'dropout_23_138bcea3d7444c72b5ec986c6c873940/cond/Merge:0' shape=(?, 30, 30, 37) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_26_c6981c9af2384858ab139834519715a5/BiasAdd:0' shape=(?, 30, 30, 33) dtype=float32>, <tf.Tensor 'dropout_24_76d9ca0c1f114e7d98497373fb73644a/cond/Merge:0' shape=(?, 30, 30, 33) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_2_53f13a8212c042baa2ba6bc6941d7683/Softmax:0' shape=(?, 10) dtype=float32>]}
-WARNING - 2019-10-28 15:24:57,754: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+TOPOLOGY - 2019-10-29 19:40:45,420: intermed-0-0: Added complement [<tf.Tensor 'conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f/BiasAdd:0' shape=(?, 30, 30, 42) dtype=float32>, <tf.Tensor 'dropout_30_2942ce6c64374ad9b8e1ad1d26bb9b60/cond/Merge:0' shape=(?, 30, 30, 42) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,420: intermed-0-1: Working on conv2d_37_b681040c43f246aab69e0027207172bd. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 30, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,420: intermed-0-1: is conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f/BiasAdd:0 conv2d: True. is conv2d_37_b681040c43f246aab69e0027207172bd dense: False
+TOPOLOGY - 2019-10-29 19:40:45,428: intermed-0-1: Added [<tf.Tensor 'conv2d_37_b681040c43f246aab69e0027207172bd/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,440: intermed-0-1: Added complement [<tf.Tensor 'conv2d_37_b681040c43f246aab69e0027207172bd/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_31_4513c3769f124859b27211b002dc1e0d/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,440: intermed-0-2: Working on conv2d_38_ff1bb8ebd75f466396bbdd655085fd93. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 12, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,440: intermed-0-2: is conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f/BiasAdd:0 conv2d: True. is conv2d_38_ff1bb8ebd75f466396bbdd655085fd93 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,449: intermed-0-2: Added [<tf.Tensor 'conv2d_38_ff1bb8ebd75f466396bbdd655085fd93/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,459: intermed-0-2: Added complement [<tf.Tensor 'conv2d_38_ff1bb8ebd75f466396bbdd655085fd93/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_32_33e8e53f27ec4e58a15f62dfe7c5b5f3/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,459: intermed-0-3: Working on conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 45, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,459: intermed-0-3: is conv2d_38_ff1bb8ebd75f466396bbdd655085fd93/BiasAdd:0 conv2d: True. is conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,473: intermed-0-3: Added [<tf.Tensor 'conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,482: intermed-0-3: Added complement [<tf.Tensor 'conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_33_7f96b7c749194de89c8cefa4d69089ed/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,483: intermed-0-4: Working on conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 16, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,483: intermed-0-4: is conv2d_37_b681040c43f246aab69e0027207172bd/BiasAdd:0 conv2d: True. is conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,483: intermed-0-4: is conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0/BiasAdd:0 conv2d: True. is conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663 dense: False
+INFO - 2019-10-29 19:40:45,483: Adding a Merge layer between conv2d_37_b681040c43f246aab69e0027207172bd/BiasAdd:0 and conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0/BiasAdd:0
+TOPOLOGY - 2019-10-29 19:40:45,485: intermed-0-4: Added Tensor("concatenate_1/concat:0", shape=(?, 30, 30, 75), dtype=float32)
+TOPOLOGY - 2019-10-29 19:40:45,493: intermed-0-4: Added [<tf.Tensor 'conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663/BiasAdd:0' shape=(?, 30, 30, 16) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,504: intermed-0-4: Added complement [<tf.Tensor 'conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663/BiasAdd:0' shape=(?, 30, 30, 16) dtype=float32>, <tf.Tensor 'dropout_34_4602c99568f147368b9ff5ac75560574/cond/Merge:0' shape=(?, 30, 30, 16) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,504: intermed-1-0: Working on conv2d_41_e5605c31167a41af8a059cc217b5eb59. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 32, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,505: intermed-1-0: is conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663/BiasAdd:0 conv2d: True. is conv2d_41_e5605c31167a41af8a059cc217b5eb59 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,513: intermed-1-0: Added [<tf.Tensor 'conv2d_41_e5605c31167a41af8a059cc217b5eb59/BiasAdd:0' shape=(?, 30, 30, 32) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,523: intermed-1-0: Added complement [<tf.Tensor 'conv2d_41_e5605c31167a41af8a059cc217b5eb59/BiasAdd:0' shape=(?, 30, 30, 32) dtype=float32>, <tf.Tensor 'dropout_35_255d6512e25b4198871fa5b0b78e1358/cond/Merge:0' shape=(?, 30, 30, 32) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,523: intermed-1-1: Working on conv2d_42_882ee9ac9b6647938691f6e00123e161. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 38, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,523: intermed-1-1: is conv2d_41_e5605c31167a41af8a059cc217b5eb59/BiasAdd:0 conv2d: True. is conv2d_42_882ee9ac9b6647938691f6e00123e161 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,532: intermed-1-1: Added [<tf.Tensor 'conv2d_42_882ee9ac9b6647938691f6e00123e161/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,541: intermed-1-1: Added complement [<tf.Tensor 'conv2d_42_882ee9ac9b6647938691f6e00123e161/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_36_238ace78e69c40a88ac9454e2918e26b/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,541: intermed-1-2: Working on conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 24, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,542: intermed-1-2: is conv2d_42_882ee9ac9b6647938691f6e00123e161/BiasAdd:0 conv2d: True. is conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,552: intermed-1-2: Added [<tf.Tensor 'conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,563: intermed-1-2: Added complement [<tf.Tensor 'conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_37_edc12e59e4e7413f990a0130e7502511/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,564: intermed-1-3: Working on conv2d_44_bc7854f0b337441f82fc72feac6a219e. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 41, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,564: intermed-1-3: is conv2d_41_e5605c31167a41af8a059cc217b5eb59/BiasAdd:0 conv2d: True. is conv2d_44_bc7854f0b337441f82fc72feac6a219e dense: False
+TOPOLOGY - 2019-10-29 19:40:45,572: intermed-1-3: Added [<tf.Tensor 'conv2d_44_bc7854f0b337441f82fc72feac6a219e/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,585: intermed-1-3: Added complement [<tf.Tensor 'conv2d_44_bc7854f0b337441f82fc72feac6a219e/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_38_32d95ee2f2cc4b6580433be025c170a8/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,585: intermed-1-4: Working on conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 22, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,586: intermed-1-4: is conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773/BiasAdd:0 conv2d: True. is conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,586: intermed-1-4: is conv2d_44_bc7854f0b337441f82fc72feac6a219e/BiasAdd:0 conv2d: True. is conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624 dense: False
+INFO - 2019-10-29 19:40:45,586: Adding a Merge layer between conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773/BiasAdd:0 and conv2d_44_bc7854f0b337441f82fc72feac6a219e/BiasAdd:0
+TOPOLOGY - 2019-10-29 19:40:45,587: intermed-1-4: Added Tensor("concatenate_2/concat:0", shape=(?, 30, 30, 65), dtype=float32)
+TOPOLOGY - 2019-10-29 19:40:45,595: intermed-1-4: Added [<tf.Tensor 'conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624/BiasAdd:0' shape=(?, 30, 30, 22) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,606: intermed-1-4: Added complement [<tf.Tensor 'conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624/BiasAdd:0' shape=(?, 30, 30, 22) dtype=float32>, <tf.Tensor 'dropout_39_7848245d5a424040a8a93910bb474c61/cond/Merge:0' shape=(?, 30, 30, 22) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,606: intermed-2-0: Working on conv2d_46_616c9f29ecb14613ab3c7b5bd598442b. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 13, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,606: intermed-2-0: is conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624/BiasAdd:0 conv2d: True. is conv2d_46_616c9f29ecb14613ab3c7b5bd598442b dense: False
+TOPOLOGY - 2019-10-29 19:40:45,615: intermed-2-0: Added [<tf.Tensor 'conv2d_46_616c9f29ecb14613ab3c7b5bd598442b/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,626: intermed-2-0: Added complement [<tf.Tensor 'conv2d_46_616c9f29ecb14613ab3c7b5bd598442b/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_40_5b97b41d6d1e4565a48bf6bb7e71add5/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,627: intermed-2-1: Working on conv2d_47_d0dc39697a38469484936bf8f773a7db. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 41, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,627: intermed-2-1: is conv2d_46_616c9f29ecb14613ab3c7b5bd598442b/BiasAdd:0 conv2d: True. is conv2d_47_d0dc39697a38469484936bf8f773a7db dense: False
+TOPOLOGY - 2019-10-29 19:40:45,640: intermed-2-1: Added [<tf.Tensor 'conv2d_47_d0dc39697a38469484936bf8f773a7db/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,650: intermed-2-1: Added complement [<tf.Tensor 'conv2d_47_d0dc39697a38469484936bf8f773a7db/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_41_5b9af8c64cdc4c96926526a7628d8009/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,651: intermed-2-2: Working on conv2d_48_8b75b4c3277747c4bfe139d0f397caec. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 21, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,651: intermed-2-2: is conv2d_46_616c9f29ecb14613ab3c7b5bd598442b/BiasAdd:0 conv2d: True. is conv2d_48_8b75b4c3277747c4bfe139d0f397caec dense: False
+TOPOLOGY - 2019-10-29 19:40:45,661: intermed-2-2: Added [<tf.Tensor 'conv2d_48_8b75b4c3277747c4bfe139d0f397caec/BiasAdd:0' shape=(?, 30, 30, 21) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,671: intermed-2-2: Added complement [<tf.Tensor 'conv2d_48_8b75b4c3277747c4bfe139d0f397caec/BiasAdd:0' shape=(?, 30, 30, 21) dtype=float32>, <tf.Tensor 'dropout_42_42546e6e80d34ff88dc2f0ddacef4e36/cond/Merge:0' shape=(?, 30, 30, 21) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,671: intermed-2-3: Working on conv2d_49_c811bd11476c4e2db192e174c13a38a4. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 18, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,672: intermed-2-3: is conv2d_47_d0dc39697a38469484936bf8f773a7db/BiasAdd:0 conv2d: True. is conv2d_49_c811bd11476c4e2db192e174c13a38a4 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,680: intermed-2-3: Added [<tf.Tensor 'conv2d_49_c811bd11476c4e2db192e174c13a38a4/BiasAdd:0' shape=(?, 30, 30, 18) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,690: intermed-2-3: Added complement [<tf.Tensor 'conv2d_49_c811bd11476c4e2db192e174c13a38a4/BiasAdd:0' shape=(?, 30, 30, 18) dtype=float32>, <tf.Tensor 'dropout_43_120bbe2c96244a60a1aa608e528b4a71/cond/Merge:0' shape=(?, 30, 30, 18) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,690: intermed-2-4: Working on conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24. Specs: [<class 'keras.layers.convolutional.Conv2D'>, {'filters': 30, 'kernel_size': 1, 'strides': 1, 'data_format': 'channels_last', 'padding': 'same'}]
+TOPOLOGY - 2019-10-29 19:40:45,691: intermed-2-4: is conv2d_48_8b75b4c3277747c4bfe139d0f397caec/BiasAdd:0 conv2d: True. is conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24 dense: False
+TOPOLOGY - 2019-10-29 19:40:45,691: intermed-2-4: is conv2d_49_c811bd11476c4e2db192e174c13a38a4/BiasAdd:0 conv2d: True. is conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24 dense: False
+INFO - 2019-10-29 19:40:45,691: Adding a Merge layer between conv2d_48_8b75b4c3277747c4bfe139d0f397caec/BiasAdd:0 and conv2d_49_c811bd11476c4e2db192e174c13a38a4/BiasAdd:0
+TOPOLOGY - 2019-10-29 19:40:45,692: intermed-2-4: Added Tensor("concatenate_3/concat:0", shape=(?, 30, 30, 39), dtype=float32)
+TOPOLOGY - 2019-10-29 19:40:45,700: intermed-2-4: Added [<tf.Tensor 'conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,710: intermed-2-4: Added complement [<tf.Tensor 'conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_44_f0e93f22e92547fd8493d950183c576b/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,710: output-0-0: Working on dense_6_28ca7bee2ac84771b9f6146b8e77c0f9. Specs: [<class 'keras.layers.core.Dense'>, {'units': 10, 'activation': 'softmax'}]
+TOPOLOGY - 2019-10-29 19:40:45,710: output-0-0: is conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24/BiasAdd:0 conv2d: True. is dense_6_28ca7bee2ac84771b9f6146b8e77c0f9 dense: True
+INFO - 2019-10-29 19:40:45,710: Adding a Flatten() layer between conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24/BiasAdd:0 and dense_6_28ca7bee2ac84771b9f6146b8e77c0f9
+TOPOLOGY - 2019-10-29 19:40:45,718: output-0-0: Added [<tf.Tensor 'flatten_1/Reshape:0' shape=(?, ?) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,726: output-0-0: Added [<tf.Tensor 'dense_6_28ca7bee2ac84771b9f6146b8e77c0f9/Softmax:0' shape=(?, 10) dtype=float32>]
+TOPOLOGY - 2019-10-29 19:40:45,726: {'input-0-0': [<tf.Tensor 'conv2d_35_a2799d96f9d141d6bb8f9e45e65d191c/Relu:0' shape=(?, 30, 30, 48) dtype=float32>], 'intermed-0-0': [<tf.Tensor 'conv2d_36_52fe2bc6d37b4a3e957224dae7ad1c3f/BiasAdd:0' shape=(?, 30, 30, 42) dtype=float32>, <tf.Tensor 'dropout_30_2942ce6c64374ad9b8e1ad1d26bb9b60/cond/Merge:0' shape=(?, 30, 30, 42) dtype=float32>], 'intermed-0-1': [<tf.Tensor 'conv2d_37_b681040c43f246aab69e0027207172bd/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_31_4513c3769f124859b27211b002dc1e0d/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>], 'intermed-0-2': [<tf.Tensor 'conv2d_38_ff1bb8ebd75f466396bbdd655085fd93/BiasAdd:0' shape=(?, 30, 30, 12) dtype=float32>, <tf.Tensor 'dropout_32_33e8e53f27ec4e58a15f62dfe7c5b5f3/cond/Merge:0' shape=(?, 30, 30, 12) dtype=float32>], 'intermed-0-3': [<tf.Tensor 'conv2d_39_491e04d7da1d4d4f8095ae07ba57bef0/BiasAdd:0' shape=(?, 30, 30, 45) dtype=float32>, <tf.Tensor 'dropout_33_7f96b7c749194de89c8cefa4d69089ed/cond/Merge:0' shape=(?, 30, 30, 45) dtype=float32>], 'intermed-0-4': [<tf.Tensor 'conv2d_40_1a2f2ebcb1ed4c2aa65e1e11def5f663/BiasAdd:0' shape=(?, 30, 30, 16) dtype=float32>, <tf.Tensor 'dropout_34_4602c99568f147368b9ff5ac75560574/cond/Merge:0' shape=(?, 30, 30, 16) dtype=float32>], 'intermed-1-0': [<tf.Tensor 'conv2d_41_e5605c31167a41af8a059cc217b5eb59/BiasAdd:0' shape=(?, 30, 30, 32) dtype=float32>, <tf.Tensor 'dropout_35_255d6512e25b4198871fa5b0b78e1358/cond/Merge:0' shape=(?, 30, 30, 32) dtype=float32>], 'intermed-1-1': [<tf.Tensor 'conv2d_42_882ee9ac9b6647938691f6e00123e161/BiasAdd:0' shape=(?, 30, 30, 38) dtype=float32>, <tf.Tensor 'dropout_36_238ace78e69c40a88ac9454e2918e26b/cond/Merge:0' shape=(?, 30, 30, 38) dtype=float32>], 'intermed-1-2': [<tf.Tensor 'conv2d_43_96c2f0ce89bb4dc1b79930cbc24a2773/BiasAdd:0' shape=(?, 30, 30, 24) dtype=float32>, <tf.Tensor 'dropout_37_edc12e59e4e7413f990a0130e7502511/cond/Merge:0' shape=(?, 30, 30, 24) dtype=float32>], 'intermed-1-3': [<tf.Tensor 'conv2d_44_bc7854f0b337441f82fc72feac6a219e/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_38_32d95ee2f2cc4b6580433be025c170a8/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>], 'intermed-1-4': [<tf.Tensor 'conv2d_45_d745aed07ea041a4a4bfd7ee5b7e3624/BiasAdd:0' shape=(?, 30, 30, 22) dtype=float32>, <tf.Tensor 'dropout_39_7848245d5a424040a8a93910bb474c61/cond/Merge:0' shape=(?, 30, 30, 22) dtype=float32>], 'intermed-2-0': [<tf.Tensor 'conv2d_46_616c9f29ecb14613ab3c7b5bd598442b/BiasAdd:0' shape=(?, 30, 30, 13) dtype=float32>, <tf.Tensor 'dropout_40_5b97b41d6d1e4565a48bf6bb7e71add5/cond/Merge:0' shape=(?, 30, 30, 13) dtype=float32>], 'intermed-2-1': [<tf.Tensor 'conv2d_47_d0dc39697a38469484936bf8f773a7db/BiasAdd:0' shape=(?, 30, 30, 41) dtype=float32>, <tf.Tensor 'dropout_41_5b9af8c64cdc4c96926526a7628d8009/cond/Merge:0' shape=(?, 30, 30, 41) dtype=float32>], 'intermed-2-2': [<tf.Tensor 'conv2d_48_8b75b4c3277747c4bfe139d0f397caec/BiasAdd:0' shape=(?, 30, 30, 21) dtype=float32>, <tf.Tensor 'dropout_42_42546e6e80d34ff88dc2f0ddacef4e36/cond/Merge:0' shape=(?, 30, 30, 21) dtype=float32>], 'intermed-2-3': [<tf.Tensor 'conv2d_49_c811bd11476c4e2db192e174c13a38a4/BiasAdd:0' shape=(?, 30, 30, 18) dtype=float32>, <tf.Tensor 'dropout_43_120bbe2c96244a60a1aa608e528b4a71/cond/Merge:0' shape=(?, 30, 30, 18) dtype=float32>], 'intermed-2-4': [<tf.Tensor 'conv2d_50_0e4d8f8f07df4aa69ef68c0c4b121e24/BiasAdd:0' shape=(?, 30, 30, 30) dtype=float32>, <tf.Tensor 'dropout_44_f0e93f22e92547fd8493d950183c576b/cond/Merge:0' shape=(?, 30, 30, 30) dtype=float32>], 'output-0-0': [<tf.Tensor 'dense_6_28ca7bee2ac84771b9f6146b8e77c0f9/Softmax:0' shape=(?, 10) dtype=float32>]}
+WARNING - 2019-10-29 19:40:46,177: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Use tf.cast instead.

@@ -12,7 +12,7 @@ input_configs = {
 
 global_configs = {
     "module_range" : ([3, 3], 'int'),
-    "component_range" : ([3, 3], 'int')
+    "component_range" : ([5, 5], 'int')
 }
 
 output_configs = {
@@ -96,12 +96,28 @@ class Component(object):
     Represents a basic unit of a topology.
     keras_component: the keras component being represented
     """
-    def __init__(self, representation, keras_component=None, complementary_component=None, keras_complementary_component=None):
+    def __init__(self, representation, keras_component=None, complementary_component=None, keras_complementary_component=None, component_type=None):
         self.representation = representation
         self.keras_component = keras_component
-        self.historical_marking = 0
         self.complementary_component = complementary_component
         self.keras_complementary_component = keras_complementary_component
+        self.component_type = component_type
+    
+    def compare_to(self, component):
+        if self.representation[0] == component.representation[0]:
+            score = []
+            for n in self.representation[1]:
+                if self.representation[1][n] == component.representation[1][n]:
+                    score.append(1)
+                elif possible_components[self.component_type][1][n][1] == "int": 
+                    ranges = possible_components[self.component_type][1][n][0]
+                    scale = max(ranges) - min(ranges)
+                    score.append(1 - abs(self.representation[1][n] - component.representation[1][n])/scale)
+                else:
+                    score.append(0)
+            return sum(score)/len(score)
+        else:
+            return 0
 
 class Module(object):
     """
@@ -113,23 +129,36 @@ class Module(object):
         self.component_graph = component_graph
         self.layer_type = layer_type
         self.species = None
-        self.mark = None
+        self.mark = mark
     
     def __getitem__(self, item):
         return self.components[item]
     
-    def compare_to(self, individual):
-        pass
+    def compare_to(self, module):
+        nodes = self.component_graph.nodes()
+        obj_module_node_defs = [module.component_graph.nodes[node]["node_def"] for node in module.component_graph.nodes()]
+        
+        if self.mark == module.mark:
+            return 1
+        else:
+            score = []
+            for node in nodes:
+                scores = [nodes[node]["node_def"].compare_to(obj_node_def) for obj_node_def in obj_module_node_defs]
+                score.append(max(scores))
+
+            print(score)
+            return sum(score)/len(score)
 
 class Blueprint:
     """
     Represents a topology made of modules.
     modules: modules composing a topology.
     """
-    def __init__(self, modules:List[Module], input_shape=None, module_graph=None):
+    def __init__(self, modules:List[Module], input_shape=None, module_graph=None, mark=None):
         self.modules = modules
         self.input_shape = input_shape
         self.module_graph = module_graph
+        self.mark = mark
 
     def __getitem__(self, item):
         return self.modules[item]
@@ -160,7 +189,7 @@ class Individual:
         self.model = model
         self.name = name
 
-    def generate(self):
+    def generate(self, save_fig=True):
         """
         Returns the keras model representing of the topology.
         """
@@ -179,28 +208,31 @@ class Individual:
             for successor in module_graph.successors(node):
                 assembled_module_graph.add_edge(f'{node}-{output_nodes[node]}', f'{successor}-0')
 
-        plt.tight_layout()
-        plt.subplot(121)
-        nx.draw(assembled_module_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_module_graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
-        l,r = plt.xlim()
-        plt.xlim(l-5,r+5)
-        plt.savefig("./images/2_component_level_graph.png", format="PNG", bbox_inches="tight")
-        plt.clf()
+        if (save_fig):
+            plt.tight_layout()
+            plt.subplot(121)
+            nx.draw(assembled_module_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_module_graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
+            l,r = plt.xlim()
+            plt.xlim(l-5,r+5)
+            plt.savefig("./images/2_component_level_graph.png", format="PNG", bbox_inches="tight")
+            plt.clf()
 
         logging.log(21, f"Generated the assembled graph: {assembled_module_graph.nodes()}")
 
         logging.info(f"Generating keras layers")
+
+        #Adds Input layer
         logging.info(f"Adding the Input() layer")
         model_input = keras.layers.Input(shape=self.blueprint.input_shape)
         logging.log(21, f"Added {model_input}")
 
         component_graph = assembled_module_graph
 
-        # Iterate over the graph including nodes
+        # Iterate over the graph connecting keras layers
         for component_id in component_graph.nodes():
             layer = []
 
-            # Create a copy of the original layer so we don't have duplicate layers in the model in the future.
+            # Create a copy of the original layer so we don't have duplicate layers in the model in the future. Generates the keras layer now.
             component = copy.deepcopy(component_graph.nodes[component_id]["node_def"])
             component_def = component.representation[0]
             parameter_def = component.representation[1]
@@ -334,7 +366,7 @@ class Population:
 
             #Create a blueprint
             input_shape = self.input_shape
-            new_blueprint = Generator().random_blueprint(global_configs, possible_components, possible_complementary_components, input_shape)
+            new_blueprint = GraphOperator().random_blueprint(global_configs, possible_components, possible_complementary_components, input_shape)
 
             #Create individual with the Blueprint
             new_individual = Individual(blueprint=new_blueprint, name=n, compiler=compiler)
@@ -343,36 +375,58 @@ class Population:
         self.individuals = new_individuals
 
     def create_module_population(self, size=1):
+        """
+        Creates a population of modules to be used in blueprint populations.
+        Can be evolved over generations.
+        """
 
         new_modules = []
 
         for n in range(size):
-            new_module = Generator().random_module(global_configs, possible_components, possible_complementary_components)
-            new_module.historical_marking = self.historical_marker.mark_module()
+            mark = self.historical_marker.mark_module()
+            new_module = GraphOperator().random_module(global_configs, 
+                                                        possible_components, 
+                                                        possible_complementary_components,
+                                                        name=mark)
+            new_module.mark = mark
+            print(new_module)
             new_modules.append(new_module)
 
         print(new_modules)
         self.modules = new_modules
 
     def create_blueprint_population(self, size=1):
+        """
+        Creates a population of blueprints to be used in individual populations.
+        Can be evolved over generations.
+        """
 
         new_blueprints = []
 
         for n in range(size):
 
+            mark = self.historical_marker.mark_blueprint()
+
             #Create a blueprint
             input_shape = self.input_shape
-            new_blueprint = Generator().random_blueprint(global_configs,
+            new_blueprint = GraphOperator().random_blueprint(global_configs,
                                                             possible_components, 
                                                             possible_complementary_components, 
                                                             input_shape,
-                                                            node_content_generator=self.return_random_module)
+                                                            node_content_generator=self.return_random_module,
+                                                            args={},
+                                                            name=mark)
+            new_blueprint.mark = mark
             new_blueprints.append(new_blueprint)
 
         print(new_blueprints)
         self.blueprints = new_blueprints
     
     def create_individual_population(self, size=1, compiler=None):
+        """
+        Creates a population of individuals to be compared.
+        Can be evolved over generations.
+        """
 
         new_individuals = []
 
@@ -473,7 +527,7 @@ class Population:
 
         return best_scores
 
-class Generator:
+class GraphOperator:
 
     count=0
 
@@ -499,7 +553,8 @@ class Generator:
         plt.clf()
 
     def random_component(self, possible_components, possible_complementary_components = None):
-        component_def, possible_parameters = possible_components[random.choice(list(possible_components))]
+        component_type = random.choice(list(possible_components))
+        component_def, possible_parameters = possible_components[component_type]
 
         parameter_def = {}
         for parameter_name in possible_parameters:
@@ -517,7 +572,11 @@ class Generator:
             complementary_component = None
             keras_complementary_component = None
 
-        new_component = Component([component_def, parameter_def], component_def(**parameter_def), complementary_component=complementary_component, keras_complementary_component=keras_complementary_component)
+        new_component = Component(representation=[component_def, parameter_def],
+                                    keras_component=component_def(**parameter_def),
+                                    complementary_component=complementary_component,
+                                    keras_complementary_component=keras_complementary_component,
+                                    component_type=component_type)
         return new_component
 
     def random_graph(self, node_range, node_content_generator, args=None):
@@ -534,7 +593,8 @@ class Generator:
                 precedent = random.randint(0, node-1)
                 new_graph.add_edge(precedent, node)
             elif node == node_range-1:
-                leaf_nodes = [leaf_node for leaf_node in new_graph.nodes() if new_graph.out_degree(leaf_node)==0 or leaf_node==0]
+                leaf_nodes = [leaf_node for leaf_node in new_graph.nodes() if new_graph.out_degree(leaf_node)==0]
+                root_node = min([node for node in new_graph.nodes() if new_graph.in_degree(node) == 0])
                 leaf_nodes.remove(node)
 
                 while (len(leaf_nodes) > 0):
@@ -542,11 +602,12 @@ class Generator:
                         leaf_node = random.choice(leaf_nodes)
                         new_graph.add_edge(leaf_node, node)
                     else:
-                        leaf_nodes.append(0)
+                        leaf_nodes.append(root_node)
                         random_node1 = random.choice(leaf_nodes)
+                        simple_paths = [node for path in nx.all_simple_paths(new_graph, root_node, random_node1) for node in path]
                         leaf_nodes.remove(random_node1)
                         random_node2 = random.choice(leaf_nodes)
-                        if (new_graph.in_degree(random_node2)>1 and random_node2 not in new_graph.successors(random_node1) and random_node2 != 0):
+                        if (new_graph.in_degree(random_node2) >= 1 and random_node2 not in simple_paths and random_node2 != root_node):
                             new_graph.add_edge(random_node1, random_node2)
                     leaf_nodes = [leaf_node for leaf_node in new_graph.nodes() if new_graph.out_degree(leaf_node)==0]
                     leaf_nodes.remove(node)
@@ -564,13 +625,13 @@ class Generator:
                                             args = {"possible_components": possible_nodes,
                                                     "possible_complementary_components": possible_complementary_components})
 
-        self.save_graph_plot(f"{name}_{self.count}_module_internal_graph.png", graph)
+        self.save_graph_plot(f"module_{name}_{self.count}_module_internal_graph.png", graph)
         self.count+=1
         new_module = Module(None, ModuleComposition.INTERMED, component_graph=graph)
 
         return new_module
 
-    def random_blueprint(self, global_configs, possible_components, possible_complementary_components, input_shape, node_content_generator=None, args={}):
+    def random_blueprint(self, global_configs, possible_components, possible_complementary_components, input_shape, node_content_generator=None, args={}, name=0):
 
         node_range = self.random_parameter_def(global_configs, "module_range")
         logging.log(21, f"Generating {node_range} modules")
@@ -588,29 +649,109 @@ class Generator:
                                             args = {"global_configs": input_configs,
                                                     "possible_nodes": possible_inputs,
                                                     "possible_complementary_components": None})
-        self.save_graph_plot("1_1_input_module.png", input_node)
+        self.save_graph_plot(f"blueprint_{name}_input_module.png", input_node)
 
         intermed_graph = self.random_graph(node_range=node_range,
                                             node_content_generator=node_content_generator,
                                             args = args)
-        self.save_graph_plot("1_2_intermed_module.png", intermed_graph)
+        self.save_graph_plot(f"blueprint_{name}_intermed_module.png", intermed_graph)
 
         output_node = self.random_graph(node_range=1,
                                             node_content_generator=self.random_module,
                                             args = {"global_configs": output_configs,
                                                     "possible_nodes": possible_outputs,
                                                     "possible_complementary_components": None})
-        self.save_graph_plot("1_3_output_module.png", output_node)
+        self.save_graph_plot(f"blueprint_{name}_output_module.png", output_node)
 
         graph = nx.union(input_node, intermed_graph, rename=("input-", "intermed-"))
         graph = nx.union(graph, output_node, rename=(None, "output-"))
         graph.add_edge("input-0", "intermed-0")
         graph.add_edge(f"intermed-{max(intermed_graph.nodes())}", "output-0")
-        self.save_graph_plot("1_module_level_graph.png", graph)
+        self.save_graph_plot(f"blueprint_{name}_module_level_graph.png", graph)
 
         new_blueprint = Blueprint(None, input_shape, module_graph=graph)
 
         return new_blueprint
+
+    def mutate_by_node_removal(self, graph):
+
+        new_graph = graph.copy()
+
+        candidate_nodes = [node for node in new_graph.nodes() if new_graph.out_degree(node) > 0 and new_graph.in_degree(node) > 0]
+        selected_node = random.choice(candidate_nodes)
+        
+        # Removing a node
+        if len(list(new_graph.predecessors(selected_node))) > 0 and len(list(new_graph.successors(selected_node))) > 0:
+            predecessors = new_graph.predecessors(selected_node)
+            successors = new_graph.successors(selected_node)
+
+            new_edges = [(p,s) for p in predecessors for s in successors]
+
+            new_graph.remove_node(selected_node)
+            new_graph.add_edges_from(new_edges)
+
+        return new_graph
+    
+    def mutate_by_node_addition_in_edges(self, graph, args=None):
+
+        new_graph = graph.copy()
+
+        # "working around" the bad naming decisions I make in life.
+        try:
+            node = int(max(new_graph.nodes())) + 1
+        except:
+            node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]) + 1)
+
+        candidate_edges = [edge for edge in new_graph.edges()]
+        selected_edge = random.choice(candidate_edges)
+        
+        # Adding a node 
+        predecessor = selected_edge[0]
+        successor = selected_edge[1]
+
+        node_def = self.random_component(**args)
+        new_graph.add_node(node, node_def=node_def)
+        new_graph.remove_edge(predecessor, successor)
+
+        new_graph.add_edge(predecessor, node)
+        new_graph.add_edge(node, successor)
+
+        return new_graph
+    
+    def mutate_by_node_addition_outside_edges(self, graph, args=None):
+
+        new_graph = graph.copy()
+
+        try:
+            node = int(max(new_graph.nodes())) + 1
+        except:
+            node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]) + 1)
+
+        node_def = self.random_component(**args)
+
+        # Select nodes that are not outputs
+        candidate_predecessor_nodes = [node for node in new_graph.nodes() if new_graph.out_degree(node) > 0]
+
+        #Select random predecessor
+        predecessor = random.choice(candidate_predecessor_nodes)
+        starting_node = min([node for node in new_graph.nodes() if new_graph.in_degree(node) == 0])
+        simple_paths = [node for path in nx.all_simple_paths(new_graph, starting_node, predecessor) for node in path]
+
+        # Select nodes that are not inputs and have at most 1 inputs (merge only supports 2 input layers)
+        candidate_successor_nodes = [node for node in new_graph.nodes() if new_graph.in_degree(node) == 1 and node not in simple_paths]
+
+        # If no successors available just create the node between an existing edge.
+        if candidate_successor_nodes == []:
+            successor = random.choice(new_graph.successors(predecessor))
+            new_graph.remove_edge(predecessor, successor)
+        else:
+            successor = random.choice(candidate_successor_nodes)
+
+        new_graph.add_node(node, node_def=node_def)
+        new_graph.add_edge(predecessor, node)
+        new_graph.add_edge(node, successor)
+
+        return new_graph
 
 def test_run(global_configs, possible_components):
     """
@@ -732,14 +873,14 @@ def test_run(global_configs, possible_components):
 
             for n in range(size):
                 #Create input module
-                new_input_module = Generator().random_module(input_configs, possible_inputs)
+                new_input_module = GraphOperator().random_module(input_configs, possible_inputs)
               
                 #Create intermediate module
-                new_intermed_module1 = Generator().random_module(global_configs, possible_components)
-                new_intermed_module2 = Generator().random_module(global_configs, possible_components)
+                new_intermed_module1 = GraphOperator().random_module(global_configs, possible_components)
+                new_intermed_module2 = GraphOperator().random_module(global_configs, possible_components)
 
                 #Create output module
-                new_output_module = Generator().random_module(output_configs, possible_outputs)
+                new_output_module = GraphOperator().random_module(output_configs, possible_outputs)
 
                 #Set the compiler
                 new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
@@ -886,7 +1027,7 @@ def run_cifar10_nopop(global_configs, possible_components, population_size, epoc
 
     print("Best fitting: ", iteration)
 
-def run_cifar10(global_configs, possible_components, population_size, epochs, training_epochs):
+def run_cifar10_tests(global_configs, possible_components, population_size, epochs, training_epochs):
     from keras.datasets import cifar10
 
     possible_inputs = {
@@ -936,9 +1077,67 @@ def run_cifar10(global_configs, possible_components, population_size, epochs, tr
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
 
     population = Population(my_dataset, input_shape=x_train.shape[1:])
-    #population.create_random_blueprints(population_size, compiler=compiler)
+
+    ###########
+    # MODULES #
+    ###########
+    
+    # Start with random modules
     population.create_module_population(5)
-    population.create_blueprint_population(1)
+
+    #Test: original module selection
+    module = random.choice(population.modules)
+    GraphOperator().save_graph_plot("test_module_original.png", module.component_graph)
+    args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
+
+    #Test: mutation by removal
+    print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
+    mutated_graph = GraphOperator().mutate_by_node_removal(module.component_graph)
+    print(f"mutation by removal; edges: {mutated_graph.edges()}")
+    GraphOperator().save_graph_plot("test_module_mutate_by_node_removal.png", mutated_graph)
+
+    #Test: mutation by addition
+    print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
+    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(module.component_graph, args=args))
+    print(f"mutation by addition; edges: {mutated_graph.edges()}")
+    GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_in_edges.png", mutated_graph)
+
+    #Test: mutation by addition 2
+    print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
+    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, args = args))
+    print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
+    GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_outside_edges.png", mutated_graph)
+
+    ##############
+    # BLUEPRINTS #
+    ##############
+
+    # Start with random blueprints from modules
+    population.create_blueprint_population(5)
+
+    #Test: original blueprint selection
+    blueprint = random.choice(population.blueprints)
+    GraphOperator().save_graph_plot("test_blueprint_original.png", blueprint.module_graph)
+    args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
+
+    #Test: mutation by removal
+    print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
+    mutated_graph = GraphOperator().mutate_by_node_removal(blueprint.module_graph)
+    print(f"mutation by removal; edges: {mutated_graph.edges()}")
+    GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_removal.png", mutated_graph)
+
+    #Test: mutation by addition
+    print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
+    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(blueprint.module_graph, args=args))
+    print(f"mutation by addition; edges: {mutated_graph.edges()}")
+    GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_in_edges.png", mutated_graph)
+
+    #Test: mutation by addition 2
+    print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
+    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(blueprint.module_graph, args = args))
+    print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
+    GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
+
     population.create_individual_population(1, compiler)
 
     #exit(0)
@@ -950,4 +1149,4 @@ if __name__ == "__main__":
     
     #test_run(global_configs, possible_components)
     #run_cifar10_nopop(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
-    run_cifar10(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
+    run_cifar10_tests(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
