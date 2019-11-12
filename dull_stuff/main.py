@@ -445,10 +445,9 @@ class Population:
                                                         possible_complementary_components,
                                                         name=mark)
             new_module.mark = mark
-            print(new_module)
             new_modules.append(new_module)
 
-        print(new_modules)
+        #print(new_modules)
         self.modules = new_modules
 
     def create_blueprint_population(self, size=1):
@@ -475,7 +474,7 @@ class Population:
             new_blueprint.mark = mark
             new_blueprints.append(new_blueprint)
 
-        print(new_blueprints)
+        #print(new_blueprints)
         self.blueprints = new_blueprints
     
     def create_individual_population(self, size=1, compiler=None):
@@ -558,7 +557,6 @@ class Population:
         for species in item_species:
             for item in species.group:
                 item.species = species
-                print(item.species)
         
         logging.log(21, f"KMeans generated {n_clusters} species using: {representations}.")
         
@@ -578,7 +576,7 @@ class Population:
         for species in species_list:
             previous_member_representations = previous_member_representations + [item.get_kmeans_representation() for item in species.group]
             previous_labels = previous_labels + [item.species.name for item in species.group]
-        print(f"previous_members: {previous_member_representations}. \n previous_labels: {previous_labels}")
+        logging.log(21,(f"Previous species members: {previous_member_representations}. \nPrevious labels: {previous_labels}"))
 
         #Collect current representations for classification
         member_representations = []
@@ -587,19 +585,16 @@ class Population:
 
         #Scale features using the whole data
         scaled_representations = scale(previous_member_representations + member_representations)
-
         #Select only speciated members to train the classifier
         scaled_previous_member_representations = scaled_representations[:len(previous_member_representations)]
-        
         #Fit data to centroids
         classifier = NearestCentroid().fit(scaled_previous_member_representations, previous_labels)
-
         #Predict label to all data. New labels must be THE SAME as old labels, if they existed previously.
         all_classifications = classifier.predict(scaled_representations)
-        print(f"all_classifications: {all_classifications}")
+        logging.log(21,f"All Classifications: {all_classifications}")
 
         new_classifications = all_classifications[len(previous_member_representations):]
-        print(f"old classifications: {previous_labels}, new classifications: {new_classifications}")
+        logging.log(21,"Old Classifications: {previous_labels}. \nNew Classifications: {new_classifications}")
 
         #Update species members
         for species in species_list:
@@ -1283,7 +1278,7 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     #Start module species
     population.create_module_species(n_module_species)
     for species in population.module_species:
-        print(f"Module Species {species.name}: {[item.mark for item in species.group]}")
+        print(f"Initial Module Species {species.name}: {[item.mark for item in species.group]}")
     print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
 
     #Add unspeciated members
@@ -1294,7 +1289,7 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     #Speciate
     population.update_module_species()
     for species in population.module_species:
-        print(f"Module Species {species.name}: {[item.mark for item in species.group]}")
+        print(f"Re-Speciated Module Species {species.name}: {[item.mark for item in species.group]}")
     print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
 
     exit(0)
@@ -1330,9 +1325,22 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
 
-    print(population.create_blueprint_species(n_blueprint_species))
-    for species in population.module_species:
-        print(f"Blueprint Species {species.name}: {species.group}")
+    #Start blueprint species
+    population.create_blueprint_species(n_blueprint_species)
+    for species in population.blueprint_species:
+        print(f"Initial Blueprint Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[item.species.name for item in population.blueprints]}")
+
+    #Add unspeciated members
+    current_population = population.blueprints
+    population.create_blueprint_population(5)
+    population.blueprints = population.blueprints + current_population
+
+    #Speciate
+    population.update_blueprint_species()
+    for species in population.blueprint_species:
+        print(f"Re-Speciated Blueprint Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[item.species.name for item in population.blueprints]}")
 
     ###############
     # POPULATIONS #
