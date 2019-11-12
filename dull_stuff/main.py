@@ -572,46 +572,40 @@ class Population:
         An accuracy threshold can be specified so new species are generated in case new members dont fit the existing centroid accordingly.
         """
 
-        species_labels = []
-        speciated_members = []
-        new_members = []
+        #Collect previous representations for centroid calculations.
+        previous_member_representations = []
+        previous_labels = []
+        for species in species_list:
+            previous_member_representations = previous_member_representations + [item.get_kmeans_representation() for item in species.group]
+            previous_labels = previous_labels + [item.species.name for item in species.group]
+        print(f"previous_members: {previous_member_representations}. \n previous_labels: {previous_labels}")
 
-        for item in items:
-            if item.species in species_list:
-                species_labels.append(item.species.name)
-                speciated_members.append(item)
-            else:
-                new_members.append(item)
-        
-        print(f"speciated_members: {[item.mark for item in speciated_members]}. \nspecies_labels: {species_labels}. \nnew_members: {[item.mark for item in new_members]}")
-
-        speciated_members_representations = []
+        #Collect current representations for classification
         member_representations = []
-
-        #Collect feature representations
         for item in items:
             member_representations.append(item.get_kmeans_representation())
-        
+
         #Scale features using the whole data
-        scaled_representations = scale(member_representations)
+        scaled_representations = scale(previous_member_representations + member_representations)
 
         #Select only speciated members to train the classifier
-        for n in range(len(items)):
-            if items[n].species in species_list:
-                speciated_members_representations.append(scaled_representations[n])
+        scaled_previous_member_representations = scaled_representations[:len(previous_member_representations)]
         
         #Fit data to centroids
-        classifier = NearestCentroid().fit(speciated_members_representations, species_labels)
+        classifier = NearestCentroid().fit(scaled_previous_member_representations, previous_labels)
 
         #Predict label to all data. New labels must be THE SAME as old labels, if they existed previously.
-        classifications = classifier.predict(scaled_representations)
-        print(f"old classifications: {species_labels}, new classifications: {classifications}")
+        all_classifications = classifier.predict(scaled_representations)
+        print(f"all_classifications: {all_classifications}")
+
+        new_classifications = all_classifications[len(previous_member_representations):]
+        print(f"old classifications: {previous_labels}, new classifications: {new_classifications}")
 
         #Update species members
         for species in species_list:
             group = []
-            for n in range(len(classifications)):
-                if classifications[n] == species.name:
+            for n in range(len(new_classifications)):
+                if new_classifications[n] == species.name:
                     group.append(items[n])
 
             species.group = group

@@ -1,121 +1,121 @@
-WARNING - 2019-11-12 18:07:33,916: This will get logged to a file
-INFO - 2019-11-12 18:07:33,916: Hi, this is a test run.
-WARNING - 2019-11-12 18:07:33,930: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+WARNING - 2019-11-12 18:34:25,580: This will get logged to a file
+INFO - 2019-11-12 18:34:25,580: Hi, this is a test run.
+WARNING - 2019-11-12 18:34:25,596: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Colocations handled automatically by placer.
-TOPOLOGY - 2019-11-12 18:07:33,939: Generating 5 components
-DEBUG - 2019-11-12 18:07:34,226: update_title_pos
-DEBUG - 2019-11-12 18:07:34,234: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=6.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
-DEBUG - 2019-11-12 18:07:34,240: update_title_pos
-DEBUG - 2019-11-12 18:07:34,258: update_title_pos
-DEBUG - 2019-11-12 18:07:34,269: update_title_pos
-DEBUG - 2019-11-12 18:07:34,276: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:34,302: Generating 5 components
-DEBUG - 2019-11-12 18:07:34,414: update_title_pos
-DEBUG - 2019-11-12 18:07:34,426: update_title_pos
-DEBUG - 2019-11-12 18:07:34,444: update_title_pos
-DEBUG - 2019-11-12 18:07:34,453: update_title_pos
-DEBUG - 2019-11-12 18:07:34,459: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:34,483: Generating 5 components
-DEBUG - 2019-11-12 18:07:34,588: update_title_pos
-DEBUG - 2019-11-12 18:07:34,599: update_title_pos
-DEBUG - 2019-11-12 18:07:34,617: update_title_pos
-DEBUG - 2019-11-12 18:07:34,626: update_title_pos
-DEBUG - 2019-11-12 18:07:34,633: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:34,657: Generating 5 components
-DEBUG - 2019-11-12 18:07:34,763: update_title_pos
-DEBUG - 2019-11-12 18:07:34,778: update_title_pos
-DEBUG - 2019-11-12 18:07:34,798: update_title_pos
-DEBUG - 2019-11-12 18:07:34,809: update_title_pos
-DEBUG - 2019-11-12 18:07:34,816: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:34,842: Generating 5 components
-DEBUG - 2019-11-12 18:07:34,948: update_title_pos
-DEBUG - 2019-11-12 18:07:34,960: update_title_pos
-DEBUG - 2019-11-12 18:07:34,980: update_title_pos
-DEBUG - 2019-11-12 18:07:34,992: update_title_pos
-DEBUG - 2019-11-12 18:07:34,999: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:35,025: Generating 5 components
-DEBUG - 2019-11-12 18:07:35,129: update_title_pos
-DEBUG - 2019-11-12 18:07:35,141: update_title_pos
-DEBUG - 2019-11-12 18:07:35,160: update_title_pos
-DEBUG - 2019-11-12 18:07:35,171: update_title_pos
-DEBUG - 2019-11-12 18:07:35,178: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:35,203: Generating 5 components
-DEBUG - 2019-11-12 18:07:35,310: update_title_pos
-DEBUG - 2019-11-12 18:07:35,321: update_title_pos
-DEBUG - 2019-11-12 18:07:35,342: update_title_pos
-DEBUG - 2019-11-12 18:07:35,353: update_title_pos
-DEBUG - 2019-11-12 18:07:35,360: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:35,385: Generating 5 components
-DEBUG - 2019-11-12 18:07:35,591: update_title_pos
-DEBUG - 2019-11-12 18:07:35,603: update_title_pos
-DEBUG - 2019-11-12 18:07:35,622: update_title_pos
-DEBUG - 2019-11-12 18:07:35,634: update_title_pos
-DEBUG - 2019-11-12 18:07:35,641: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:35,670: Generating 5 components
-DEBUG - 2019-11-12 18:07:35,773: update_title_pos
-DEBUG - 2019-11-12 18:07:35,785: update_title_pos
-DEBUG - 2019-11-12 18:07:35,805: update_title_pos
-DEBUG - 2019-11-12 18:07:35,816: update_title_pos
-DEBUG - 2019-11-12 18:07:35,823: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:35,849: Generating 5 components
-DEBUG - 2019-11-12 18:07:35,949: update_title_pos
-DEBUG - 2019-11-12 18:07:35,960: update_title_pos
-DEBUG - 2019-11-12 18:07:35,978: update_title_pos
-DEBUG - 2019-11-12 18:07:35,989: update_title_pos
-DEBUG - 2019-11-12 18:07:35,996: update_title_pos
-DEBUG - 2019-11-12 18:07:36,118: update_title_pos
-DEBUG - 2019-11-12 18:07:36,130: update_title_pos
-DEBUG - 2019-11-12 18:07:36,148: update_title_pos
-DEBUG - 2019-11-12 18:07:36,159: update_title_pos
-DEBUG - 2019-11-12 18:07:36,166: update_title_pos
-DEBUG - 2019-11-12 18:07:36,297: update_title_pos
-DEBUG - 2019-11-12 18:07:36,308: update_title_pos
-DEBUG - 2019-11-12 18:07:36,325: update_title_pos
-DEBUG - 2019-11-12 18:07:36,335: update_title_pos
-DEBUG - 2019-11-12 18:07:36,340: update_title_pos
-DEBUG - 2019-11-12 18:07:36,465: update_title_pos
-DEBUG - 2019-11-12 18:07:36,478: update_title_pos
-DEBUG - 2019-11-12 18:07:36,497: update_title_pos
-DEBUG - 2019-11-12 18:07:36,509: update_title_pos
-DEBUG - 2019-11-12 18:07:36,516: update_title_pos
-DEBUG - 2019-11-12 18:07:36,649: update_title_pos
-DEBUG - 2019-11-12 18:07:36,663: update_title_pos
-DEBUG - 2019-11-12 18:07:36,684: update_title_pos
-DEBUG - 2019-11-12 18:07:36,696: update_title_pos
-DEBUG - 2019-11-12 18:07:36,704: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:36,742: KMeans generated 3 species using: [(5, 5, 150, 0, 0), (5, 4, 99, 0, 0), (5, 4, 108, 0, 0), (5, 6, 127, 0, 0), (5, 6, 179, 0, 0), (5, 5, 164, 0, 0), (5, 5, 151, 0, 0), (5, 5, 187, 0, 0), (5, 6, 154, 0, 0), (5, 5, 174, 0, 0)].
-TOPOLOGY - 2019-11-12 18:07:36,742: Created 3 module species.
-TOPOLOGY - 2019-11-12 18:07:36,742: Species 0: [<__main__.Module object at 0x0000017EDFAC7DA0>, <__main__.Module object at 0x0000017ED8B8BD30>, <__main__.Module object at 0x0000017ED8C86E48>, <__main__.Module object at 0x0000017ED8CABEF0>, <__main__.Module object at 0x0000017ED8C43C88>]
-TOPOLOGY - 2019-11-12 18:07:36,742: Species 1: [<__main__.Module object at 0x0000017ED8BED1D0>, <__main__.Module object at 0x0000017ED8C61A20>, <__main__.Module object at 0x0000017ED8CA0630>]
-TOPOLOGY - 2019-11-12 18:07:36,742: Species 2: [<__main__.Module object at 0x0000017ED8BB9C50>, <__main__.Module object at 0x0000017ED8B96F28>]
-TOPOLOGY - 2019-11-12 18:07:36,743: Generating 5 components
-DEBUG - 2019-11-12 18:07:36,843: update_title_pos
-DEBUG - 2019-11-12 18:07:36,855: update_title_pos
-DEBUG - 2019-11-12 18:07:36,874: update_title_pos
-DEBUG - 2019-11-12 18:07:36,885: update_title_pos
-DEBUG - 2019-11-12 18:07:36,891: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:36,917: Generating 5 components
-DEBUG - 2019-11-12 18:07:37,019: update_title_pos
-DEBUG - 2019-11-12 18:07:37,031: update_title_pos
-DEBUG - 2019-11-12 18:07:37,050: update_title_pos
-DEBUG - 2019-11-12 18:07:37,062: update_title_pos
-DEBUG - 2019-11-12 18:07:37,069: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:37,094: Generating 5 components
-DEBUG - 2019-11-12 18:07:37,201: update_title_pos
-DEBUG - 2019-11-12 18:07:37,212: update_title_pos
-DEBUG - 2019-11-12 18:07:37,231: update_title_pos
-DEBUG - 2019-11-12 18:07:37,243: update_title_pos
-DEBUG - 2019-11-12 18:07:37,250: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:37,275: Generating 5 components
-DEBUG - 2019-11-12 18:07:37,411: update_title_pos
-DEBUG - 2019-11-12 18:07:37,423: update_title_pos
-DEBUG - 2019-11-12 18:07:37,440: update_title_pos
-DEBUG - 2019-11-12 18:07:37,450: update_title_pos
-DEBUG - 2019-11-12 18:07:37,456: update_title_pos
-TOPOLOGY - 2019-11-12 18:07:37,479: Generating 5 components
-DEBUG - 2019-11-12 18:07:37,580: update_title_pos
-DEBUG - 2019-11-12 18:07:37,590: update_title_pos
-DEBUG - 2019-11-12 18:07:37,609: update_title_pos
-DEBUG - 2019-11-12 18:07:37,619: update_title_pos
-DEBUG - 2019-11-12 18:07:37,625: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:25,606: Generating 5 components
+DEBUG - 2019-11-12 18:34:25,920: update_title_pos
+DEBUG - 2019-11-12 18:34:25,929: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=bold:stretch=normal:size=6.0 to DejaVu Sans ('C:\\Users\\dasilvej\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans-Bold.ttf') with score of 0.000000.
+DEBUG - 2019-11-12 18:34:25,934: update_title_pos
+DEBUG - 2019-11-12 18:34:25,954: update_title_pos
+DEBUG - 2019-11-12 18:34:25,965: update_title_pos
+DEBUG - 2019-11-12 18:34:25,971: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:25,998: Generating 5 components
+DEBUG - 2019-11-12 18:34:26,219: update_title_pos
+DEBUG - 2019-11-12 18:34:26,233: update_title_pos
+DEBUG - 2019-11-12 18:34:26,254: update_title_pos
+DEBUG - 2019-11-12 18:34:26,265: update_title_pos
+DEBUG - 2019-11-12 18:34:26,272: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:26,299: Generating 5 components
+DEBUG - 2019-11-12 18:34:26,410: update_title_pos
+DEBUG - 2019-11-12 18:34:26,421: update_title_pos
+DEBUG - 2019-11-12 18:34:26,440: update_title_pos
+DEBUG - 2019-11-12 18:34:26,452: update_title_pos
+DEBUG - 2019-11-12 18:34:26,459: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:26,487: Generating 5 components
+DEBUG - 2019-11-12 18:34:26,591: update_title_pos
+DEBUG - 2019-11-12 18:34:26,603: update_title_pos
+DEBUG - 2019-11-12 18:34:26,621: update_title_pos
+DEBUG - 2019-11-12 18:34:26,631: update_title_pos
+DEBUG - 2019-11-12 18:34:26,637: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:26,660: Generating 5 components
+DEBUG - 2019-11-12 18:34:26,764: update_title_pos
+DEBUG - 2019-11-12 18:34:26,776: update_title_pos
+DEBUG - 2019-11-12 18:34:26,795: update_title_pos
+DEBUG - 2019-11-12 18:34:26,806: update_title_pos
+DEBUG - 2019-11-12 18:34:26,813: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:26,838: Generating 5 components
+DEBUG - 2019-11-12 18:34:26,940: update_title_pos
+DEBUG - 2019-11-12 18:34:26,951: update_title_pos
+DEBUG - 2019-11-12 18:34:26,969: update_title_pos
+DEBUG - 2019-11-12 18:34:26,979: update_title_pos
+DEBUG - 2019-11-12 18:34:26,985: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:27,009: Generating 5 components
+DEBUG - 2019-11-12 18:34:27,213: update_title_pos
+DEBUG - 2019-11-12 18:34:27,224: update_title_pos
+DEBUG - 2019-11-12 18:34:27,242: update_title_pos
+DEBUG - 2019-11-12 18:34:27,251: update_title_pos
+DEBUG - 2019-11-12 18:34:27,257: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:27,285: Generating 5 components
+DEBUG - 2019-11-12 18:34:27,391: update_title_pos
+DEBUG - 2019-11-12 18:34:27,403: update_title_pos
+DEBUG - 2019-11-12 18:34:27,423: update_title_pos
+DEBUG - 2019-11-12 18:34:27,435: update_title_pos
+DEBUG - 2019-11-12 18:34:27,442: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:27,468: Generating 5 components
+DEBUG - 2019-11-12 18:34:27,577: update_title_pos
+DEBUG - 2019-11-12 18:34:27,589: update_title_pos
+DEBUG - 2019-11-12 18:34:27,608: update_title_pos
+DEBUG - 2019-11-12 18:34:27,619: update_title_pos
+DEBUG - 2019-11-12 18:34:27,626: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:27,651: Generating 5 components
+DEBUG - 2019-11-12 18:34:27,761: update_title_pos
+DEBUG - 2019-11-12 18:34:27,772: update_title_pos
+DEBUG - 2019-11-12 18:34:27,793: update_title_pos
+DEBUG - 2019-11-12 18:34:27,805: update_title_pos
+DEBUG - 2019-11-12 18:34:27,812: update_title_pos
+DEBUG - 2019-11-12 18:34:27,949: update_title_pos
+DEBUG - 2019-11-12 18:34:27,961: update_title_pos
+DEBUG - 2019-11-12 18:34:27,980: update_title_pos
+DEBUG - 2019-11-12 18:34:27,991: update_title_pos
+DEBUG - 2019-11-12 18:34:27,997: update_title_pos
+DEBUG - 2019-11-12 18:34:28,119: update_title_pos
+DEBUG - 2019-11-12 18:34:28,133: update_title_pos
+DEBUG - 2019-11-12 18:34:28,149: update_title_pos
+DEBUG - 2019-11-12 18:34:28,158: update_title_pos
+DEBUG - 2019-11-12 18:34:28,164: update_title_pos
+DEBUG - 2019-11-12 18:34:28,294: update_title_pos
+DEBUG - 2019-11-12 18:34:28,307: update_title_pos
+DEBUG - 2019-11-12 18:34:28,327: update_title_pos
+DEBUG - 2019-11-12 18:34:28,337: update_title_pos
+DEBUG - 2019-11-12 18:34:28,344: update_title_pos
+DEBUG - 2019-11-12 18:34:28,470: update_title_pos
+DEBUG - 2019-11-12 18:34:28,483: update_title_pos
+DEBUG - 2019-11-12 18:34:28,502: update_title_pos
+DEBUG - 2019-11-12 18:34:28,515: update_title_pos
+DEBUG - 2019-11-12 18:34:28,523: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:28,563: KMeans generated 3 species using: [(5, 5, 169, 0, 0), (5, 4, 151, 0, 0), (5, 5, 144, 0, 0), (5, 4, 116, 0, 0), (5, 5, 148, 0, 0), (5, 4, 157, 0, 0), (5, 4, 160, 0, 0), (5, 6, 135, 0, 0), (5, 5, 165, 0, 0), (5, 6, 151, 0, 0)].
+TOPOLOGY - 2019-11-12 18:34:28,563: Created 3 module species.
+TOPOLOGY - 2019-11-12 18:34:28,563: Species 0: [<__main__.Module object at 0x0000013AA2E38CF8>, <__main__.Module object at 0x0000013A9BF097F0>, <__main__.Module object at 0x0000013A9BF91320>, <__main__.Module object at 0x0000013A9BFEEF98>, <__main__.Module object at 0x0000013A9BF9B320>]
+TOPOLOGY - 2019-11-12 18:34:28,563: Species 1: [<__main__.Module object at 0x0000013A9C020F98>, <__main__.Module object at 0x0000013A9BFAAE10>, <__main__.Module object at 0x0000013A9C027048>, <__main__.Module object at 0x0000013A9BEBEE80>]
+TOPOLOGY - 2019-11-12 18:34:28,563: Species 2: [<__main__.Module object at 0x0000013A9BF44FD0>]
+TOPOLOGY - 2019-11-12 18:34:28,564: Generating 5 components
+DEBUG - 2019-11-12 18:34:28,667: update_title_pos
+DEBUG - 2019-11-12 18:34:28,680: update_title_pos
+DEBUG - 2019-11-12 18:34:28,700: update_title_pos
+DEBUG - 2019-11-12 18:34:28,712: update_title_pos
+DEBUG - 2019-11-12 18:34:28,720: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:28,747: Generating 5 components
+DEBUG - 2019-11-12 18:34:28,949: update_title_pos
+DEBUG - 2019-11-12 18:34:28,960: update_title_pos
+DEBUG - 2019-11-12 18:34:28,979: update_title_pos
+DEBUG - 2019-11-12 18:34:28,990: update_title_pos
+DEBUG - 2019-11-12 18:34:28,997: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:29,022: Generating 5 components
+DEBUG - 2019-11-12 18:34:29,123: update_title_pos
+DEBUG - 2019-11-12 18:34:29,135: update_title_pos
+DEBUG - 2019-11-12 18:34:29,155: update_title_pos
+DEBUG - 2019-11-12 18:34:29,204: update_title_pos
+DEBUG - 2019-11-12 18:34:29,211: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:29,239: Generating 5 components
+DEBUG - 2019-11-12 18:34:29,359: update_title_pos
+DEBUG - 2019-11-12 18:34:29,371: update_title_pos
+DEBUG - 2019-11-12 18:34:29,390: update_title_pos
+DEBUG - 2019-11-12 18:34:29,402: update_title_pos
+DEBUG - 2019-11-12 18:34:29,409: update_title_pos
+TOPOLOGY - 2019-11-12 18:34:29,434: Generating 5 components
+DEBUG - 2019-11-12 18:34:29,536: update_title_pos
+DEBUG - 2019-11-12 18:34:29,548: update_title_pos
+DEBUG - 2019-11-12 18:34:29,568: update_title_pos
+DEBUG - 2019-11-12 18:34:29,580: update_title_pos
+DEBUG - 2019-11-12 18:34:29,587: update_title_pos
