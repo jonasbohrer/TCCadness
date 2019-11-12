@@ -135,13 +135,14 @@ class Module(object):
     Represents a set of one or more basic units of a topology.
     components: the most basic unit of a topology.
     """
-    def __init__(self, components:dict, layer_type:ModuleComposition=ModuleComposition.INPUT, mark=None, component_graph=None):
+    def __init__(self, components:dict, layer_type:ModuleComposition=ModuleComposition.INPUT, mark=None, component_graph=None, parents=None):
         self.components = components
         self.component_graph = component_graph
         self.layer_type = layer_type
         self.mark = mark
         self.scores = [0,0]
         self.species = None
+        self.parents = parents
     
     def __getitem__(self, item):
         return self.components[item]
@@ -177,18 +178,45 @@ class Module(object):
     def update_scores(self, scores):
         self.scores = scores
 
+    def simple_crossover(self, parent_2, mark):
+        
+        parent_1_graph = self.component_graph
+        parent_1_graph_nodes = [node for node in parent_1_graph.nodes()]
+        parent_2_graph = parent_2.component_graph
+        parent_2_graph_nodes = [node for node in parent_2_graph.nodes()]
+        child_graph = self.component_graph.copy()
+        child_graph_nodes = [node for node in child_graph.nodes()]
+
+        for n in range(len(child_graph_nodes)):
+            parent_1_node = parent_1_graph.nodes[parent_1_graph_nodes[n]]["node_def"]
+            if n < len(parent_2_graph.nodes()):
+                parent_2_node = parent_2_graph.nodes[parent_2_graph_nodes[n]]["node_def"]
+            else:
+                parent_2_node = parent_2_graph.nodes[random.choice(parent_2_graph_nodes)]["node_def"]
+
+            chosen_node_def = random.choice([parent_1_node, parent_2_node])
+                
+            child_graph.nodes[child_graph_nodes[n]]["node_def"] = copy.deepcopy(chosen_node_def)
+        
+        print(f"child_graph node defs: {[child_graph.nodes[node]['node_def'].representation for node in child_graph.nodes()]}")
+
+        child = Module(None, layer_type=self.layer_type, mark=mark, component_graph=child_graph)
+
+        return child
+
 class Blueprint:
     """
     Represents a topology made of modules.
     modules: modules composing a topology.
     """
-    def __init__(self, modules:List[Module], input_shape=None, module_graph=None, mark=None):
+    def __init__(self, modules:List[Module], input_shape=None, module_graph=None, mark=None, parents=None):
         self.modules = modules
         self.input_shape = input_shape
         self.module_graph = module_graph
         self.mark = mark
         self.scores = [0,0]
         self.species = None
+        self.parents = parents
 
     def __getitem__(self, item):
         return self.modules[item]
@@ -211,6 +239,32 @@ class Blueprint:
         for node in self.module_graph.nodes():
             self.module_graph.nodes[node]["node_def"].update_scores(scores)
 
+    def simple_crossover(self, parent_2, mark):
+        
+        parent_1_graph = self.module_graph
+        parent_1_graph_nodes = [node for node in parent_1_graph.nodes()]
+        parent_2_graph = parent_2.module_graph
+        parent_2_graph_nodes = [node for node in parent_2_graph.nodes()]
+        child_graph = self.module_graph.copy()
+        child_graph_nodes = [node for node in child_graph.nodes()]
+
+        for n in range(len(child_graph_nodes)):
+            parent_1_node = parent_1_graph.nodes[parent_1_graph_nodes[n]]["node_def"]
+            if n < len(parent_2_graph.nodes()):
+                parent_2_node = parent_2_graph.nodes[parent_2_graph_nodes[n]]["node_def"]
+            else:
+                parent_2_node = parent_2_graph.nodes[random.choice(parent_2_graph_nodes)]["node_def"]
+
+            chosen_node_def = random.choice([parent_1_node, parent_2_node])
+                
+            child_graph.nodes[child_graph_nodes[n]]["node_def"] = copy.deepcopy(chosen_node_def)
+        
+        print(f"child_graph node defs: {[child_graph.nodes[node]['node_def'].mark for node in child_graph.nodes()]}")
+
+        child = Blueprint(None, input_shape=self.input_shape, module_graph=child_graph, mark=mark)
+
+        return child
+
 class Species:
     """
     Represents a group of topologies with similarities.
@@ -232,11 +286,10 @@ class Individual:
     parents: individuals used in crossover to generate this topology.
     """
        
-    def __init__(self, blueprint:Blueprint, compiler=None, birth=None, parents=None, model=None, name=None):
+    def __init__(self, blueprint:Blueprint, compiler=None, birth=None, model=None, name=None):
         self.blueprint = blueprint
         self.compiler = compiler
         self.birth = birth
-        self.parents = parents
         self.model = model
         self.name = name
 
@@ -265,7 +318,7 @@ class Individual:
             nx.draw(assembled_module_graph, nx.drawing.nx_agraph.graphviz_layout(assembled_module_graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
             l,r = plt.xlim()
             plt.xlim(l-5,r+5)
-            plt.savefig("./images/2_component_level_graph.png", format="PNG", bbox_inches="tight")
+            plt.savefig(f"./images/2_component_level_graph.png", format="PNG", bbox_inches="tight")
             plt.clf()
 
         logging.log(21, f"Generated the assembled graph: {assembled_module_graph.nodes()}")
@@ -352,7 +405,11 @@ class Individual:
         logging.log(21, layer_map)
         self.model = keras.models.Model(inputs=model_input, outputs=layer_map[max(layer_map)])
         self.model.compile(**self.compiler)
-        plot_model(self.model, to_file='./images/3_layer_level_graph.png', show_shapes=True, show_layer_names=True)
+        try:
+            #plot_model(self.model, to_file='./images/3_layer_level_graph.png', show_shapes=True, show_layer_names=True)
+            plot_model(self.model, to_file=f'./images/blueprint_{self.blueprint.mark}_layer_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+        except:
+            plot_model(self.model, to_file=f'./images/blueprint_{self.blueprint.mark}_layer_level_graph.png', show_shapes=True, show_layer_names=True)
 
     def fit(self, input_x, input_y, epochs=1, validation_split=0.15):
         """
@@ -560,7 +617,6 @@ class Population:
         
         logging.log(21, f"KMeans generated {n_clusters} species using: {representations}.")
         
-        (representations, classifications, item_species)
         return item_species, classifications
 
     def apply_centroid_speciation(self, items, species_list):
@@ -594,7 +650,7 @@ class Population:
         logging.log(21,f"All Classifications: {all_classifications}")
 
         new_classifications = all_classifications[len(previous_member_representations):]
-        logging.log(21,"Old Classifications: {previous_labels}. \nNew Classifications: {new_classifications}")
+        logging.log(21,f"Old Classifications: {previous_labels}. \nNew Classifications: {new_classifications}")
 
         #Update species members
         for species in species_list:
@@ -623,7 +679,7 @@ class Population:
 
         logging.log(21, f"Created {n_clusters} module species.")
         for species in module_species:
-            logging.log(21, f"Species {species.name}: {species.group}")
+            logging.log(21, f"Module species {species.name}: {[item.mark for item in species.group]}")
 
         return (module_classifications)
 
@@ -638,7 +694,7 @@ class Population:
 
         logging.log(21, f"Created {n_clusters} blueprint species.")
         for species in blueprint_species:
-            logging.log(21, f"Species {species.name}: {species.group}")
+            logging.log(21, f"Blueprint species {species.name}: {[item.mark for item in species.group]}")
 
         return (blueprint_classifications)
     
@@ -650,6 +706,15 @@ class Population:
         self.apply_centroid_speciation(self.modules, self.module_species)
 
         return None
+    
+    def update_blueprint_species(self):
+        """
+        Divides the blueprints in groups according to similarity.
+        """
+
+        self.apply_centroid_speciation(self.blueprints, self.blueprint_species)
+
+        return None
 
     def evaluate(self):
         """
@@ -657,10 +722,61 @@ class Population:
         """
         pass
 
-    def crossover(self):
+    def crossover(self, items, species_list, marker_function, percent=0.2):
+        """
+        Generates new objects based on existing objects.
+        """
+        children = []
+        
+        for species in species_list:
+            candidates = species.group
+            if len(species.group) <= 1:
+                pass
+            else:
+                #Choses a minimum of 2 or the highest even integer that fits under the percentage
+                candidate_amount = max(2, int(len(species.group)*percent/2)*2)
+                candidates = random.choices(species.group, k=candidate_amount)
+
+                while len(candidates) > 0:
+                    parent_1 = random.choice(candidates)
+                    candidates.remove(parent_1)
+                    parent_2 = random.choice(candidates)
+                    candidates.remove(parent_2)
+                    child = parent_1.simple_crossover(parent_2, marker_function())
+                    child.parents = [parent_1, parent_2]
+
+                    #Append the child to the population.
+                    children.append(child)
+
+        return children
+
+    def crossover_modules(self, percent=0.2):
+        """
+        Generates new modules based on existing modules.
+        """
+        
+        children = self.crossover(self.modules, self.module_species, self.historical_marker.mark_module, percent=0.2)
+        
+        #Append the child to the population.
+        self.modules = self.modules + children
+
+    def crossover_blueprints(self, percent=0.2):
+        """
+        Generates new blueprints based on existing blueprints.
+        """
+        
+        children = self.crossover(self.blueprints, self.blueprint_species, self.historical_marker.mark_blueprint,  percent=0.2)
+        
+        #Append the child to the population.
+        self.blueprints = self.blueprints + children
+    
+    def mutate(self):
         """
         Generates new individuals based on existing individuals.
         """
+        
+        
+
         pass
 
     def iterate_epochs(self, epochs=1, training_epochs=1, validation_split=0.15):
@@ -1231,7 +1347,7 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
-                        filemode='w+', level=logging.DEBUG,
+                        filemode='w+', level=logging.INFO,
                         format='%(levelname)s - %(asctime)s: %(message)s')
     logging.addLevelName(21, "TOPOLOGY")
 
@@ -1286,14 +1402,16 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     population.create_module_population(5)
     population.modules = population.modules + current_population
 
-    #Speciate
+    #Test Speciation
     population.update_module_species()
     for species in population.module_species:
         print(f"Re-Speciated Module Species {species.name}: {[item.mark for item in species.group]}")
     print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
 
-    exit(0)
-
+    #Add unspeciated members through Crossover
+    population.crossover_modules()
+    population.update_module_species()
+    print(f"Post-Crossover Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
 
     ##############
     # BLUEPRINTS #
@@ -1336,11 +1454,16 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     population.create_blueprint_population(5)
     population.blueprints = population.blueprints + current_population
 
-    #Speciate
+    #Test Speciation
     population.update_blueprint_species()
     for species in population.blueprint_species:
         print(f"Re-Speciated Blueprint Species {species.name}: {[item.mark for item in species.group]}")
     print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[item.species.name for item in population.blueprints]}")
+
+    #Add unspeciated members through Crossover
+    population.crossover_blueprints()
+    population.update_blueprint_species()
+    print(f"Post-Crossover Blueprints: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
 
     ###############
     # POPULATIONS #
