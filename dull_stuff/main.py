@@ -1,9 +1,13 @@
 import keras, logging, random, pydot, copy, uuid
+import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 from enum import Enum, auto
 from typing import List
 from keras.utils.vis_utils import plot_model
+from sklearn.cluster import KMeans
+from sklearn.neighbors import NearestCentroid
+from sklearn.preprocessing import scale
 
 input_configs = {
     "module_range" : ([1, 1], 'int'),
@@ -37,6 +41,7 @@ possible_complementary_components = {
     #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2, 3], 'list')}),
     "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
 }
+
 
 class HistoricalMarker:
     
@@ -119,6 +124,12 @@ class Component(object):
         else:
             return 0
 
+    def get_layer_size(self):
+        if self.component_type == "conv2d":
+            return self.representation[1]["filters"]
+        if self.component_type == "dense":
+            return self.representation[1]["units"]
+
 class Module(object):
     """
     Represents a set of one or more basic units of a topology.
@@ -128,8 +139,9 @@ class Module(object):
         self.components = components
         self.component_graph = component_graph
         self.layer_type = layer_type
-        self.species = None
         self.mark = mark
+        self.scores = [0,0]
+        self.species = None
     
     def __getitem__(self, item):
         return self.components[item]
@@ -149,6 +161,22 @@ class Module(object):
             print(score)
             return sum(score)/len(score)
 
+    def get_module_size(self):
+        module_size = 0
+        for node in self.component_graph.nodes():
+            module_size += self.component_graph.nodes[node]["node_def"].get_layer_size()
+        return module_size
+    
+    def get_kmeans_representation(self):
+        node_count = len(self.component_graph.nodes())
+        edge_count = len(self.component_graph.edges())
+        module_size = self.get_module_size()
+        scores = self.scores
+        return node_count, edge_count, module_size, scores[0], scores[1]
+
+    def update_scores(self, scores):
+        self.scores = scores
+
 class Blueprint:
     """
     Represents a topology made of modules.
@@ -159,18 +187,41 @@ class Blueprint:
         self.input_shape = input_shape
         self.module_graph = module_graph
         self.mark = mark
+        self.scores = [0,0]
+        self.species = None
 
     def __getitem__(self, item):
         return self.modules[item]
+
+    def get_blueprint_size(self):
+        blueprint_size = 0
+        for node in self.module_graph.nodes():
+            blueprint_size += self.module_graph.nodes[node]["node_def"].get_module_size()
+        return blueprint_size
+    
+    def get_kmeans_representation(self):
+        node_count = len(self.module_graph.nodes())
+        edge_count = len(self.module_graph.edges())
+        blueprint_size = self.get_blueprint_size()
+        scores = self.scores
+        return node_count, edge_count, blueprint_size, scores[0], scores[1]
+
+    def update_scores(self, scores):
+        self.scores = scores
+        for node in self.module_graph.nodes():
+            self.module_graph.nodes[node]["node_def"].update_scores(scores)
 
 class Species:
     """
     Represents a group of topologies with similarities.
     properties: a set of common properties defining a species.
     """
-    def __init__(self, group=None, properties=None):
+    def __init__(self, name=None, species_type=None, group=None, properties=None, starting_epoch=None):
+        self.name = name
+        self.species_type = species_type
         self.group = group
         self.properties = properties
+        self.starting_epoch = starting_epoch
 
 class Individual:
     """
@@ -226,10 +277,12 @@ class Individual:
         model_input = keras.layers.Input(shape=self.blueprint.input_shape)
         logging.log(21, f"Added {model_input}")
 
+        #Garantees connections are defined in the correct order
+        node_order = nx.algorithms.dag.topological_sort(assembled_module_graph)
         component_graph = assembled_module_graph
 
         # Iterate over the graph connecting keras layers
-        for component_id in component_graph.nodes():
+        for component_id in node_order:
             layer = []
 
             # Create a copy of the original layer so we don't have duplicate layers in the model in the future. Generates the keras layer now.
@@ -322,6 +375,9 @@ class Individual:
         
         logging.info(f"Scoring one individual")
         scores = self.model.evaluate(test_x, test_y, verbose=1)
+        
+        #Update scores for blueprints (and underlying modules)
+        self.blueprint.update_scores(scores)
 
         return scores
 
@@ -335,15 +391,15 @@ class Population:
     """
     Represents the population containing multiple individual topologies and their correlations.
     """
-    def __init__(self, datasets=None, individuals=[], blueprints=[], modules=[], hyperparameters=[], species=[], groups=[], input_shape=None):
+    def __init__(self, datasets=None, individuals=[], blueprints=[], modules=[], hyperparameters=[], input_shape=None):
         self.datasets = datasets
         self.individuals = individuals
         self.blueprints = blueprints
         self.modules = modules
         self.historical_marker = HistoricalMarker()
         self.hyperparameters = hyperparameters
-        self.species = species
-        self.groups = groups
+        self.module_species = None
+        self.blueprint_species = None
         self.input_shape = input_shape
 
     def create(self, size: int =1):
@@ -478,14 +534,133 @@ class Population:
 
         return iteration
 
-    def speciate(self):
+    def apply_kmeans_speciation(self, items, n_clusters, species_type):
         """
-        Divides the individuals in groups according to similarity.
-
-
-        score = c2*(parameter similarity in matching components)/(component amount)
+        Apply KMeans to (re)start species
         """
-        pass
+        item_species = []
+        representations = []
+
+        for item in items:
+            representations.append(item.get_kmeans_representation())
+        
+        classifier = KMeans(n_clusters=n_clusters, random_state=0)
+        classifications = classifier.fit_predict(scale(representations))
+
+        for species_name in range(len(classifier.cluster_centers_)):
+            group = []
+            for n in range(len(classifications)):
+                if classifications[n] == species_name:
+                    group.append(items[n])
+
+            item_species.append(Species(name=species_name, species_type=species_type, group=group))
+
+        for species in item_species:
+            for item in species.group:
+                item.species = species
+                print(item.species)
+        
+        logging.log(21, f"KMeans generated {n_clusters} species using: {representations}.")
+        
+        (representations, classifications, item_species)
+        return item_species, classifications
+
+    def apply_centroid_speciation(self, items, species_list):
+        """
+        Apply the NearestCentroid method to assign members to existing species.
+        Centroids are calculated based on existing species members and new members are assigned to the closest centroid.
+        An accuracy threshold can be specified so new species are generated in case new members dont fit the existing centroid accordingly.
+        """
+
+        species_labels = []
+        speciated_members = []
+        new_members = []
+
+        for item in items:
+            if item.species in species_list:
+                species_labels.append(item.species.name)
+                speciated_members.append(item)
+            else:
+                new_members.append(item)
+        
+        print(f"speciated_members: {[item.mark for item in speciated_members]}. \nspecies_labels: {species_labels}. \nnew_members: {[item.mark for item in new_members]}")
+
+        speciated_members_representations = []
+        member_representations = []
+
+        #Collect feature representations
+        for item in items:
+            member_representations.append(item.get_kmeans_representation())
+        
+        #Scale features using the whole data
+        scaled_representations = scale(member_representations)
+
+        #Select only speciated members to train the classifier
+        for n in range(len(items)):
+            if items[n].species in species_list:
+                speciated_members_representations.append(scaled_representations[n])
+        
+        #Fit data to centroids
+        classifier = NearestCentroid().fit(speciated_members_representations, species_labels)
+
+        #Predict label to all data. New labels must be THE SAME as old labels, if they existed previously.
+        classifications = classifier.predict(scaled_representations)
+        print(f"old classifications: {species_labels}, new classifications: {classifications}")
+
+        #Update species members
+        for species in species_list:
+            group = []
+            for n in range(len(classifications)):
+                if classifications[n] == species.name:
+                    group.append(items[n])
+
+            species.group = group
+
+        #Update species info in items
+        for species in species_list:
+            for item in species.group:
+                item.species = species
+
+        return None
+
+    def create_module_species(self, n_clusters):
+        """
+        Divides the modules in groups according to similarity.
+        """
+
+        module_species, module_classifications = self.apply_kmeans_speciation(self.modules, n_clusters, species_type="module")
+
+        self.module_species = module_species
+
+        logging.log(21, f"Created {n_clusters} module species.")
+        for species in module_species:
+            logging.log(21, f"Species {species.name}: {species.group}")
+
+        return (module_classifications)
+
+    def create_blueprint_species(self, n_clusters):
+        """
+        Divides the blueprints in groups according to similarity.
+        """
+
+        blueprint_species, blueprint_classifications = self.apply_kmeans_speciation(self.blueprints, n_clusters, species_type="blueprints")
+        
+        self.blueprint_species = blueprint_species
+
+        logging.log(21, f"Created {n_clusters} blueprint species.")
+        for species in blueprint_species:
+            logging.log(21, f"Species {species.name}: {species.group}")
+
+        return (blueprint_classifications)
+    
+    def update_module_species(self):
+        """
+        Divides the modules in groups according to similarity.
+        """
+
+        self.apply_centroid_speciation(self.modules, self.module_species)
+
+        return None
 
     def evaluate(self):
         """
@@ -1078,12 +1253,15 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
 
     population = Population(my_dataset, input_shape=x_train.shape[1:])
 
+    n_blueprint_species = 3
+    n_module_species = 3
+
     ###########
     # MODULES #
     ###########
     
     # Start with random modules
-    population.create_module_population(5)
+    population.create_module_population(10)
 
     #Test: original module selection
     module = random.choice(population.modules)
@@ -1107,6 +1285,26 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, args = args))
     print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_outside_edges.png", mutated_graph)
+
+    #Start module species
+    population.create_module_species(n_module_species)
+    for species in population.module_species:
+        print(f"Module Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
+
+    #Add unspeciated members
+    current_population = population.modules
+    population.create_module_population(5)
+    population.modules = population.modules + current_population
+
+    #Speciate
+    population.update_module_species()
+    for species in population.module_species:
+        print(f"Module Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
+
+    exit(0)
+
 
     ##############
     # BLUEPRINTS #
@@ -1138,10 +1336,20 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
 
-    population.create_individual_population(1, compiler)
+    print(population.create_blueprint_species(n_blueprint_species))
+    for species in population.module_species:
+        print(f"Blueprint Species {species.name}: {species.group}")
 
-    #exit(0)
+    ###############
+    # POPULATIONS #
+    ###############
+
+    # Start with random blueprints from modules
+    population.create_individual_population(5, compiler)
+
     iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
+    
+    exit(0)
 
     print("Best fitting: ", iteration)
   
@@ -1149,4 +1357,4 @@ if __name__ == "__main__":
     
     #test_run(global_configs, possible_components)
     #run_cifar10_nopop(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
-    run_cifar10_tests(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
+    run_cifar10_tests(global_configs, possible_components, population_size=5, epochs=1, training_epochs=1)
