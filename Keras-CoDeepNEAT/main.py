@@ -15,8 +15,8 @@ input_configs = {
 }
 
 global_configs = {
-    "module_range" : ([2, 2], 'int'),
-    "component_range" : ([4, 6], 'int')
+    "module_range" : ([1, 2], 'int'),
+    "component_range" : ([1, 2], 'int')
 }
 
 output_configs = {
@@ -48,6 +48,7 @@ class HistoricalMarker:
     def __init__(self):
         self.module_counter = 0
         self.blueprint_counter = 0
+        self.individual_counter = 0
     
     def mark_module(self):
         self.module_counter += 1
@@ -56,6 +57,10 @@ class HistoricalMarker:
     def mark_blueprint(self):
         self.blueprint_counter += 1
         return self.blueprint_counter
+    
+    def mark_individual(self):
+        self.individual_counter += 1
+        return self.individual_counter
 
 class NameGenerator:
     def __init__(self):
@@ -140,9 +145,10 @@ class Module(object):
         self.component_graph = component_graph
         self.layer_type = layer_type
         self.mark = mark
-        self.scores = [0,0]
+        self.scores = [99,0]
         self.species = None
         self.parents = parents
+        self.ever_used = False
     
     def __getitem__(self, item):
         return self.components[item]
@@ -214,9 +220,10 @@ class Blueprint:
         self.input_shape = input_shape
         self.module_graph = module_graph
         self.mark = mark
-        self.scores = [0,0]
+        self.scores = [99,0]
         self.species = None
         self.parents = parents
+        self.ever_used = False
 
     def __getitem__(self, item):
         return self.modules[item]
@@ -278,13 +285,15 @@ class Species:
 
     def average_features(self):
 
-        test_losses = [item.scores[0] for item in self.group]
-        avg_test_loss = sum(test_losses)/(len(test_losses))
-        test_acc = [item.scores[1] for item in self.group]
-        avg_test_acc = sum(test_acc)/(len(test_acc))
-        
+        try:
+            test_losses = [item.scores[0] for item in self.group]
+            avg_test_loss = sum(test_losses)/(len(test_losses))
+            test_acc = [item.scores[1] for item in self.group]
+            avg_test_acc = sum(test_acc)/(len(test_acc))
+        except:
+            avg_test_loss = 99
+            avg_test_acc = 0
         return avg_test_loss, avg_test_acc
-
 
 class Individual:
     """
@@ -328,7 +337,7 @@ class Individual:
             l,r = plt.xlim()
             plt.xlim(l-5,r+5)
             try:
-                plot_model(self.model, to_file=f'./images/blueprint_{self.blueprint.mark}_component_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+                plt.savefig(f'./images/blueprint_{self.blueprint.mark}_component_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
             except:
                 plt.savefig(f"./images/blueprint_{self.blueprint.mark}_component_level_graph.png", format="PNG", bbox_inches="tight")
             plt.clf()
@@ -460,7 +469,7 @@ class Population:
     """
     Represents the population containing multiple individual topologies and their correlations.
     """
-    def __init__(self, datasets=None, individuals=[], blueprints=[], modules=[], hyperparameters=[], input_shape=None):
+    def __init__(self, datasets=None, individuals=[], blueprints=[], modules=[], hyperparameters=[], input_shape=None, population_size=1, compiler=None):
         self.datasets = datasets
         self.individuals = individuals
         self.blueprints = blueprints
@@ -470,6 +479,8 @@ class Population:
         self.module_species = None
         self.blueprint_species = None
         self.input_shape = input_shape
+        self.population_size = population_size
+        self.compiler = compiler
 
     def create(self, size: int =1):
         """
@@ -561,16 +572,28 @@ class Population:
             new_blueprint = self.return_random_blueprint()
 
             #Create individual with the Blueprint
-            new_individual = Individual(blueprint=new_blueprint, name=n, compiler=compiler)
+            new_individual = Individual(blueprint=new_blueprint, name=self.historical_marker.mark_individual(), compiler=compiler)
             new_individuals.append(new_individual)
 
         self.individuals = new_individuals
 
-    def return_random_module(self):
-        return random.choice(self.modules)
+    def return_random_module(self, prefer_unused=True):
+        unused = [module for module in self.modules if not module.ever_used]
+        if unused != [] and prefer_unused:
+            choice = random.choice(unused)
+            choice.ever_used = True
+            return choice
+        else:
+            return random.choice(self.modules)
 
-    def return_random_blueprint(self):
-        return random.choice(self.blueprints)
+    def return_random_blueprint(self, prefer_unused=True):
+        unused = [blueprint for blueprint in self.blueprints if not blueprint.ever_used]
+        if unused != [] and prefer_unused:
+            choice = random.choice(unused)
+            choice.ever_used = True
+            return choice
+        else:
+            return random.choice(self.blueprints)
 
     def return_individual(self, name):
         for individual in self.individuals:
@@ -579,7 +602,7 @@ class Population:
 
         return False
 
-    def iterate_fitness(self, training_epochs=1, validation_split=0.15):
+    def iterate_fitness(self, training_epochs=1, validation_split=0.15, epoch=0):
         """
         Fits the individuals and generates scores.
 
@@ -596,8 +619,12 @@ class Population:
         test_y = self.datasets.test[1]
 
         for individual in self.individuals:
-            history = individual.fit(input_x, input_y, training_epochs, validation_split)
-            score = individual.score(test_x, test_y)
+            try:
+                history = individual.fit(input_x, input_y, training_epochs, validation_split)
+                score = individual.score(test_x, test_y)
+            except:
+                history = None
+                score = [99,0]
             iteration.append([individual.name, individual.blueprint.mark, score, history])
 
         return iteration
@@ -662,7 +689,8 @@ class Population:
         logging.log(21,f"All Classifications: {all_classifications}")
 
         new_classifications = all_classifications[len(previous_member_representations):]
-        logging.log(21,f"Old Classifications: {previous_labels}. \nNew Classifications: {new_classifications}")
+        logging.log(21,f"Old Classifications: {previous_labels}")
+        logging.log(21,f"New Classifications: {new_classifications}")
 
         #Update species members
         for species in species_list:
@@ -762,7 +790,9 @@ class Population:
                     children.append(child)
 
                 #Sort by scores
-                species.group.sort(key=lambda x: (x.scores[1], x.scores[0]), reverse=True)
+                species.group.sort(key=lambda x: (-x.scores[0], x.scores[1]), reverse=True)
+
+                logging.log(21, f"Species {species.name} ordering: {np.array([(item.mark, item.scores) for item in species.group])}")
 
                 exclusions = exclusions + species.group[-int(candidate_amount/2):]
 
@@ -778,6 +808,8 @@ class Population:
         #Append the child to the population.
         self.modules = self.modules + children
         #print(f"modules {[module.mark for module in self.modules]}. \children: {[module.mark for module in children]} \nexclusions: {[module.mark for module in exclusions]}")
+
+        logging.log(21, f"Excluding modules: {[module.mark for module in exclusions]}")
         for excluded in exclusions:
             self.modules.remove(excluded)
 
@@ -790,6 +822,8 @@ class Population:
         
         #Append the child to the population.
         self.blueprints = self.blueprints + children
+
+        logging.log(21, f"Excluding blueprints: {[module.mark for module in exclusions]}")
         for excluded in exclusions:
             self.blueprints.remove(excluded)
     
@@ -811,16 +845,19 @@ class Population:
             mutation_operator = random.choice(mutation_variants)
             try:
                 mutated_graph = mutation_operator(candidate.component_graph, generator_function, args)
-                candidate.component_graph = mutated_graph
-                logging.log(21, f"Mutated candidate {candidate.mark}.")
+                if (mutated_graph != None):
+                    logging.log(21, f"Mutated candidate module {candidate.mark}.")
+                    candidate.component_graph = mutated_graph
+                else:
+                    raise
             except:
-                logging.log(21, f"Impossible to mutate candidate {candidate.mark}.")
+                logging.log(21, f"Impossible to mutate candidate module {candidate.mark}.")
             
 
-        logging.log(21, f"Mutated {len(candidates)} modules")
+        logging.log(21, f"Mutated {len(candidates)} modules.")
         pass
     
-    def mutate_blueprints(self, percent=0.5):
+    def mutate_blueprints(self, percent=0.7):
         """
         Mutates existing individuals.
         """
@@ -836,10 +873,14 @@ class Population:
 
         for candidate in candidates:
             mutation_operator = random.choice(mutation_variants)
-            mutated_graph = mutation_operator(candidate.module_graph, generator_function, args)
-            candidate.module_graph = mutated_graph
+            try:
+                mutated_graph = mutation_operator(candidate.module_graph, generator_function, args)
+                candidate.module_graph = mutated_graph
+                logging.log(21, f"Mutated candidate blueprint {candidate.mark}.")
+            except:
+                logging.log(21, f"Impossible to mutate candidate blueprint {candidate.mark}.")
 
-        logging.log(21, f"Mutated {len(candidates)} blueprints")
+        logging.log(21, f"Mutated {len(candidates)} blueprints.")
         pass
 
     def iterate_epochs(self, epochs=1, training_epochs=1, validation_split=0.15):
@@ -855,36 +896,63 @@ class Population:
         best_scores = []
 
         for epoch in range(epochs):
-            logging.info(f" -- Iterating epoch {epoch} -- ")
-            print(f" -- Iterating epoch {epoch} -- ")
-            logging.log(21, f"Currently {len(self.modules)} modules, {len(self.blueprints)} blueprints, latest best iteration: {iteration}")
-            logging.log(21, f"Current modules: {[item.mark for item in self.modules]}")
-            logging.log(21, f"Current blueprints: {[item.mark for item in self.blueprints]}")
+            try:
+                logging.info(f" -- Iterating epoch {epoch} -- ")
+                print(f" -- Iterating epoch {epoch} -- ")
+                logging.log(21, f"Currently {len(self.modules)} modules, {len(self.blueprints)} blueprints, latest iteration: {np.array(iteration)}")
+                logging.log(21, f"Current modules: {[item.mark for item in self.modules]}")
+                logging.log(21, f"Current blueprints: {[item.mark for item in self.blueprints]}")
 
-            iteration = self.iterate_fitness(training_epochs, validation_split)
-            iterations.append(iteration)
+                iteration = self.iterate_fitness(training_epochs, validation_split, epoch)
+                iterations.append(iteration)
 
-            self.update_module_species()
-            for species in self.module_species:
-                logging.log(21, f"Current module species {species.name} scores: {species.average_features()}")
-            self.crossover_modules()
-            self.mutate_modules()
+                logging.log(21, f"This iteration: {np.array(iteration)}")
 
-            self.update_blueprint_species()
-            for species in self.blueprint_species:
-                logging.log(21, f"Current blueprint species {species.name} scores: {species.average_features()}")
-            self.crossover_blueprints()
-            self.mutate_blueprints()
+                # [name, blueprint_mark, score[test_loss, test_val], history]
 
-            # [name, blueprint_mark, score[test_loss, test_val], history]
+                best_fitting = max(iteration, key=lambda x: (-x[2][1], x[2][0]))
+                self.return_individual(best_fitting[0]).model.save(f"./models/best_epoch_{epoch}.h5")
+                best_scores.append([f"epoch {epoch}", best_fitting])
 
-            best_fitting = max(iteration, key=lambda x: (x[2][1], x[2][0]))
+                #Update species, crossover, mutate
+                self.update_module_species()
+                for species in self.module_species:
+                    logging.log(21, f"Current module species {species.name} scores: {species.average_features()}")
+                self.crossover_modules()
+                self.mutate_modules()
+
+                self.update_blueprint_species()
+                for species in self.blueprint_species:
+                    logging.log(21, f"Current blueprint species {species.name} scores: {species.average_features()}")
+                self.crossover_blueprints()
+                self.mutate_blueprints()
+
+                #Summarize and restart
+                self.summary(epoch)
+                self.create_individual_population(self.population_size, compiler=self.compiler)
             
-            self.return_individual(best_fitting[0]).model.save(f"./models/best_epoch_{epoch}.h5")
+            except:
+                logging.ERROR(f"SKIPPED EPOCH {epoch}.")
 
-            best_scores.append(best_fitting)
 
         return best_scores
+
+    def summary(self, epoch=""):
+        logging.log(21, f"\n\n --------------- Epoch {epoch} Summary -------------- \n")
+
+        logging.log(21, f"Current {len(self.individuals)} individuals: {[item.name for item in self.individuals]}")
+        
+        logging.log(21, f"Current {len(self.blueprints)} blueprints: \n{np.array([[item.mark] + item.scores for item in self.blueprints])}")
+        logging.log(21, f"Current {len(self.blueprint_species)} blueprint species: {[item.name for item in self.blueprint_species]}")
+        for species in self.blueprint_species:
+            logging.log(21, f"Current blueprint species {species.name} scores: {species.average_features()}")
+            
+        logging.log(21, f"Current {len(self.modules)} modules:\n {np.array([[item.mark] + item.scores for item in self.modules])}")
+        logging.log(21, f"Current {len(self.module_species)} module species: {[item.name for item in self.module_species]}")
+        for species in self.module_species:
+            logging.log(21, f"Current module species {species.name} scores: {species.average_features()}")
+        
+        logging.log(21, f"\n -------------------------------------------- \n")
 
 class GraphOperator:
 
@@ -1008,19 +1076,19 @@ class GraphOperator:
                                             args = {"global_configs": input_configs,
                                                     "possible_nodes": possible_inputs,
                                                     "possible_complementary_components": None})
-        self.save_graph_plot(f"blueprint_{name}_input_module.png", input_node)
+        #self.save_graph_plot(f"blueprint_{name}_input_module.png", input_node)
 
         intermed_graph = self.random_graph(node_range=node_range,
                                             node_content_generator=node_content_generator,
                                             args = args)
-        self.save_graph_plot(f"blueprint_{name}_intermed_module.png", intermed_graph)
+        #self.save_graph_plot(f"blueprint_{name}_intermed_module.png", intermed_graph)
 
         output_node = self.random_graph(node_range=1,
                                             node_content_generator=self.random_module,
                                             args = {"global_configs": output_configs,
                                                     "possible_nodes": possible_outputs,
                                                     "possible_complementary_components": None})
-        self.save_graph_plot(f"blueprint_{name}_output_module.png", output_node)
+        #self.save_graph_plot(f"blueprint_{name}_output_module.png", output_node)
 
         graph = nx.union(input_node, intermed_graph, rename=("input-", "intermed-"))
         graph = nx.union(graph, output_node, rename=(None, "output-"))
@@ -1058,11 +1126,11 @@ class GraphOperator:
 
         new_graph = graph.copy()
 
-        # "working around" the bad naming decisions I make in life.
+        # "working around" to process the bad entity naming decisions I make in life.
         try:
             node = int(max(new_graph.nodes())) + 1
         except:
-            node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]) + 1)
+            node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]+[0]) + 1)
 
         candidate_edges = [edge for edge in new_graph.edges()]
         selected_edge = random.choice(candidate_edges)
@@ -1087,7 +1155,7 @@ class GraphOperator:
         try:
             node = int(max(new_graph.nodes())) + 1
         except:
-            node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]) + 1)
+            node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]+[0]) + 1)
 
         node_def = generator_function(**args)
 
@@ -1624,7 +1692,7 @@ def run_cifar10_full(global_configs, possible_components, population_size, epoch
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
 
-    population = Population(my_dataset, input_shape=x_train.shape[1:])
+    population = Population(my_dataset, input_shape=x_train.shape[1:], population_size=population_size, compiler=compiler)
 
     n_blueprint_species = 3
     n_module_species = 4
@@ -1641,9 +1709,9 @@ def run_cifar10_full(global_configs, possible_components, population_size, epoch
     population.create_individual_population(population_size, compiler)
 
     # Iterate generating, fitting, scoring, speciating, reproducing and mutating.
-    iteration = population.iterate_epochs(epochs=3, training_epochs=training_epochs, validation_split=0.15)
+    iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
 
-    print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", iteration)
+    print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", np.array(iteration))
    
 if __name__ == "__main__":
     
