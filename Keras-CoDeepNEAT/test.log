@@ -1,0 +1,43 @@
+WARNING - 2019-11-13 14:22:22,852: This will get logged to a file
+INFO - 2019-11-13 14:22:22,853: Hi, this is a test run.
+WARNING - 2019-11-13 14:22:22,897: From C:\Users\dasilvej\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow\python\framework\op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+TOPOLOGY - 2019-11-13 14:22:22,909: Generating 6 components
+TOPOLOGY - 2019-11-13 14:22:24,321: Generating 5 components
+TOPOLOGY - 2019-11-13 14:22:24,566: Generating 5 components
+TOPOLOGY - 2019-11-13 14:22:24,758: Generating 6 components
+TOPOLOGY - 2019-11-13 14:22:24,956: Generating 5 components
+TOPOLOGY - 2019-11-13 14:22:25,147: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:25,344: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:25,629: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:25,920: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:26,104: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:26,281: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:26,466: Generating 6 components
+TOPOLOGY - 2019-11-13 14:22:26,675: Generating 6 components
+TOPOLOGY - 2019-11-13 14:22:26,888: Generating 5 components
+TOPOLOGY - 2019-11-13 14:22:27,082: Generating 6 components
+TOPOLOGY - 2019-11-13 14:22:27,288: Generating 6 components
+TOPOLOGY - 2019-11-13 14:22:27,594: Generating 5 components
+TOPOLOGY - 2019-11-13 14:22:27,848: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:28,045: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:28,332: Generating 4 components
+TOPOLOGY - 2019-11-13 14:22:28,527: KMeans generated 4 species using: [(6, 6, 187, 0, 0), (5, 5, 107, 0, 0), (5, 5, 147, 0, 0), (6, 7, 159, 0, 0), (5, 5, 118, 0, 0), (4, 3, 104, 0, 0), (4, 4, 127, 0, 0), (4, 4, 146, 0, 0), (4, 3, 138, 0, 0), (4, 3, 85, 0, 0), (4, 3, 79, 0, 0), (6, 8, 189, 0, 0), (6, 7, 158, 0, 0), (5, 5, 123, 0, 0), (6, 6, 179, 0, 0), (6, 7, 100, 0, 0), (5, 6, 163, 0, 0), (4, 4, 115, 0, 0), (4, 4, 108, 0, 0), (4, 3, 137, 0, 0)].
+TOPOLOGY - 2019-11-13 14:22:28,527: Created 4 module species.
+TOPOLOGY - 2019-11-13 14:22:28,527: Module species 0: [1, 4, 12, 13, 15, 17]
+TOPOLOGY - 2019-11-13 14:22:28,527: Module species 1: [7, 8, 9, 18, 19, 20]
+TOPOLOGY - 2019-11-13 14:22:28,527: Module species 2: [2, 3, 5, 14, 16]
+TOPOLOGY - 2019-11-13 14:22:28,527: Module species 3: [6, 10, 11]
+TOPOLOGY - 2019-11-13 14:22:28,527: Generating 2 modules
+TOPOLOGY - 2019-11-13 14:22:28,528: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:29,015: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:29,520: Generating 2 modules
+TOPOLOGY - 2019-11-13 14:22:29,520: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:30,026: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:30,569: Generating 2 modules
+TOPOLOGY - 2019-11-13 14:22:30,569: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:31,156: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:31,682: Generating 2 modules
+TOPOLOGY - 2019-11-13 14:22:31,682: Generating 1 components
+TOPOLOGY - 2019-11-13 14:22:32,307: Generating 1 components
