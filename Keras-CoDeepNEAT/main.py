@@ -200,10 +200,12 @@ class Module(object):
             else:
                 parent_2_node = parent_2_graph.nodes[random.choice(parent_2_graph_nodes)]["node_def"]
 
-            chosen_node_def = random.choice([parent_1_node, parent_2_node])
-                
-            child_graph.nodes[child_graph_nodes[n]]["node_def"] = copy.deepcopy(chosen_node_def)
-        
+            if parent_2_node.component_type == parent_1_node.component_type:
+                chosen_node_def = random.choice([parent_1_node, parent_2_node])
+                child_graph.nodes[child_graph_nodes[n]]["node_def"] = copy.deepcopy(chosen_node_def)
+            else:
+                pass
+            
         #print(f"child_graph node defs: {[child_graph.nodes[node]['node_def'].representation for node in child_graph.nodes()]}")
 
         child = Module(None, layer_type=self.layer_type, mark=mark, component_graph=child_graph)
@@ -262,9 +264,12 @@ class Blueprint:
             else:
                 parent_2_node = parent_2_graph.nodes[random.choice(parent_2_graph_nodes)]["node_def"]
 
-            chosen_node_def = random.choice([parent_1_node, parent_2_node])
-            child_graph.nodes[child_graph_nodes[n]]["node_def"] = copy.deepcopy(chosen_node_def)
-            
+            if parent_2_node.layer_type == parent_1_node.layer_type:
+                chosen_node_def = random.choice([parent_1_node, parent_2_node])
+                child_graph.nodes[child_graph_nodes[n]]["node_def"] = copy.deepcopy(chosen_node_def)
+            else:
+                pass
+
         #print(f"child_graph node defs: {[child_graph.nodes[node]['node_def'].mark for node in child_graph.nodes()]}")
 
         child = Blueprint(None, input_shape=self.input_shape, module_graph=child_graph, mark=mark)
@@ -310,21 +315,38 @@ class Individual:
         self.birth = birth
         self.model = model
         self.name = name
+        self.scores = [0,0]
 
-    def generate(self, save_fig=True):
+    def generate(self, save_fig=True, epoch=""):
         """
         Returns the keras model representing of the topology.
         """
 
+        logging.log(21, f"Starting assembling of blueprint {self.blueprint.mark}.")
+
         layer_map = {}
         module_graph = self.blueprint.module_graph
+
+        if (save_fig):
+            plt.tight_layout()
+            plt.subplot(121)
+            nx.draw(module_graph, nx.drawing.nx_agraph.graphviz_layout(module_graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
+            l,r = plt.xlim()
+            plt.xlim(l-5,r+5)
+            try:
+                plt.savefig(f'./images/ep{epoch}_blueprint_{self.blueprint.mark}_module_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+            except:
+                plt.savefig(f"./images/ep{epoch}_blueprint_{self.blueprint.mark}_module_level_graph.png", format="PNG", bbox_inches="tight")
+            plt.clf()
 
         assembled_module_graph = nx.DiGraph()
         output_nodes = {}
 
         for node in module_graph.nodes():
             assembled_module_graph = nx.union(assembled_module_graph, module_graph.nodes[node]["node_def"].component_graph, rename=(None, f'{node}-'))
-            output_nodes[node] = (max(module_graph.nodes[node]["node_def"].component_graph.nodes()))
+            node_order = [node for node in nx.algorithms.dag.topological_sort(module_graph.nodes[node]["node_def"].component_graph)]
+            output_nodes[node] = node_order[-1]
+            #output_nodes[node] = (max(module_graph.nodes[node]["node_def"].component_graph.nodes()))
 
         for node in module_graph.nodes():
             for successor in module_graph.successors(node):
@@ -337,12 +359,12 @@ class Individual:
             l,r = plt.xlim()
             plt.xlim(l-5,r+5)
             try:
-                plt.savefig(f'./images/blueprint_{self.blueprint.mark}_component_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+                plt.savefig(f'./images/ep{epoch}_blueprint_{self.blueprint.mark}_component_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
             except:
-                plt.savefig(f"./images/blueprint_{self.blueprint.mark}_component_level_graph.png", format="PNG", bbox_inches="tight")
+                plt.savefig(f"./images/ep{epoch}_blueprint_{self.blueprint.mark}_component_level_graph.png", format="PNG", bbox_inches="tight")
             plt.clf()
 
-        logging.log(21, f"Generated the assembled graph: {assembled_module_graph.nodes()}")
+        logging.log(21, f"Generated the assembled graph for blueprint {self.blueprint.mark}: {assembled_module_graph.nodes()}")
 
         logging.info(f"Generating keras layers")
 
@@ -402,7 +424,7 @@ class Individual:
             # Else, if two inputs, merge them and use the merge as layer input
             elif component_graph.in_degree(component_id) == 2:
                 predecessors = [layer_map[predecessor_id] for predecessor_id in component_graph.predecessors(component_id)]
-                for predecessor in range(len(predecessors[0])):
+                for predecessor in range(len(predecessors)):
                     logging.log(21, f"{component_id}: is {predecessors[predecessor][0].name} conv2d: {'conv2d' in predecessors[predecessor][0].name}. is {component.keras_component.name} dense: {'dense' in component.keras_component.name}")
                     if "conv2d" in predecessors[predecessor][0].name and "dense" in component.keras_component.name:
                         logging.info(f"Adding a Flatten() layer between {predecessors[predecessor][0].name} and {component.keras_component.name}")
@@ -428,17 +450,17 @@ class Individual:
         self.model.compile(**self.compiler)
         try:
             #plot_model(self.model, to_file='./images/3_layer_level_graph.png', show_shapes=True, show_layer_names=True)
-            plot_model(self.model, to_file=f'./images/blueprint_{self.blueprint.mark}_layer_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+            plot_model(self.model, to_file=f'./images/ep{epoch}_blueprint_{self.blueprint.mark}_layer_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
         except:
-            plot_model(self.model, to_file=f'./images/blueprint_{self.blueprint.mark}_layer_level_graph.png', show_shapes=True, show_layer_names=True)
+            plot_model(self.model, to_file=f'./images/ep{epoch}_blueprint_{self.blueprint.mark}_layer_level_graph.png', show_shapes=True, show_layer_names=True)
 
-    def fit(self, input_x, input_y, epochs=1, validation_split=0.15):
+    def fit(self, input_x, input_y, epochs=1, validation_split=0.15, current_epoch=""):
         """
         Fits the keras model representing the topology.
         """
 
         logging.info(f"Fitting one individual for {epochs} epochs")
-        self.generate()
+        self.generate(epoch=current_epoch)
         fitness = self.model.fit(input_x, input_y, epochs=epochs, validation_split=validation_split, batch_size=512)
         #print(fitness)
 
@@ -456,6 +478,7 @@ class Individual:
         
         #Update scores for blueprints (and underlying modules)
         self.blueprint.update_scores(scores)
+        self.scores = scores
 
         return scores
 
@@ -602,7 +625,11 @@ class Population:
 
         return False
 
-    def iterate_fitness(self, training_epochs=1, validation_split=0.15, epoch=0):
+    def return_best_individual(self):
+        best_fitting = max(self.individuals, key=lambda indiv: (indiv.scores[1], -indiv.scores[0]))
+        return best_fitting
+
+    def iterate_fitness(self, training_epochs=1, validation_split=0.15, current_epoch=0):
         """
         Fits the individuals and generates scores.
 
@@ -619,12 +646,12 @@ class Population:
         test_y = self.datasets.test[1]
 
         for individual in self.individuals:
-            try:
-                history = individual.fit(input_x, input_y, training_epochs, validation_split)
-                score = individual.score(test_x, test_y)
-            except:
-                history = None
-                score = [99,0]
+            #try:
+            history = individual.fit(input_x, input_y, training_epochs, validation_split, current_epoch=current_epoch)
+            score = individual.score(test_x, test_y)
+            #except:
+            #    history = None
+            #    score = [99,0]
             iteration.append([individual.name, individual.blueprint.mark, score, history])
 
         return iteration
@@ -742,8 +769,11 @@ class Population:
         """
         Divides the modules in groups according to similarity.
         """
-
-        self.apply_centroid_speciation(self.modules, self.module_species)
+        modules = [module for module in self.modules if module.scores != [99,0]]
+        if (modules != []):
+            self.apply_centroid_speciation(modules, self.module_species)
+        else:
+            logging.log(21, "Species not updated, no new scored modules.")
 
         return None
     
@@ -752,7 +782,11 @@ class Population:
         Divides the blueprints in groups according to similarity.
         """
 
-        self.apply_centroid_speciation(self.blueprints, self.blueprint_species)
+        blueprints = [blueprint for blueprint in self.blueprints if blueprint.scores != [99,0]]
+        if (blueprints != []):
+            self.apply_centroid_speciation(blueprints, self.blueprint_species)
+        else:
+            logging.log(21, "Species not updated, no new scored blueprints.")
 
         return None
 
@@ -790,9 +824,9 @@ class Population:
                     children.append(child)
 
                 #Sort by scores
-                species.group.sort(key=lambda x: (-x.scores[0], x.scores[1]), reverse=True)
+                species.group.sort(key=lambda x: (x.scores[1], -x.scores[0]), reverse=True)
 
-                logging.log(21, f"Species {species.name} ordering: {np.array([(item.mark, item.scores) for item in species.group])}")
+                logging.log(21, f"Species {species.name} ordering: {([[item.mark, item.scores] for item in species.group])}")
 
                 exclusions = exclusions + species.group[-int(candidate_amount/2):]
 
@@ -834,6 +868,7 @@ class Population:
 
         args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
         generator_function = GraphOperator().random_component
+
         mutation_variants = [GraphOperator().mutate_by_node_removal,
                              GraphOperator().mutate_by_node_addition_in_edges,
                              GraphOperator().mutate_by_node_addition_outside_edges,
@@ -875,8 +910,8 @@ class Population:
             mutation_operator = random.choice(mutation_variants)
             try:
                 mutated_graph = mutation_operator(candidate.module_graph, generator_function, args)
+                logging.log(21, f"Mutated candidate blueprint {candidate.mark} to graph: {mutated_graph.nodes()}")
                 candidate.module_graph = mutated_graph
-                logging.log(21, f"Mutated candidate blueprint {candidate.mark}.")
             except:
                 logging.log(21, f"Impossible to mutate candidate blueprint {candidate.mark}.")
 
@@ -896,44 +931,48 @@ class Population:
         best_scores = []
 
         for epoch in range(epochs):
+            #try:
+            logging.info(f" -- Iterating epoch {epoch} -- ")
+            print(f" -- Iterating epoch {epoch} -- ")
+            logging.log(21, f"Currently {len(self.modules)} modules, {len(self.blueprints)} blueprints, latest iteration: {np.array(iteration)}")
+            logging.log(21, f"Current modules: {[item.mark for item in self.modules]}")
+            logging.log(21, f"Current blueprints: {[item.mark for item in self.blueprints]}")
+
+            self.create_individual_population(self.population_size, compiler=self.compiler)
+
+            iteration = self.iterate_fitness(training_epochs, validation_split, current_epoch=epoch)
+            iterations.append(iteration)
+            logging.log(21, f"This iteration: {np.array(iteration)}")
+
+            # [name, blueprint_mark, score[test_loss, test_val], history]
+            best_fitting = max(iteration, key=lambda x: (x[2][1], -x[2][0]))
+            logging.log(21, f"Best model chosen: {best_fitting}")
+
             try:
-                logging.info(f" -- Iterating epoch {epoch} -- ")
-                print(f" -- Iterating epoch {epoch} -- ")
-                logging.log(21, f"Currently {len(self.modules)} modules, {len(self.blueprints)} blueprints, latest iteration: {np.array(iteration)}")
-                logging.log(21, f"Current modules: {[item.mark for item in self.modules]}")
-                logging.log(21, f"Current blueprints: {[item.mark for item in self.blueprints]}")
-
-                iteration = self.iterate_fitness(training_epochs, validation_split, epoch)
-                iterations.append(iteration)
-
-                logging.log(21, f"This iteration: {np.array(iteration)}")
-
-                # [name, blueprint_mark, score[test_loss, test_val], history]
-
-                best_fitting = max(iteration, key=lambda x: (-x[2][1], x[2][0]))
                 self.return_individual(best_fitting[0]).model.save(f"./models/best_epoch_{epoch}.h5")
-                best_scores.append([f"epoch {epoch}", best_fitting])
-
-                #Update species, crossover, mutate
-                self.update_module_species()
-                for species in self.module_species:
-                    logging.log(21, f"Current module species {species.name} scores: {species.average_features()}")
-                self.crossover_modules()
-                self.mutate_modules()
-
-                self.update_blueprint_species()
-                for species in self.blueprint_species:
-                    logging.log(21, f"Current blueprint species {species.name} scores: {species.average_features()}")
-                self.crossover_blueprints()
-                self.mutate_blueprints()
-
-                #Summarize and restart
-                self.summary(epoch)
-                self.create_individual_population(self.population_size, compiler=self.compiler)
-            
             except:
-                logging.ERROR(f"SKIPPED EPOCH {epoch}.")
+                logging.error(f"Model from {epoch} could not be saved.")
 
+            best_scores.append([f"epoch {epoch}", best_fitting])
+
+            #Update species, crossover, mutate
+            self.update_module_species()
+            for species in self.module_species:
+                logging.log(21, f"Current module species {species.name} scores: {species.average_features()}")
+            self.crossover_modules()
+            self.mutate_modules()
+
+            self.update_blueprint_species()
+            for species in self.blueprint_species:
+                logging.log(21, f"Current blueprint species {species.name} scores: {species.average_features()}")
+            self.crossover_blueprints()
+            self.mutate_blueprints()
+            
+            #except:
+            #    logging.error(f"SKIPPED EPOCH {epoch}.")
+
+            #Summarize execution
+            self.summary(epoch)
 
         return best_scores
 
@@ -942,17 +981,58 @@ class Population:
 
         logging.log(21, f"Current {len(self.individuals)} individuals: {[item.name for item in self.individuals]}")
         
-        logging.log(21, f"Current {len(self.blueprints)} blueprints: \n{np.array([[item.mark] + item.scores for item in self.blueprints])}")
+        logging.log(21, f"Current {len(self.blueprints)} blueprints: \n[Mark, Val loss, Val acc, Species]\n{np.array([[item.mark] + item.scores + [None if item.species == None else item.species.name] for item in self.blueprints])}")
         logging.log(21, f"Current {len(self.blueprint_species)} blueprint species: {[item.name for item in self.blueprint_species]}")
         for species in self.blueprint_species:
             logging.log(21, f"Current blueprint species {species.name} scores: {species.average_features()}")
             
-        logging.log(21, f"Current {len(self.modules)} modules:\n {np.array([[item.mark] + item.scores for item in self.modules])}")
+        logging.log(21, f"Current {len(self.modules)} modules: \n[Mark, Val loss, Val acc, Species]\n{np.array([[item.mark] + item.scores + [None if item.species == None else item.species.name] for item in self.modules])}")
         logging.log(21, f"Current {len(self.module_species)} module species: {[item.name for item in self.module_species]}")
         for species in self.module_species:
             logging.log(21, f"Current module species {species.name} scores: {species.average_features()}")
         
         logging.log(21, f"\n -------------------------------------------- \n")
+
+    def train_full_model(self, individual, training_epochs, validation_split):
+
+        logging.info(f"Training {individual.name} for {training_epochs} epochs. Blueprint: {individual.blueprint.mark}.")
+        
+        #(batch, channels, rows, cols)
+        input_x = self.datasets.training[0]
+        input_y = self.datasets.training[1]
+        test_x = self.datasets.test[0]
+        test_y = self.datasets.test[1]
+
+        history = individual.fit(input_x, input_y, training_epochs, validation_split, current_epoch="final")
+        score = individual.score(test_x, test_y)
+
+        logging.info(f"Full model training scores: {score}")
+        logging.info(f"Full model training history: {history.history}")
+
+        individual.model.save(f"./models/full_model_indiv{individual.name}_blueprint{individual.blueprint.mark}.h5")
+
+        # summarize history for accuracy
+        plt.plot(history.history['acc'])
+        plt.plot(history.history['val_acc'])
+        plt.title('model accuracy')
+        plt.ylabel('accuracy')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'test'], loc='upper left')
+        plt.tight_layout()
+        plt.savefig(f'./images/history_acc', show_shapes=True, show_layer_names=True)
+        plt.clf()
+
+        # summarize history for loss
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.title('model loss')
+        plt.ylabel('loss')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'test'], loc='upper left')
+        plt.tight_layout()
+        plt.savefig(f'./images/history_loss', show_shapes=True, show_layer_names=True)
+
+        return score, history
 
 class GraphOperator:
 
@@ -1041,7 +1121,7 @@ class GraphOperator:
 
         return new_graph
 
-    def random_module(self, global_configs, possible_nodes, possible_complementary_components, name=0):
+    def random_module(self, global_configs, possible_nodes, possible_complementary_components, name=0, layer_type=ModuleComposition.INTERMED):
 
         node_range = self.random_parameter_def(global_configs, "component_range")
         logging.log(21, f"Generating {node_range} components")
@@ -1054,7 +1134,7 @@ class GraphOperator:
 
         self.save_graph_plot(f"module_{name}_{self.count}_module_internal_graph.png", graph)
         self.count+=1
-        new_module = Module(None, ModuleComposition.INTERMED, component_graph=graph)
+        new_module = Module(None, layer_type=layer_type, component_graph=graph)
 
         return new_module
 
@@ -1070,12 +1150,12 @@ class GraphOperator:
                                                     "possible_nodes": possible_components,
                                                     "possible_complementary_components": possible_complementary_components}
 
-
         input_node = self.random_graph(node_range=1,
                                             node_content_generator=self.random_module,
                                             args = {"global_configs": input_configs,
                                                     "possible_nodes": possible_inputs,
-                                                    "possible_complementary_components": None})
+                                                    "possible_complementary_components": None,
+                                                    "layer_type": ModuleComposition.INPUT})
         #self.save_graph_plot(f"blueprint_{name}_input_module.png", input_node)
 
         intermed_graph = self.random_graph(node_range=node_range,
@@ -1087,7 +1167,8 @@ class GraphOperator:
                                             node_content_generator=self.random_module,
                                             args = {"global_configs": output_configs,
                                                     "possible_nodes": possible_outputs,
-                                                    "possible_complementary_components": None})
+                                                    "possible_complementary_components": None,
+                                                    "layer_type": ModuleComposition.OUTPUT})
         #self.save_graph_plot(f"blueprint_{name}_output_module.png", output_node)
 
         graph = nx.union(input_node, intermed_graph, rename=("input-", "intermed-"))
@@ -1100,7 +1181,7 @@ class GraphOperator:
 
         return new_blueprint
 
-    def mutate_by_node_removal(self, graph, generator_function, args=None):
+    def mutate_by_node_removal(self, graph, generator_function, args={}):
 
         new_graph = graph.copy()
 
@@ -1122,7 +1203,7 @@ class GraphOperator:
 
         return new_graph
     
-    def mutate_by_node_addition_in_edges(self, graph, generator_function, args=None):
+    def mutate_by_node_addition_in_edges(self, graph, generator_function, args={}):
 
         new_graph = graph.copy()
 
@@ -1133,6 +1214,9 @@ class GraphOperator:
             node = "intermed-" + str(max([int(node.split('-')[1]) for node in new_graph.nodes() if 'input' not in node and 'output' not in node]+[0]) + 1)
 
         candidate_edges = [edge for edge in new_graph.edges()]
+        if len(candidate_edges) == 0:
+            return None
+
         selected_edge = random.choice(candidate_edges)
         
         # Adding a node 
@@ -1146,9 +1230,12 @@ class GraphOperator:
         new_graph.add_edge(predecessor, node)
         new_graph.add_edge(node, successor)
 
+        if len(leaf_nodes) != 1:
+            return None
+
         return new_graph
     
-    def mutate_by_node_addition_outside_edges(self, graph, generator_function, args=None):
+    def mutate_by_node_addition_outside_edges(self, graph, generator_function, args={}):
 
         new_graph = graph.copy()
 
@@ -1181,225 +1268,13 @@ class GraphOperator:
         new_graph.add_edge(predecessor, node)
         new_graph.add_edge(node, successor)
 
-        return new_graph
-
-def test_run(global_configs, possible_components):
-    """
-    A test run to verify the whole pipeline.
-    """
-
-    class MyPopulation(Population):
-        """
-        An example child class of Population class.
-        """
-
-        def create(self, size=1):
+        # Only one leaf node allowed
+        leaf_nodes = [leaf_node for leaf_node in new_graph.nodes() if new_graph.out_degree(leaf_node)==0]
         
-            new_individuals = []
+        if len(leaf_nodes) != 1:
+            return None
 
-            for n in range(size):
-                #Create components
-                new_input_conv_component = Component(None, keras.layers.Conv2D(8, (3, 3), activation="relu", input_shape=(8, 8, 1)))
-                new_conv_component = Component(None, keras.layers.Conv2D(4, (3, 3), activation="relu"),)
-                new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
-                new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-                #Combine them in modules
-                new_input_module = Module([[None, None, new_input_conv_component]], ModuleComposition.INPUT)
-                new_intermed_module = Module([[None, None, new_conv_component]], ModuleComposition.INTERMED)
-                new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
-                #Create the blueprint combining modules
-                input_shape = (8, 8, 1)
-                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], input_shape)
-                #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
-                new_individuals.append(new_individual)
-
-            self.individuals = new_individuals
-
-        def create_random_straight(self, size=1):
-
-            new_individuals = []
-
-            for n in range(size):
-                #Create input module
-                new_input_conv_component = Component(None, keras.layers.Conv2D(48, (3, 3), activation="relu"))
-                new_input_module = Module([[None, None, new_input_conv_component]], ModuleComposition.INPUT)
-                
-                def new_module():
-                    
-                    """    parameter_values, parameter_type = possible_parameters[parameter]
-                        if parameter_type == 'int':
-                            parameter_def[parameter] = random.randint(parameter_values[0], parameter_values[1])
-                        if parameter_type == 'float':
-                            parameter_def[parameter] = ((parameter_values[1] - parameter_values[0]) * random.random()) + parameter_values[0]
-                        if parameter_type == 'list':
-                            parameter_def[parameter] = random.choice(parameter_values)"""
-                    components = []
-                    parameter_values, parameter_type = global_configs["component_range"]
-                    components = random.randint(parameter_values[0], parameter_values[1])
-                    new_module = Module([[None, 1, self.random_component()],
-                                                    [0, 2, self.random_component()],
-                                                    [1, 3, self.random_component()],
-                                                    [2, None, self.random_component()]], ModuleComposition.INPUT)
-                    return new_module
-
-                #new_input_module = new_module()
-                #Create intermediate module
-                new_intermed_module = Module([[None, 1, self.random_component()],
-                                                [0, 2, self.random_component()],
-                                                [1, 3, self.random_component()],
-                                                [2, None, self.random_component()]], ModuleComposition.INTERMED)
-
-                #Create output module
-                new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
-                new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
-
-                #Set the compiler
-                new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-                input_shape = (8, 8, 1)
-                #Create the blueprint combining modules
-                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], input_shape)
-
-                #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
-                new_individuals.append(new_individual)
-
-            self.individuals = new_individuals
-
-        def create_random_forked(self, size=1):
-
-            new_individuals = []
-
-            for n in range(size):
-                #Create input module
-                new_input_conv_component = Component(None, keras.layers.Conv2D(48, (3, 3), activation="relu"))
-                new_input_module = Module([[None, None, new_input_conv_component]], ModuleComposition.INPUT)
-              
-                #Create intermediate module
-                new_intermed_module = Module([[None, 1, self.random_component()],
-                                                [0, 3, self.random_component()],
-                                                [0, 3, self.random_component()],
-                                                [(1,2), None, self.random_component()]], ModuleComposition.INTERMED)
-
-                #Create output module
-                new_softmax_component = Component(None, keras.layers.Dense(2, activation="softmax"),)
-                new_output_module = Module([[None, None, new_softmax_component]], ModuleComposition.OUTPUT)
-
-                #Set the compiler
-                new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-                input_shape = (8, 8, 1)
-                #Create the blueprint combining modules
-                new_blueprint = Blueprint([new_input_module, new_intermed_module, new_output_module], input_shape)
-
-                #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
-                new_individuals.append(new_individual)
-
-            self.individuals = new_individuals
-
-        def create_fixed_blueprints(self, size=1):
-
-            new_individuals = []
-
-            for n in range(size):
-                #Create input module
-                new_input_module = GraphOperator().random_module(input_configs, possible_inputs)
-              
-                #Create intermediate module
-                new_intermed_module1 = GraphOperator().random_module(global_configs, possible_components)
-                new_intermed_module2 = GraphOperator().random_module(global_configs, possible_components)
-
-                #Create output module
-                new_output_module = GraphOperator().random_module(output_configs, possible_outputs)
-
-                #Set the compiler
-                new_compiler = {"loss":"sparse_categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-                #Create the blueprint combining modules
-                module_graph = nx.DiGraph()
-                
-                module_graph.add_node(0, module_def=new_input_module)
-                module_graph.add_node(1, module_def=new_intermed_module1)
-                module_graph.add_node(2, module_def=new_intermed_module2)
-                module_graph.add_node(3, module_def=new_output_module)
-                module_graph.add_edge(0, 1)
-                module_graph.add_edge(0, 2)
-                module_graph.add_edge(1, 3)
-                module_graph.add_edge(2, 3)
-
-                new_blueprint = Blueprint([new_input_module, new_intermed_module1, new_intermed_module2, new_output_module], input_shape, module_graph=module_graph)
-
-                #Create individual with the Blueprint
-                new_individual = Individual(blueprint=new_blueprint, compiler=new_compiler)
-                new_individuals.append(new_individual)
-
-            self.individuals = new_individuals
-
-    #A random distribution of 0s and 1s.
-    training_dataset = [[[[[[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]]],
-                                 [[[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]]],
-                                 [[[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]]],
-                                 [[[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]]],
-                                 [[[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]]],
-                                 [[[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[0], [0], [0], [0], [0], [0], [0], [0]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]],
-                                  [[1], [1], [1], [1], [1], [1], [1], [1]]]]], [1, 0, 1, 0, 1, 0]]
-
-    my_dataset = Datasets(training=training_dataset)
-
-    logging.basicConfig(filename='test.log',
-                        filemode='w+', level=logging.DEBUG,
-                        format='%(levelname)s - %(asctime)s: %(message)s')
-    logging.addLevelName(21, "TOPOLOGY")
-
-    logging.warning('This will get logged to a file')
-    logging.info(f"Hi, this is a test run.")
-
-    population = MyPopulation(my_dataset, input_shape = (8, 8, 1))
-    population.create_random_blueprints(1)
-
-    iteration = population.iterate_epochs(epochs=1, training_epochs=5)
-
-    print(iteration)
+        return new_graph
 
 def run_cifar10_nopop(global_configs, possible_components, population_size, epochs, training_epochs):
     from keras.datasets import cifar10
@@ -1522,11 +1397,11 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     module = random.choice(population.modules)
     GraphOperator().save_graph_plot("test_module_original.png", module.component_graph)
     args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
-
+    generator_function = GraphOperator().random_component
     #Test: mutation by removal
     try:
         print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-        mutated_graph = GraphOperator().mutate_by_node_removal(module.component_graph)
+        mutated_graph = GraphOperator().mutate_by_node_removal(module.component_graph, generator_function=generator_function)
         print(f"mutation by removal; edges: {mutated_graph.edges()}")
         GraphOperator().save_graph_plot("test_module_mutate_by_node_removal.png", mutated_graph)
     except:
@@ -1534,13 +1409,13 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
 
     #Test: mutation by addition
     print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(module.component_graph, args=args))
+    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(module.component_graph, generator_function=generator_function, args=args))
     print(f"mutation by addition; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_in_edges.png", mutated_graph)
 
     #Test: mutation by addition 2
     print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, args = args))
+    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, generator_function=generator_function, args = args))
     print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_outside_edges.png", mutated_graph)
 
@@ -1576,23 +1451,24 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
     #Test: original blueprint selection
     blueprint = random.choice(population.blueprints)
     GraphOperator().save_graph_plot("test_blueprint_original.png", blueprint.module_graph)
-    args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
+    args = {}
+    generator_function = population.return_random_module
 
     #Test: mutation by removal
     print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-    mutated_graph = GraphOperator().mutate_by_node_removal(blueprint.module_graph)
+    mutated_graph = GraphOperator().mutate_by_node_removal(blueprint.module_graph, generator_function=generator_function)
     print(f"mutation by removal; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_removal.png", mutated_graph)
 
     #Test: mutation by addition
     print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(blueprint.module_graph, args=args))
+    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(blueprint.module_graph, generator_function=generator_function, args=args))
     print(f"mutation by addition; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_in_edges.png", mutated_graph)
 
     #Test: mutation by addition 2
     print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(blueprint.module_graph, args = args))
+    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(blueprint.module_graph, generator_function=generator_function, args=args))
     print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
     GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
 
@@ -1639,11 +1515,9 @@ def run_cifar10_tests(global_configs, possible_components, population_size, epoc
 
     iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
     
-    exit(0)
-
     print("Best fitting: ", iteration)
 
-def run_cifar10_full(global_configs, possible_components, population_size, epochs, training_epochs):
+def run_cifar10_crossover_tests(global_configs, possible_components, population_size, epochs, training_epochs):
     from keras.datasets import cifar10
 
     possible_inputs = {
@@ -1692,6 +1566,207 @@ def run_cifar10_full(global_configs, possible_components, population_size, epoch
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
 
+    population = Population(my_dataset, input_shape=x_train.shape[1:])
+
+    n_blueprint_species = 3
+    n_module_species = 3
+
+    ###########
+    # MODULES #
+    ###########
+    
+    # Start with random modules
+    population.create_module_population(10)
+
+    #Test: original module selection
+    module = random.choice(population.modules)
+    GraphOperator().save_graph_plot("test_module_original.png", module.component_graph)
+    args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
+    generator_function = GraphOperator().random_component
+    #Test: mutation by removal
+    try:
+        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
+        mutated_graph = GraphOperator().mutate_by_node_removal(module.component_graph, generator_function=generator_function)
+        print(f"mutation by removal; edges: {mutated_graph.edges()}")
+        GraphOperator().save_graph_plot("test_module_mutate_by_node_removal.png", mutated_graph)
+    except:
+        print("Mutation by removal didn't work (possibly too few nodes)")
+
+    #Test: mutation by addition
+    try:
+        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
+        mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(module.component_graph, generator_function=generator_function, args=args))
+        print(f"mutation by addition; edges: {mutated_graph.edges()}")
+        GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_in_edges.png", mutated_graph)
+    except:
+        print("Mutation by addition didn't work (possibly too few nodes)")
+
+    #Test: mutation by addition 2
+    try:
+        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
+        mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, generator_function=generator_function, args = args))
+        print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
+        GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_outside_edges.png", mutated_graph)
+    except:
+        print("Mutation by addition didn't work (possibly too few nodes)")
+
+    #Start module species
+    population.create_module_species(n_module_species)
+    for species in population.module_species:
+        print(f"Initial Module Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
+
+    #Add unspeciated members
+    current_population = population.modules
+    population.create_module_population(5)
+    population.modules = population.modules + current_population
+
+    #Test Speciation
+    population.update_module_species()
+    for species in population.module_species:
+        print(f"Re-Speciated Module Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
+
+    #Add unspeciated members through Crossover
+    population.crossover_modules()
+    population.update_module_species()
+    print(f"Post-Crossover Modules: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
+
+    ##############
+    # BLUEPRINTS #
+    ##############
+
+    # Start with random blueprints from modules
+    population.create_blueprint_population(5)
+
+    #Test: original blueprint selection
+    blueprint = random.choice(population.blueprints)
+    GraphOperator().save_graph_plot("test_blueprint_original.png", blueprint.module_graph)
+    args = {}
+    generator_function = population.return_random_module
+
+    #Test: mutation by removal
+    try:
+        print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
+        mutated_graph = GraphOperator().mutate_by_node_removal(blueprint.module_graph, generator_function=generator_function)
+        print(f"mutation by removal; edges: {mutated_graph.edges()}")
+        GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_removal.png", mutated_graph)
+    except:
+        print("Mutation by removal didn't work (possibly too few nodes)")
+
+    #Test: mutation by addition
+    try:
+        print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
+        mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(blueprint.module_graph, generator_function=generator_function, args=args))
+        print(f"mutation by addition; edges: {mutated_graph.edges()}")
+        GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_in_edges.png", mutated_graph)
+    except:
+        print("Mutation by addition didn't work (possibly too few nodes)")
+
+    #Test: mutation by addition 2
+    try:
+        print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
+        mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(blueprint.module_graph, generator_function=generator_function, args=args))
+        print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
+        GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
+    except:
+        print("Mutation by addition didn't work (possibly too few nodes)")
+        
+    #Start blueprint species
+    population.create_blueprint_species(n_blueprint_species)
+    for species in population.blueprint_species:
+        print(f"Initial Blueprint Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.blueprints]}")
+
+    #Add unspeciated members
+    current_population = population.blueprints
+    population.create_blueprint_population(5)
+    population.blueprints = population.blueprints + current_population
+
+    #Test Speciation
+    population.update_blueprint_species()
+    for species in population.blueprint_species:
+        print(f"Re-Speciated Blueprint Species {species.name}: {[item.mark for item in species.group]}")
+    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.blueprints]}")
+
+    #Add unspeciated members through Crossover
+    previous_population = population.blueprints
+    population.crossover_blueprints()
+    population.update_blueprint_species()
+    print(f"Post-Crossover Blueprints: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
+
+    #Select a child and its parents and generate models from their blueprints.
+    for item in population.blueprints:
+        if item.parents != None:
+            Individual(blueprint=item, compiler=compiler).generate()
+            Individual(blueprint=item.parents[0], compiler=compiler).generate()
+            Individual(blueprint=item.parents[1], compiler=compiler).generate()
+
+            break
+
+    exit(0)
+
+    ###############
+    # POPULATIONS #
+    ###############
+
+    # Start with random blueprints from modules
+    population.create_individual_population(5, compiler)
+
+    iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
+    
+    print("Best fitting: ", iteration)
+
+def run_cifar10_full(global_configs, possible_components, population_size, epochs, training_epochs):
+    from keras.datasets import cifar10
+
+    possible_inputs = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([48,48], 'int'), "kernel_size": ([3], 'list'), "activation": (["relu"], 'list')})
+    }
+
+    possible_components = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
+        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
+    }
+
+    possible_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([1,1], 'int'), "activation": (["softmax"], 'list')})
+    }
+    
+    # The data, split between train and test sets:
+    (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+    (x_train, y_train), (x_test, y_test) = (x_train[0:10000], y_train[0:10000]), (x_test[0:1000], y_test[0:1000])
+    print('x_train shape:', x_train.shape)
+    print(x_train.shape[0], 'train samples')
+    print(x_test.shape[0], 'test samples')
+
+    batch_size = 32
+    num_classes = 10
+    data_augmentation = False
+    num_predictions = 20
+
+    # Convert class vectors to binary class matrices.
+    y_train = keras.utils.to_categorical(y_train, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
+
+    x_train = x_train.astype('float32')
+    x_test = x_test.astype('float32')
+    x_train /= 255
+    x_test /= 255
+    validation_split = 0.15
+
+    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+
+    logging.basicConfig(filename='test.log',
+                        filemode='w+', level=logging.INFO,
+                        format='%(levelname)s - %(asctime)s: %(message)s')
+    logging.addLevelName(21, "TOPOLOGY")
+
+    logging.warning('This will get logged to a file')
+    logging.info(f"Hi, this is a test run.")
+
+    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+
     population = Population(my_dataset, input_shape=x_train.shape[1:], population_size=population_size, compiler=compiler)
 
     n_blueprint_species = 3
@@ -1705,17 +1780,26 @@ def run_cifar10_full(global_configs, possible_components, population_size, epoch
     population.create_blueprint_population(6)
     population.create_blueprint_species(n_blueprint_species)
 
-    # Generate random individuals
-    population.create_individual_population(population_size, compiler)
-
     # Iterate generating, fitting, scoring, speciating, reproducing and mutating.
-    iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=0.15)
+    iteration = population.iterate_epochs(epochs=epochs, training_epochs=training_epochs, validation_split=validation_split)
 
     print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", np.array(iteration))
+
+    #Train the best model
+    best_model = population.return_best_individual()
+
+    try:
+        print(f"Best fitting model chosen for retraining: {best_model.name}")
+        population.train_full_model(best_model, 50, validation_split)
+    except:
+        population.individuals.remove(best_model)
+        best_model = population.return_best_individual()
+        print(f"Best fitting model chosen for retraining: {best_model.name}")
+        population.train_full_model(best_model, 50, validation_split)
    
 if __name__ == "__main__":
     
     #test_run(global_configs, possible_components)
     #run_cifar10_nopop(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)
-    #run_cifar10_tests(global_configs, possible_components, population_size=5, epochs=2, training_epochs=1)
-    run_cifar10_full(global_configs, possible_components, population_size=5, epochs=5, training_epochs=1)
+    #run_cifar10_crossover_tests(global_configs, possible_components, population_size=5, epochs=2, training_epochs=1)
+    run_cifar10_full(global_configs, possible_components, population_size=5, epochs=5, training_epochs=5)

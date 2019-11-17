@@ -1,0 +1,391 @@
+\documentclass[12pt]{article}
+
+\usepackage{soul}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url,verbatim}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[english]{babel}   
+%\usepackage[latin1]{inputenc}  
+\usepackage[utf8]{inputenc}  
+\usepackage{subcaption}
+% UTF-8 encoding is recommended by ShareLaTex
+
+     
+\sloppy
+
+\title{Evolution of Neural Network Architectures Using CoDeepNEAT \\ An Adapted Keras Implementation}
+
+\author{Jonas da S. Bohrer\inst{1}\\ Marcio Dorn, Bruno Grisci}
+
+\address{Instituto de Informática -- Universidade Federal do Rio Grande do Sul
+  (UFRGS)\\
+  Caixa Postal 15.064 -- 91.501-970 -- Porto Alegre -- RS -- Brazil
+\email{\{jsbohrer, mdorn, bigrisci\}@inf.ufrgs.br}
+}
+
+\begin{document} 
+
+\maketitle
+     
+\begin{resumo} 
+    \begin{comment}
+      Este relatório descreve os tópicos relevantes, o processo de estudo e o planejamento de tarefas para a finalização do trabalho de conclusão do curso de Engenharia de Computação na Universidade Federal do Rio Grande do Sul. Nele é estabelecida a base teórica do projeto acompanhada de referências bibliográficas dos tópicos referentes à pesquisa realizada. A descrição conta com uma breve introdução sobre os estudos de neuroevolução, ou seja, o desenvolvimento e aprimoramento de redes neurais através de algoritmos evolutivos. Neste contexto, o estudo é direcionado especialmente à evolução de topologias de redes neurais. Além disso, são apresentados os experimentos realizados no tópico e futuras atividades planejadas. Pelo fato de o material fonte se encontrar majoritariamente em inglês, o conteúdo do relatório é apresentado da mesma forma.
+    \end{comment}
+    
+  Aprendizado de máquina é um extenso campo de estudo nas áreas de ciência da computação e estatística dedicado à execução de tarefas computacionais através de algoritmos que não requerem instruções explícitas, mas dependem do aprendizado de padrões em conjuntos de dados para o propósito de automatizar inferências. Grande porção do trabalho envolvido em um projeto de aprendizado de máquina é definir o melhor tipo de algoritmo para resolver um dado problema. Redes neurais, especialmente redes neurais profundas, são o tipo de solução predominante no campo de estudo, mas as próprias redes podem produzir resultados muito diferentes de acordo com as decisões arquiteturais feitas para as mesmas. Encontrar a topologia e configurações de rede neural adequadas para um dado problema é um desafio que requer conhecimento de domínio e esforços de teste devido à imensa quantidade de parametros que devem ser considerados. O propósito deste plano de estudo é propor uma implementação adapatada de uma técnica evolucionária bem estabelecida que consegue automatizar as tarefas de seleção de topologia e hiperparâmetros, usando um framework de aprendizado de máquina acessível e popular - Keras - como base, apresentando resultados inicial e mudanças esperadas em relação ao algoritmo original.
+    
+
+\end{resumo}
+
+
+
+\begin{abstract}
+
+Machine learning is a huge field of study in computer science and statistics dedicated to the execution of computational tasks through algorithms that do not require explicit instructions, but instead rely on learning patterns from data samples for the purpose of automating inferences. A large portion of the work involved in a machine learning project is to define the best type of algorithm to solve a given problem. Neural networks - especially deep neural networks - are the predominant type of solution in the field, but the networks themselves can produce very different results according to the architectural choices made for them. Finding the optimal network topology and configurations for a given problem is a challenge that requires domain knowledge and testing efforts due to the large amount of parameters that need to be considered. The purpose of this research plan is to propose an adapted implementation of a well-established evolutionary technique that manages to automate the tasks of topology and hyperparameter selection, using a popular and accessible machine learning framework - Keras - as back-end, presenting initial results and expected changes in relation to the original algorithm.
+\end{abstract}
+
+\section{Introduction}
+
+Evolutionary computation can be shortly described as the use of evolutionary systems as computational processes for solving complex problems \cite{DeJong:2016:ECU:3027779}. As discussed in \cite{DeJong:2016:ECU:3027779}, although one can trace its genealogical roots as far back as the 1930s, it was the emergence of relatively inexpensive digital computing technology in the 1960s that served as an important catalyst for the field. The availability of this technology made it possible to use computer simulation as a tool for analyzing systems much more complex than those analyzable mathematically.
+
+Around the same time, machine learning emerged as a branch of AI proposing a more probabilistic approach to the search of artificial intelligence with systems that aimed to learn and improve without being explicitly programmed. Though it had an interesting premise, it only rose to its recent level of popularity in the last few decades, justified by the increasing availability of large amounts of data and computational resources required for the extremely complex algorithms the field proposed.
+
+These two fields, evolutionary computation and machine learning, come together in what is usually described as Evolutionary Machine Learning (EML), which presents hybrid approaches that use algorithms from one field in the search of better solutions in the other. These resulting approaches have been widely applied to real-world problems in various situations, including agriculture, manufacturing, power and energy, internet/wifi/networking, finance, and healthcare. \cite{Al-Sahaf:2019}
+
+Out of the many branches in EML, one of the most widely studied is Neuroevolution, which is characterized by the act of building different aspects of neural networks through evolutionary algorithms (EAs). EAs are especially well suited for this task because of their remarkable ability to find good solutions in highly dimensional search spaces, such as exploring the multiple possibilities surrounding the definition of a neural network structure. Nonetheless, neuroevolution enables important capabilities that are typically unavailable to the more traditional gradient-based approaches like stochastic gradient descent (SGD) \cite{Rumelhart1986}, raising the level of automation beyond the initial perspective of only setting weights to pre-configured network topologies. These new capabilities include the search of ideal hyperparameters, architectural parts and even the rules for learning themselves \cite{Stanley2019}, 
+
+
+    \begin{comment}
+     Out of the many branches in EML, one of the most widely studied is Neuroevolution, which is characterized by techniques that take profit of the remarkable ability of evolutionary algorithms (EAs) to generate good solutions in highly dimensional search spaces to search for possible configurations of neural networks, a type of algorithm known for its great flexibility in hyperparameters and design options. Since NNs are so flexible, there are many opportunities to apply evolution-inspired techniques to explore possible configurations while not becoming too tied to domain knowledge and reducing human benchmarking.
+    Neuroevolution also enables important capabilities that are typically unavailable to the more traditional gradient-based approaches like stochastic gradient descent (SGD) \cite{Rumelhart1986}. \hl{cp: Such capabilities for neural networks include learning their building blocks (for example activation functions), hyperparameters (for example learning rates), architectures (for example the number of neurons per layer, how many layers there are, and which layers connect to which) and even the rules for learning themselves } \cite{Stanley2019}.
+    \end{comment}
+
+    \begin{comment}SOBRE NEAT\\\end{comment}
+
+A great example of early neuroevolution approaches successfully applied to a wide range of problems is the NeuroEvolution of Augmenting Topologies (NEAT) algorithm \cite{NEAT}, which is the starting point of this report. 
+NEAT's main idea was to generate neural networks by associating similar parts of different neural networks through mutations (adding or removing nodes and connections) and cross overs (swapping nodes and connections) with a historical markings mechanism that simplified the identification of network similarities. Most importantly, it managed to implement a diversity preservation mechanism (named speciation), enabling the evolution of increasingly complex topologies by allowing organisms to compete primarily within their own niches instead of with the population at large.
+
+    \begin{comment}
+    A great example of early neuroevolution approaches succesfully applied to a wide range of problems is the NeuroEvolution of Augmenting Topologies (NEAT) algorithm \cite{NEAT}. 
+    NEAT managed to mutate and cross over similar parts of different topologies to generate intermediate solutions with the goal of achieving better results than the original topologies. Most notably, it managed to implement a mechanism to preserve diversity (named speciation), allowing the evolution of increasingly complex topologies while still exploring different search spaces by allowing organisms to compete primarily within their own niches instead of with
+    the population at large.
+    \end{comment}
+
+    \begin{comment}
+    As noted by \cite{Stanley2019},
+    although impressive, especially in their day, all of the successful
+    applications [CAN EXPAND] using NEAT or similarly inspired algorithms involved tiny neural networks by modern standards, composed of hundreds or thousands of connections instead of the millions of connections commonly seen in modern deep neural network (DNN) research.
+    \end{comment}
+    
+But NEAT did not age well throughout the last decade, despite of its remarkable success in multiple use cases \cite{Stanley2019} - like the notorious discovery through NEAT of the
+most accurate measurement yet of the mass of the top quark, which was achieved at the Tevatron particle collider \cite{PhysRevLett.102.152001} - where minimal structure was a lot more of a priority. Considering the state of art in modern deep learning research, the networks generated by the original NEAT algorithm are easily surpassed in dimension and consequently effectiveness when compared to networks used in currently popular problems like image recognition or text recognition, where thousands of nodes and hundreds of thousands to millions of connections are necessary to process information of complex data sources accordingly. The growth tendency in network dimensions comes directly from the availability of unprecedentedly cheap and powerful computational resources and large datasets as seen in the latest years, not only reducing the need for minimal structures in standard neural networks but also resulting in the perfect conditions for the practical usage and consequent popularization of all sorts of creative solutions involving different approaches to the traditional neural network topology, such as deep networks, convolutional networks, LSTM networks, graph networks, relational networks and more, contributing to yet one more weakness in standard NEAT.
+
+This rapid popularization of different types of neural networks brought into the neuroevolution field challenges to try new techniques by combining and expanding these varied components into appropriate topologies and configurations to solve problems even more effectively, being also referred as the neural architecture search problem \cite{DBLP:journals/corr/ZophL16}. Adaptations in the traditional neuroevolution algorithms to face this evolving environment of possibilities and need for larger structures are largely popular at the moment \cite{Stanley2019} and can be seen, for instance, in the multiple successors of NEAT throughout the years, like the notorious HyperNEAT, DeepNEAT and CoDeepNEAT variations, which are the focus of this research plan.
+
+\section{NEAT variations}
+\subsection{HyperNEAT}
+
+HyperNEAT (hypercube-based NEAT) is probably the major extension of NEAT to date, having become a complex topic on its own and inspiring multiple approaches based on its success. Using connective CPNNs (Compositional Pattern Producing Networks) to represent connectivity patterns as functions of the Cartesian space \cite{hyperneat}, HyperNEAT exploits regularities in the data domain to evolve larger neural networks. In other words, the use of CPNNs enables indirect encoding, a principle based on attributing the discovery of patterns and regularities to the algorithm itself, relying as little as possible in direct encoding from designers. Moreover, indirect encoding aims to access regularities not commonly addressed by conventional neural network learning algorithms, being capable of inferring constructions like, for instance, convolution.
+
+HyperNEAT also means a breakthrough from NEAT by allowing the evolution of much larger neural networks than the previous algorithm. By abstracting the mapping of spatial patterns generated by small CPNNs into connectivity patterns, HyperNEAT allows the generated networks to be scaled in a customizable manner (up to millions of connections, for instance), better adapting to more complex applications such as evolving controller parts of legged robots \cite{4983289}, learning to play Atari games \cite{hausknecht:tciaig13}, combining SGD and indirect encoding for network evolution \cite{Fernando:2016:CED:2908812.2908890} and even directly evolving modularity of components \cite{Verbancsics:2011:CCE:2001576.2001776}.
+
+\subsection{DeepNEAT and CoDeepNEAT}
+Alternatively, a more recent path taken from NEAT was the DeepNEAT variation and, subsequently, the CoDeepNEAT variation \cite{DBLP:journals/corr/MiikkulainenLMR17}. Both cases, which are very tied, differ from HyperNEAT in that they don't aim to learn connectivity from geometric regularities in the data, but instead in assembling nodes based more directly in adaptations of the fitness evaluation process of NEAT.
+
+DeepNEAT can be summarized as an extension of NEAT that considers entire layers as genes instead of considering single neurons when forming structures. The focus now is to define compositions of layers instead of picking neurons and their connections one by one, generating larger and deeper networks suited to solving larger scale problems then the ones NEAT was meant to solve in the past, while not minding the indirect encoding factor of HyperNEAT and considering pre-established components like different types of layers.
+
+    \begin{comment}
+     As described in the original work \cite{DBLP:journals/corr/MiikkulainenLMR17}, "[DeepNEAT] follows the same fundamental process as NEAT: First, a population of chromosomes (each represented by a graph) with minimal complexity is created. Over generations, structure (i.e. nodes and edges) is added to the graph incrementally through mutation. During crossover, historical markings are used to determine how genes of two chromosomes can be lined up. The population is divided into species (i.e. subpopulations) based on a similarity metric. Each species grows proportionally to its fitness and evolution occurs separately in each species". 
+    \end{comment}
+Similarly to the original NEAT algorithm, DeepNEAT follows a standard genetic algorithm structure to find its solutions: it starts by creating an initial population of individuals, each represented by a graph, and evolves them over generations. During these generations, the individuals are recreated by adding or removing structural parts (nodes and edges) from their graphs through mutation, while keeping track of changes through a historical markings mechanism. Using the historical markings, chromosomes are compared in every generation using a similarity metric, being classified into subpopulations called species. Each species is evaluated by the shared fitness of its individuals, calculated by a fitness sharing function. This shared score is used to decide which species thrive or not in each generation. Finally, the surviving species evolve separately from each other through crossovers (exchanging genetic information) among its constituent individuals, and the next generation takes place.
+
+The changes to the main algorithm of NEAT in how nodes now represent layers imply additional aspects that must be considered when defining a layer in DeepNEAT: what is the type of layer (convolutional, dense, recurrent), the properties of the layer (number of neurons, kernel size, stride size, activation function) and how nodes connect to each other. This is handled by considering a table of possible hyperparameters as the chromosome map for each node and an additional table of global parameters applicable to the entire network (such as learning rate, training algorithm, and data preprocessing) \cite{DBLP:journals/corr/MiikkulainenLMR17}. This makes the algorithm not only define topological information, but diverse network configurations more broadly.
+
+%\hl{Aqui eu posso descrever um exemplo do deepneat mas nao me parece necessario(?)}
+
+    \begin{comment}
+	More recently, a different path taken from NEAT was the DeepNEAT and CoDeepNEAT variations. As described in the original work [ref Evolving Deep Neural Networks], "DeepNEAT is a most immediate extension of the standard neural network topology-evolution method NEAT to DNN. It follows the same fundamental process as NEAT: First, a population of chromosomes (each represented by a graph) with minimal complexity is created. Over generations, structure (i.e. nodes and edges) is added to the graph incrementally through mutation. During crossover, historical markings are used to determine how genes of two chromosomes can be lined up. The population is divided into species (i.e. subpopulations) based on a similarity metric. Each species grows proportionally to its fitness and evolution occurs separately in each species."
+    
+	"DeepNEAT differs from NEAT in that each node in the chromosome
+    no longer represents a neuron, but a layer in a DNN. Each
+    node contains a table of real and binary valued hyperparameters
+    that are mutated through uniform Gaussian distribution and random
+    bit-flipping, respectively. These hyperparameters determine
+    the type of layer (such as convolutional, fully connected, or recurrent)
+    and the properties of that layer (such as number of neurons,
+    kernel size, and activation function). The edges in the chromosome
+    are no longer marked with weights; instead they simply indicate
+    how the nodes (layers) are connected together. To construct a DNN
+    from a DeepNEAT chromosome, one simply needs to traverse the
+    chromosome graph, replacing each node with the corresponding
+    layer. The chromosome also contains a set of global hyperparameters
+    applicable to the entire network (such as learning rate, training
+    algorithm, and data preprocessing)." [ref Evolving Deep Neural Networks]
+    \end{comment}
+
+Investing in the same perspective of focusing on layers instead of single neurons, CoDeepNEAT extends DeepNEAT by dividing the construction of a topology into two different levels: module chromosomes and blueprint chromosomes (Figure \ref{fig:codeepneatmoduleblueprint}). Modules are graphs representing a small structure of connected layers. Blueprints are graphs representing a composition of connected nodes that point to module species, which can be assembled into complete networks by joining a sample of the module species pointed by each node. In other words, instead of evolving network species, CoDeepNEAT evolves module species and blueprint species which are assembled together into networks. The algorithm is inspired mainly by Hierarchical SANE \cite{Moriarty1997FormingNN} but is also influenced by component-evolution approaches ESP \cite{Gomez:1999:SNC:1624312.1624411} and CoSyNE \cite{gomez:jmlr08}.
+
+\begin{figure}[ht]
+    \centering
+    \hfill
+        \strut\vspace*{-\baselineskip}\newline\centering
+        \includegraphics[width=10cm]{Codeepneat_module_blueprint.png}
+        \caption{A visualization of how CoDeepNEAT assembles networks for fitness evaluation. Modules and blueprints are assembled together into a network through replacement of blueprint nodes with corresponding modules. This approach allows evolving repetitive and deep structures seen in many successful recent DNNs (from \cite{DBLP:journals/corr/MiikkulainenLMR17}).}
+        \label{fig:codeepneatmoduleblueprint}
+\end{figure}
+
+Considering these two different chromosome types, CoDeepNEAT requires evolving separate populations for each one of them while and scoring them individually. The genetic algorithm behind this is very similar to the one described for DeepNEAT, with the only effective changes being the population management and the assignment of scores by the fitness function. Now, instead of having one score for each individual and a shared score for its species, the score needs to be assigned both to the blueprint and to the modules used in its composition, and later shared between their respective species. At the same time, when modules are used in multiple blueprints, all blueprint scores must be considered for the module score. Apart from these changes, CoDeepNEAT works very similarly to DeepNEAT while also bringing module evolution as an addition to the standard evaluation process.
+
+The original paper presents resulting showing that CoDeepNEAT can indeed be implemented and generate high scoring networks for simple datasets such as CIFAR-10 and much more complex problems like image captioning using MSCOCO  \cite{DBLP:journals/corr/ChenFLVGDZ15}. Of course, large datasets require longer training times and more computational resources, which lead CoDeepNEAT to be recently expanded to a platform called LEAF \cite{2019arXiv190206827L}, taking advantage of cloud computing services to parallelize the algorithm for demanding use cases.
+
+
+%\hl{Aqui eu posso descrever melhor exemplos de codeepneat mas sao poucos e nao sei se e necessario}
+
+
+    \begin{comment}
+    Sharing the same perspective of looking at layer level instead of nodes themselves, CoDeepNEAT extends DeepNEAT by dividing the construction of a topology in two different levels: modules and blueprints. The interaction between these components is described in \cite{DBLP:journals/corr/MiikkulainenLMR17}: "in CoDeepNEAT, two populations of modules and blueprints are evolved separately, using the same methods as described for DeepNEAT. The blueprint chromosome is a graph where each node contains a pointer to a particular module species. In turn, each module chromosome is a graph that represents a small DNN. During fitness evaluation, the modules and blueprints are combined together to create a larger assembled network Figure 1. Each node in the blueprint is replaced with a module chosen randomly from the species to which that node points. If multiple blueprint nodes point to the same module species, then the same module is used in all of them. The assembled networks are evaluated the a manner similar to DeepNEAT, but the fitnesses of the assembled networks are attributed back to blueprints and modules as the average fitness of all the assembled networks containing that blueprint or module. CoDeepNEAT can evolve repetitive modular structure efficiently. Furthermore, because small mutations in the modules and blueprints open lead to large changes in the assembled network structure, CoDeepNEAT can explore more diverse and deeper architectures than DeepNEAT."
+    \end{comment}
+
+
+
+
+\section{Proposed work}
+
+Although algorithms like NEAT and its variations have existing implementations directly from its authors, they consist of self-contained code that can be expanded but presents barriers in terms of directly connecting to other popular Machine Learning frameworks that researchers, students or scientists are more likely to be familiar with. Keras, Tensorflow, PyTorch and other similar frameworks contain a number of functionalities that may come in handy when developing or analyzing machine learning models, which is a key element in validating the resulting models from neural architecture search algorithms in practical scenarios. As of the moment of this review, both NEAT and HyperNEAT have been explored in public implementations using these frameworks but few or lacking implementations of CoDeepNEAT have been found, presenting an opportunity to bring this method to a more accessible context.
+
+\begin{comment}
+Although algorithms like NEAT and its variations have existing implementations directly from its authors, they consist of self-contained code that can be expanded but presents barriers in terms of directly connecting to other popular Machine Learning frameworks that researchers, students or scientists are more likely to be familiar with. Frameworks like Keras[ref], Tensorflow[ref], PyTorch[ref] or Caffe[ref] contain a number of functionalities that may come in handy when developing or analyzing machine learning models, which is a key element in validating the resulting models from neural architecture search algorithms in practice. As of the moment of this review, few or lacking implementations using these frameworks were found, presenting an opportunity to bring these methods to a more accessible context.
+\end{comment}
+
+Furthermore, many changes can be proposed to the original algorithm, such as different crossover operations, similarity metrics or mutation operations. Having an implementation based on a widespread framework facilitates these experiments for the overall scientific community. With these aspects in mind, this report summarizes the idea behind the implementation of an algorithm based on CoDeepNEAT in an accessible and popular framework and expanded based on different approaches seen in literature. The framework of choice for this implementation is Keras, a user-friendly and high-level Python package for machine learning development and management, as opposed to the low-level and complex usability found in other popular options like Tensorflow or Pytorch, for instance.
+
+\subsection{Algorithm structure}
+
+The implementation is planned to follow the instructions both from the original NEAT paper and the extended CoDeepNEAT variation with small changes. A preliminary version of the planned implementation is described in Algorithm \ref{alg1}.
+
+\begin{algorithm}[ht]
+\caption{Genetic algorithm structure for implementation\label{IR}}
+\SetAlgoLined
+\KwData{hyperparameter tables, global parameter tables}
+\KwResult{evolved candidate solutions}
+\Begin{
+initiate module and blueprint populations considering parameter tables\;
+ \For{generation in generations}{
+    \For{individual in individual population}{
+        assemble respective blueprint\;
+        generate Keras model\;
+        score model\;
+        assign score to blueprint and modules\;
+    }
+    \For{species in module species}{
+        calculate shared fitness\;
+        apply elitism\;
+        reproduce through crossover and mutation considering parameter tables\;
+    }
+    \For{species in blueprint species}{
+        calculate shared fitness\;
+        apply elitism\;
+        reproduce through crossover and mutation considering parameter tables\;
+    }
+    speciate modules\;
+    speciate blueprints\;
+ }
+ }
+ \label{alg1}
+\end{algorithm}
+
+Even though the algorithms are described in detail in the original work, a formal pseudo-algorithm is not specified, thus the procedure described in Algorithm \ref{alg1} is an abstraction of that description. Specific genetic algorithm parameters such as elitism rate, crossover rate, mutation rate, number of allowed species, minimum and maximum number of individuals per species, etc., are not described in dept in the original work and are planned to be implemented as adjustable parameters, as are the tables of possible components of modules (layer types) and hyperparameters (layer sizes, kernel sizes, strides, activation functions, learning rates).
+
+\subsection{Proposed tasks}
+
+The implementation requires the following fundamental working parts before initial testing:
+    \begin{itemize}
+        \item Genetic algorithm structure (to support iterations).
+        \item Graph generation structure (to generate graphs for modules and blueprints).
+        \item Module population management structure (to generate modules, manage speciation, fitness sharing).
+        \item Blueprint population management structure (to generate blueprints, manage speciation, assembling, trainings, fitness evaluation and fitness sharing).
+        \item Similarity metric used for speciation (to compare individuals).
+        \item Crossover technique used for reproduction (to evolve individuals through sexual reproduction).
+        \item Mutations (to evolve individuals through asexual reproduction).
+        \item Logging structure (to follow up the iteration process).
+    \end{itemize}
+    
+Additional changes are expected to be explored during development, such as:
+    \begin{itemize}
+        \item Alternative crossover operations.
+        \item Alternative mutation techniques.
+        \item Alternative similarity metrics.
+    \end{itemize}
+
+Once development is completed, testing will be done using the CIFAR-10 \cite{CIFAR-10} dataset as done in the original paper to compare results and discuss the amount of time and computational power required for this approach considering academic use. Initial tests point that the required time for a complete run of the preliminary implementation (specified in section 5) with an arbitrary amount of 10 evolving individuals and 10 generations takes between 12 and 14 hours, for CIFAR-10, considering very limited hardware configurations which will be improved and detailed in the complete report for faster runs. Most of the computation necessary is dedicated to training the networks for fitness evaluation during generations.
+
+\section{Current status}
+
+Out of the items specified in the earlier section, the following have been partially completed:
+\begin{itemize}
+        \item Genetic algorithm structure (supports iterations).
+        \item Graph generation structure (generates graphs for modules and blueprints).
+        \item Module population management structure (manages module creation, fitness sharing).
+        \item Blueprint population management structure (manages blueprint creation, assembling and training, fitness evaluation and fitness sharing).
+        \item Similarity function (not historical markings).
+        \item Logging structure.
+\end{itemize}
+
+Figure \ref{fig:example_network/3_layer_level_graph} shows an example assembled Keras network generated by the current algorithm. This network is based on the assembled graph shown in figure \ref{fig:example_network/2_component_level_graph}, which is structured by the network's blueprint shown in figure \ref{fig:example_network/1_module_level_graph}. Figure \ref{fig:example_network/1_2_intermed_module} shows the graph structure for the module pointed by the intermediate nodes in the blueprint graph in figure \ref{fig:example_network/1_module_level_graph}.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=7cm]{example_network2/3_layer_level_graph.png}
+        \caption{Final Keras model representation.}
+        \label{fig:example_network/3_layer_level_graph}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{.45\textwidth}
+        \strut\vspace*{-\baselineskip}\newline\centering
+        \includegraphics[width=6cm]{example_network2/2_component_level_graph.png}
+        \caption{Assembled graph representing the connections of the conceptual model.}
+        \label{fig:example_network/2_component_level_graph}
+
+        \includegraphics[width=6cm]{example_network2/1_module_level_graph.png}
+        \caption{Blueprint graph structuring the connections of 3 intermediate modules, plus the input and output layers.}
+        \label{fig:example_network/1_module_level_graph}
+    
+        \includegraphics[width=6cm]{example_network2/1_2_intermed_module.png}
+        \caption{Module graph structuring the connections of 3 different layers.}
+        \label{fig:example_network/1_2_intermed_module}
+    \end{minipage}
+\end{figure}
+
+And the following will require more work in the following weeks:
+
+\begin{itemize}
+        \item Improve similarity metric used for speciation.
+        \item Crossover technique used for reproduction.
+        \item Mutations.
+    \end{itemize}
+    
+\section{Work schedule}
+
+The remaining tasks including implementation and documentation, as well as the latest deliveries are described in table \ref{table:workschedule}.
+
+\begin{table}[h]
+    \begin{tabular}{ |p{2cm}|p{3cm}|p{8cm}| } 
+        \hline
+        Date & Task type & Description
+        \\
+        \hline
+        09/10/2019 &
+        Implementation   &
+        Module crossovers and mutations, blueprint crossovers and mutations
+        \\
+        \hline
+        16/10/2019 &
+        Documentation  &
+        Documentation of current implementation details
+        \\
+        \hline
+        20/10/2019 &
+        Implementation  &
+        Similarity metric improvements.\\
+        \hline
+        25/10/2019 &
+        Implementation  &
+        Final structural implementations and experiment environment setup\\
+        \hline
+        30/10/2019 &
+        Documentation  &
+        Literature overview adjustments and implementation documentation\\
+        \hline
+        06/11/2019 &
+        Implementation  &
+        Remaining experiment adjustments\\
+        \hline
+        13/11/2019 &
+        Documentation  &
+        Experiment documentation and adjustments\\
+        \hline
+        20/11/2019 &
+        Documentation  &
+        Preliminary complete text\\
+        \hline
+        27/11/2019 &
+        Documentation  &
+        Final text\\
+        \hline
+    \end{tabular}
+    \caption{Work schedule planned for the remaining tasks.}
+    \label{table:workschedule}
+\end{table}
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+
+
+
+
+
+
+
+\begin{comment}
+
+SPECIATION: http://nn.cs.utexas.edu/?nodine:ugthesis10
+
+Preciso de ajuda para:
+
+    * Implementação não parece ser um problema (já tenho uma estrutura de código e bastante proficiência em Python)
+    * Estrutura do trabalho
+        * Resumo
+        * Abstract
+        * Introdução
+        * Revisão bibliográfica
+        * Implementação
+        * Resultados
+        * Conclusão
+    * Definir prazos para entregas menores
+        * Milestones
+        * Reuniões bi-semanais (?) ou entregas via web
+            * Revisões e sugestões
+    * Datas a serem cumpridas:
+        * Entrega do TG1 com sugestão do avaliador: até 10/10/19 (< 1 mes)
+        * Confirmar possibilidade de Diplomação: até 04/11/19
+        * Entrega do TG2 para a banca: até 30/11/19 (< 3 meses)
+        * Apresentação do TG2: até 20/12
+    * Marcio escolhe o avaliador do TG1, até onde eu sei.
+    
+here are many to cite: 
+    * Evolving Neural Networks Through Augmenting Topologies
+        2002
+        Kenneth O. Stanley and Risto Miikkulainen.
+        NEAT
+    * Evolving Deep Neural Networks
+        2017
+        Risto Miikkulainen
+        DeepNEAT e coDeepNEAT
+    * The new neat one (an implementation in cloud services I think?)
+    * Large-Scale Evolution of Image Classifiers-annotated.pdf
+        2017
+        Real et al.
+        Usa NEAT
+    * Genetic CNN-annotated
+        2017
+        Xie, Yuille
+        Uma approach parecida com NEAT (que não cita neat?? verificar)
+    * A survey on evolutionary machine learning
+        May 2019
+        Journal- Royal Society of New Zealand
+        DOI: 10.1080/03036758.2019.1609052
+    * Limited Evaluation Evolutionary Optimization of Large Neural Networks
+        June 2018
+        Jonas Prellberg and Oliver Kramer
+        Review de alguns parametros pro treinamento de redes neurais com evolução.. acho que NÃO É METALEARNING
+    * Simple Evolutionary Optimization Can Rival Stochastic Gradient Descent in Neural Networks
+        Outro caso de Evolutionary Optimization. Pode servir de exemplo. Temos o paper do lab sobre isso.
+        
+\end{comment}
+
+\end{document}
