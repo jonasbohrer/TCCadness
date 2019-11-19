@@ -15,8 +15,8 @@ input_configs = {
 }
 
 global_configs = {
-    "module_range" : ([1, 2], 'int'),
-    "component_range" : ([1, 2], 'int')
+    "module_range" : ([1, 1], 'int'),
+    "component_range" : ([1, 1], 'int')
 }
 
 output_configs = {
@@ -360,7 +360,6 @@ class Individual:
             plt.xlim(l-5,r+5)
             try:
                 plt.savefig(f'./images/gen{generation}_blueprint_{self.blueprint.mark}_module_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
-            except:p{generation}_blueprint_{self.blueprint.mark}_module_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
             except:
                 plt.savefig(f"./images/gen{generation}_blueprint_{self.blueprint.mark}_module_level_graph.png", format="PNG", bbox_inches="tight")
             plt.clf()
@@ -1022,6 +1021,7 @@ class Population:
 
             # Create representatives of blueprints
             self.create_individual_population(self.population_size, compiler=self.compiler)
+            logging.log(21, f"Created individuals for blueprints: {[(item.name, item.blueprint.mark) for item in self.individuals]}")
 
             # Iterate fitness and record the iteration results
             iteration = self.iterate_fitness(training_epochs, validation_split, current_generation=generation)
@@ -1063,14 +1063,16 @@ class Population:
         logging.log(21, f"Current {len(self.individuals)} individuals: {[item.name for item in self.individuals]}")
         
         # Summarize Blueprints
-        logging.log(21, f"Current {len(self.blueprints)} blueprints: \n[Mark, Val loss, Val acc, Species]\n{np.array([[item.mark] + item.weighted_scores + [None if item.species == None else item.species.name] for item in self.blueprints])}")
+        blueprint_info = np.array2string(np.array([[item.mark] + item.weighted_scores + [None if item.species == None else item.species.name] + list(item.get_kmeans_representation()) for item in self.blueprints])).replace("\n", "").replace("] [", "] \n[")
+        logging.log(21, f"Current {len(self.blueprints)} blueprints: \n[Mark, Test loss, Test acc, Species, Node Count, Edge Count, Neuron Count]\n{blueprint_info}")
         logging.log(21, f"Current {len(self.blueprint_species)} blueprint species: {[item.name for item in self.blueprint_species]}")
         logging.log(21, f"NOTE: Scores are considering past iteration. Not considering current blueprints for they are not yet all evaluated.")
         for species in self.blueprint_species:
             logging.log(21, f"Current blueprint species {species.name} scores: {species.weighted_scores}. members: {[item.mark for item in species.group]}")
             
         # Summarize Modules
-        logging.log(21, f"Current {len(self.modules)} modules: \n[Mark, Val loss, Val acc, Species]\n{np.array([[item.mark] + item.weighted_scores + [None if item.species == None else item.species.name] for item in self.modules])}")
+        module_info = np.array2string(np.array([[item.mark] + item.weighted_scores + [None if item.species == None else item.species.name] + list(item.get_kmeans_representation()) for item in self.modules])).replace("\n", "").replace("] [", "] \n[")
+        logging.log(21, f"Current {len(self.modules)} modules: \n[Mark, Test loss, Test acc, Species, Node Count, Edge Count, Neuron Count]\n{module_info}")
         logging.log(21, f"Current {len(self.module_species)} module species: {[item.name for item in self.module_species]}")
         logging.log(21, f"NOTE: Scores are considering past iteration. Not considering current modules for they are not yet all evaluated.")
         for species in self.module_species:
@@ -1855,7 +1857,7 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
     x_train /= 255
     x_test /= 255
     validation_split = 0.15
-    (x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
+    #(x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
 
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
@@ -1898,10 +1900,10 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
   
 if __name__ == "__main__":
 
-    generations = 5
-    training_epochs = 1
-    population_size = 5
-    blueprint_population_size = 5
+    generations = 10
+    training_epochs = 5
+    population_size = 6
+    blueprint_population_size = 6
     module_population_size = 20
     n_blueprint_species = 3
     n_module_species = 4

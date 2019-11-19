@@ -4,3 +4,4 @@
 *.pyc
 *.csv
 *.h5
+Keras-CoDeepNEAT/runs/large_sample_run/test.log
