@@ -8,6 +8,9 @@ from keras.utils.vis_utils import plot_model
 from sklearn.cluster import KMeans
 from sklearn.neighbors import NearestCentroid
 from sklearn.preprocessing import scale
+from keras.preprocessing.image import ImageDataGenerator
+from keras.callbacks import LearningRateScheduler
+from keras import regularizers
 
 input_configs = {
     "module_range" : ([1, 1], 'int'),
@@ -29,12 +32,12 @@ possible_inputs = {
 }
 
 possible_components = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1, 2], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
+    "conv2d": (keras.layers.Conv2D, {"filters": ([24,64], 'list'), "kernel_size": ([3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
     #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
 }
 
 possible_outputs = {
-    "dense": (keras.layers.Dense, {"units": ([32,128], 'int')})
+    "dense": (keras.layers.Dense, {"units": ([48,256], 'int'), "activation": (["relu"], 'list')})
 }
 
 possible_complementary_outputs = {
@@ -42,7 +45,7 @@ possible_complementary_outputs = {
 }
 
 possible_complementary_components = {
-    #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2, 3], 'list')}),
+    "maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
     "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
 }
 
@@ -94,6 +97,7 @@ class Datasets:
         self.training=training
         self.validation=validation
         self.test=test
+        self.custom_fit_args = None
     
     @property
     def shape(self):
@@ -317,13 +321,12 @@ class Species:
     def update_weighted_scores(self):
         if len(self.group) > 0:
             weighted_scores = [item.weighted_scores for item in self.group if item.weighted_scores != [99,0]]
-        if len(weighted_scores) > 0:
-            avg_test_loss = np.array(weighted_scores)[:,0].mean()
-            avg_test_acc = np.array(weighted_scores)[:,1].mean()
-            self.weighted_scores = [avg_test_loss, avg_test_acc]
-            logging.log(21, f"Updated weighted scores for species {self.name}: {self.weighted_scores} based on {weighted_scores}")
-        else:
-            pass
+
+            if len(weighted_scores) > 0:
+                avg_test_loss = np.array(weighted_scores)[:,0].mean()
+                avg_test_acc = np.array(weighted_scores)[:,1].mean()
+                self.weighted_scores = [avg_test_loss, avg_test_acc]
+                logging.log(21, f"Updated weighted scores for species {self.name}: {self.weighted_scores} based on {weighted_scores}")
         
 class Individual:
     """
@@ -478,15 +481,18 @@ class Individual:
         except:
             plot_model(self.model, to_file=f'./images/gen{generation}_blueprint_{self.blueprint.mark}_layer_level_graph.png', show_shapes=True, show_layer_names=True)
 
-    def fit(self, input_x, input_y, training_epochs=1, validation_split=0.15, current_generation=""):
+    def fit(self, input_x, input_y, training_epochs=1, validation_split=0.15, current_generation="", custom_fit_args=None):
         """
         Fits the keras model representing the topology.
         """
 
         logging.info(f"Fitting one individual for {training_epochs} epochs")
         self.generate(generation=current_generation)
-        fitness = self.model.fit(input_x, input_y, epochs=training_epochs, validation_split=validation_split, batch_size=512)
-        #print(fitness)
+        if custom_fit_args is not None:
+            fitness = self.model.fit_generator(**custom_fit_args)
+        else:
+            fitness = self.model.fit(input_x, input_y, epochs=training_epochs, validation_split=validation_split, batch_size=512)
+
         logging.info(f"Fitness for individual {self.name} using blueprint {self.blueprint.mark} after {training_epochs} epochs: {fitness.history}")
 
         return fitness
@@ -683,7 +689,10 @@ class Population:
         test_y = self.datasets.test[1]
 
         for individual in self.individuals:
-            history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation)
+            if (self.datasets.custom_fit_args is not None):
+                history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation, custom_fit_args=self.datasets.custom_fit_args)
+            else:
+                history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation)
             score = individual.score(test_x, test_y)
 
             iteration.append([individual.name, individual.blueprint.mark, score, history])
@@ -941,23 +950,30 @@ class Population:
                              GraphOperator().mutate_by_node_addition_in_edges,
                              GraphOperator().mutate_by_node_replacement]
 
-        candidates = random.sample(self.modules, k=round(len(self.modules)*percent))
-
-        for candidate in candidates:
-            mutation_operator = random.choice(mutation_variants)
-            try:
-                mutated_graph = mutation_operator(candidate.component_graph, generator_function, args)
-                if (mutated_graph != None):
-                    logging.log(21, f"Mutated candidate module {candidate.mark} with {mutation_operator}.")
-                    candidate.component_graph = mutated_graph
-                else:
-                    pass
-            except:
-                logging.log(21, f"Impossible to mutate candidate module {candidate.mark} with {mutation_operator}.")
+        if len(self.modules) > 1:
+            #Keep the 10% best intact
+            candidates = self.modules
+            candidates.sort(key=lambda x: (x.weighted_scores[1], -x.weighted_scores[0]), reverse=True)
+            candidates = candidates[max(1, int(len(candidates)/10)):]
             
+            candidates = random.sample(candidates, k=round(len(self.modules)*percent))
 
-        logging.log(21, f"Mutated {len(candidates)} modules.")
-        pass
+            for candidate in candidates:
+                mutation_operator = random.choice(mutation_variants)
+                try:
+                    mutated_graph = mutation_operator(candidate.component_graph, generator_function, args)
+                    if (mutated_graph != None):
+                        logging.log(21, f"Mutated candidate module {candidate.mark} with {mutation_operator}.")
+                        candidate.component_graph = mutated_graph
+                    else:
+                        pass
+                except:
+                    logging.log(21, f"Impossible to mutate candidate module {candidate.mark} with {mutation_operator}.")
+
+            logging.log(21, f"Mutated {len(candidates)} modules.")
+
+        else:
+            pass
     
     def mutate_blueprints(self, percent=0.5):
         """
@@ -972,19 +988,27 @@ class Population:
                              GraphOperator().mutate_by_node_addition_in_edges,
                              GraphOperator().mutate_by_node_replacement]
 
-        candidates = random.sample(self.blueprints, k=int(len(self.blueprints)*percent))
+        if len(self.blueprints) > 1:
+            #Keep the 10% best intact
+            candidates = self.blueprints
+            candidates.sort(key=lambda x: (x.weighted_scores[1], -x.weighted_scores[0]), reverse=True)
+            candidates = candidates[max(1, int(len(candidates)/10)):]
+            
+            candidates = random.sample(candidates, k=round(len(self.blueprints)*percent))
 
-        for candidate in candidates:
-            mutation_operator = random.choice(mutation_variants)
-            try:
-                mutated_graph = mutation_operator(candidate.module_graph, generator_function, args)
-                logging.log(21, f"Mutated candidate blueprint {candidate.mark} to graph: {mutated_graph.nodes()} with {mutation_operator}.")
-                candidate.module_graph = mutated_graph
-            except:
-                logging.log(21, f"Impossible to mutate candidate blueprint {candidate.mark} with {mutation_operator}.")
+            for candidate in candidates:
+                mutation_operator = random.choice(mutation_variants)
+                try:
+                    mutated_graph = mutation_operator(candidate.module_graph, generator_function, args)
+                    logging.log(21, f"Mutated candidate blueprint {candidate.mark} to graph: {mutated_graph.nodes()} with {mutation_operator}.")
+                    candidate.module_graph = mutated_graph
+                except:
+                    logging.log(21, f"Impossible to mutate candidate blueprint {candidate.mark} with {mutation_operator}.")
 
-        logging.log(21, f"Mutated {len(candidates)} blueprints.")
-        pass
+            logging.log(21, f"Mutated {len(candidates)} blueprints.")
+
+        else:
+            pass
 
     def update_shared_fitness(self):
         for module in self.modules:
@@ -1779,7 +1803,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     
     # The data, split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-    (x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
+    #(x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
@@ -1795,6 +1819,19 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     x_train /= 255
     x_test /= 255
     validation_split = 0.15
+    #training
+    batch_size = 128
+
+    #data augmentation
+    datagen = ImageDataGenerator(
+        rotation_range=15,
+        width_shift_range=0.1,
+        height_shift_range=0.1,
+        horizontal_flip=True,
+        )
+    datagen.fit(x_train)
+
+    print("Using data augmentation.")
 
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
@@ -1806,7 +1843,18 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     logging.warning('This will get logged to a file')
     logging.info(f"Hi, this is a test run.")
 
-    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.RMSprop(), "metrics":["accuracy"]}
+
+    custom_fit_args = {"generator": datagen.flow(x_train, y_train, batch_size=batch_size),
+    "steps_per_epoch": x_train.shape[0] // batch_size,
+    "epochs": training_epochs,
+    "verbose": 1,
+    "validation_data": (x_test,y_test),
+    #"callbacks": [LearningRateScheduler(lr_schedule)]
+    }
+
+    #my_dataset.custom_fit_args = custom_fit_args
+    my_dataset.custom_fit_args = None
 
     population = Population(my_dataset, input_shape=x_train.shape[1:], population_size=population_size, compiler=compiler)
   
@@ -1826,14 +1874,17 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     #Train the best model
     best_model = population.return_best_individual()
 
+    #Set data augmentation
+    my_dataset.custom_fit_args = custom_fit_args
+
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 1, validation_split)
+        population.train_full_model(best_model, 150, validation_split)
     except:
         population.individuals.remove(best_model)
         best_model = population.return_best_individual()
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 1, validation_split)
+        population.train_full_model(best_model, 150, validation_split)
 
 def run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species):
     from keras.datasets import mnist
@@ -1900,13 +1951,13 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
   
 if __name__ == "__main__":
 
-    generations = 10
-    training_epochs = 5
+    generations = 20
+    training_epochs = 1
     population_size = 6
     blueprint_population_size = 6
     module_population_size = 20
     n_blueprint_species = 3
     n_module_species = 4
     
-    #run_cifar10_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
-    run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
+    run_cifar10_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
+    #run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
