@@ -1,4 +1,4 @@
-import keras, logging, random, pydot, copy, uuid
+import keras, logging, random, pydot, copy, uuid, os, sys
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -8,8 +8,9 @@ from keras.utils.vis_utils import plot_model
 from sklearn.cluster import KMeans
 from sklearn.neighbors import NearestCentroid
 from sklearn.preprocessing import scale
+from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import LearningRateScheduler
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras import regularizers
 
 input_configs = {
@@ -32,7 +33,7 @@ possible_inputs = {
 }
 
 possible_components = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([24,64], 'list'), "kernel_size": ([3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
+    "conv2d": (keras.layers.Conv2D, {"filters": ([16,64], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1, 2], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
     #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
 }
 
@@ -45,7 +46,7 @@ possible_complementary_outputs = {
 }
 
 possible_complementary_components = {
-    "maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
+    #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
     "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
 }
 
@@ -491,7 +492,7 @@ class Individual:
         if custom_fit_args is not None:
             fitness = self.model.fit_generator(**custom_fit_args)
         else:
-            fitness = self.model.fit(input_x, input_y, epochs=training_epochs, validation_split=validation_split, batch_size=512)
+            fitness = self.model.fit(input_x, input_y, epochs=training_epochs, validation_split=validation_split, batch_size=128)
 
         logging.info(f"Fitness for individual {self.name} using blueprint {self.blueprint.mark} after {training_epochs} epochs: {fitness.history}")
 
@@ -1803,7 +1804,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     
     # The data, split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-    #(x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
+    (x_train, y_train), (x_test, y_test) = (x_train[0:20000], y_train[0:20000]), (x_test[0:2000], y_test[0:2000])
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
@@ -1845,12 +1846,15 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.RMSprop(), "metrics":["accuracy"]}
 
+    es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
+    mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+
     custom_fit_args = {"generator": datagen.flow(x_train, y_train, batch_size=batch_size),
     "steps_per_epoch": x_train.shape[0] // batch_size,
     "epochs": training_epochs,
     "verbose": 1,
     "validation_data": (x_test,y_test),
-    #"callbacks": [LearningRateScheduler(lr_schedule)]
+    "callbacks": [es, mc]
     }
 
     #my_dataset.custom_fit_args = custom_fit_args
@@ -1879,12 +1883,12 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 150, validation_split)
+        population.train_full_model(best_model, 100, validation_split)
     except:
         population.individuals.remove(best_model)
         best_model = population.return_best_individual()
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 150, validation_split)
+        population.train_full_model(best_model, 100, validation_split)
 
 def run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species):
     from keras.datasets import mnist
@@ -1952,12 +1956,23 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
 if __name__ == "__main__":
 
     generations = 20
-    training_epochs = 1
+    training_epochs = 2
     population_size = 6
     blueprint_population_size = 6
-    module_population_size = 20
+    module_population_size = 30
     n_blueprint_species = 3
     n_module_species = 4
+
+    def create_dir(dir):
+        if not os.path.exists(os.path.dirname(dir)):
+            try:
+                os.makedirs(os.path.dirname(dir))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
+    create_dir("models/")
+    create_dir("images/")
     
     run_cifar10_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
     #run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
