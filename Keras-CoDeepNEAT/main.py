@@ -33,7 +33,7 @@ possible_inputs = {
 }
 
 possible_components = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([16,64], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1, 2], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
+    "conv2d": (keras.layers.Conv2D, {"filters": ([16,64], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
     #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
 }
 
