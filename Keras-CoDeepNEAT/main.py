@@ -1804,7 +1804,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     
     # The data, split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-    (x_train, y_train), (x_test, y_test) = (x_train[0:20000], y_train[0:20000]), (x_test[0:2000], y_test[0:2000])
+    #(x_train, y_train), (x_test, y_test) = (x_train[0:20000], y_train[0:20000]), (x_test[0:2000], y_test[0:2000])
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
@@ -1834,7 +1834,8 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     print("Using data augmentation.")
 
-    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    my_dataset = Datasets(training=[x_train[0:20000], y_train[0:20000]], test=[x_test[0:20000], y_test[0:20000]])
+    #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
                         filemode='w+', level=logging.INFO,
@@ -1856,6 +1857,9 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     "validation_data": (x_test,y_test),
     "callbacks": [es, mc]
     }
+                                
+    improved_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    improved_dataset.custom_fit_args = custom_fit_args
 
     #my_dataset.custom_fit_args = custom_fit_args
     my_dataset.custom_fit_args = None
@@ -1879,8 +1883,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     best_model = population.return_best_individual()
 
     #Set data augmentation
-    my_dataset.custom_fit_args = custom_fit_args
-    population.datasets = my_dataset
+    population.datasets = improved_dataset
 
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
