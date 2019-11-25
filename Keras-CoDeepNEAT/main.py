@@ -1880,6 +1880,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     #Set data augmentation
     my_dataset.custom_fit_args = custom_fit_args
+    population.datasets = my_dataset
 
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
