@@ -1,4 +1,4 @@
-import keras, logging, random, pydot, copy, uuid, os, sys
+import keras, logging, random, pydot, copy, uuid, os, sys, csv, json
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -12,6 +12,8 @@ from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import EarlyStopping, ModelCheckpoint, CSVLogger
 from keras import regularizers
+
+basepath = "./"     #"/dbfs/FileStore/"
 
 input_configs = {
     "module_range" : ([1, 1], 'int'),
@@ -49,7 +51,6 @@ possible_complementary_components = {
     #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
     "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
 }
-
 
 class HistoricalMarker:
     
@@ -363,9 +364,9 @@ class Individual:
             l,r = plt.xlim()
             plt.xlim(l-5,r+5)
             try:
-                plt.savefig(f'./images/gen{generation}_blueprint_{self.blueprint.mark}_module_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+                plt.savefig(f'{basepath}/images/gen{generation}_blueprint_{self.blueprint.mark}_module_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
             except:
-                plt.savefig(f"./images/gen{generation}_blueprint_{self.blueprint.mark}_module_level_graph.png", format="PNG", bbox_inches="tight")
+                plt.savefig(f"{basepath}/images/gen{generation}_blueprint_{self.blueprint.mark}_module_level_graph.png", format="PNG", bbox_inches="tight")
             plt.clf()
 
         assembled_module_graph = nx.DiGraph()
@@ -388,9 +389,9 @@ class Individual:
             l,r = plt.xlim()
             plt.xlim(l-5,r+5)
             try:
-                plt.savefig(f'./images/gen{generation}_blueprint_{self.blueprint.mark}_component_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+                plt.savefig(f'{basepath}/images/gen{generation}_blueprint_{self.blueprint.mark}_component_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
             except:
-                plt.savefig(f"./images/gen{generation}_blueprint_{self.blueprint.mark}_component_level_graph.png", format="PNG", bbox_inches="tight")
+                plt.savefig(f"{basepath}/images/gen{generation}_blueprint_{self.blueprint.mark}_component_level_graph.png", format="PNG", bbox_inches="tight")
             plt.clf()
 
         logging.log(21, f"Generated the assembled graph for blueprint {self.blueprint.mark}: {assembled_module_graph.nodes()}")
@@ -478,9 +479,9 @@ class Individual:
         self.model = keras.models.Model(inputs=model_input, outputs=layer_map[max(layer_map)][-1])
         self.model.compile(**self.compiler)
         try:
-            plot_model(self.model, to_file=f'./images/gen{generation}_blueprint_{self.blueprint.mark}_layer_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
+            plot_model(self.model, to_file=f'{basepath}/images/gen{generation}_blueprint_{self.blueprint.mark}_layer_level_graph_parent1id{self.blueprint.parents[0].mark}_parent2id{self.blueprint.parents[1].mark}.png', show_shapes=True, show_layer_names=True)
         except:
-            plot_model(self.model, to_file=f'./images/gen{generation}_blueprint_{self.blueprint.mark}_layer_level_graph.png', show_shapes=True, show_layer_names=True)
+            plot_model(self.model, to_file=f'{basepath}/images/gen{generation}_blueprint_{self.blueprint.mark}_layer_level_graph.png', show_shapes=True, show_layer_names=True)
 
     def fit(self, input_x, input_y, training_epochs=1, validation_split=0.15, current_generation="", custom_fit_args=None):
         """
@@ -696,7 +697,12 @@ class Population:
                 history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation)
             score = individual.score(test_x, test_y)
 
-            iteration.append([individual.name, individual.blueprint.mark, score, history])
+            iteration.append([individual.name,
+                              individual.blueprint.mark,
+                              score,
+                              individual.blueprint.get_kmeans_representation(),
+                              (None if individual.blueprint.species == None else individual.blueprint.species.name),
+                              current_generation])
 
         return iteration
 
@@ -1063,7 +1069,7 @@ class Population:
             logging.log(21, f"Best model chosen: {best_fitting}")
             
             try:
-                self.return_individual(best_fitting[0]).model.save(f"./models/best_generation_{generation}.h5")
+                self.return_individual(best_fitting[0]).model.save(f"{basepath}/models/best_generation_{generation}.h5")
             except:
                 logging.error(f"Model from generation {generation} could not be saved.")
 
@@ -1079,6 +1085,10 @@ class Population:
 
             # Summarize execution
             self.summary(generation)
+
+        with open(f"{basepath}iterations.csv", "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(iterations)
 
         return best_scores
 
@@ -1121,7 +1131,10 @@ class Population:
         logging.info(f"Full model training scores: {score}")
         logging.info(f"Full model training history: {history.history}")
 
-        individual.model.save(f"./models/full_model_indiv{individual.name}_blueprint{individual.blueprint.mark}.h5")
+        individual.model.save(f"{basepath}/models/full_model_indiv{individual.name}_blueprint{individual.blueprint.mark}.h5")
+
+        with open(f'{basepath}training.json', 'w', encoding='utf-8') as f:
+            json.dump(history.history, f, ensure_ascii=False, indent=4)
 
         # summarize history for accuracy
         plt.plot(history.history['acc'])
@@ -1131,7 +1144,7 @@ class Population:
         plt.xlabel('epoch')
         plt.legend(['train', 'test'], loc='upper left')
         plt.tight_layout()
-        plt.savefig(f'./images/history_acc', show_shapes=True, show_layer_names=True)
+        plt.savefig(f'{basepath}/images/history_acc', show_shapes=True, show_layer_names=True)
         plt.clf()
 
         # summarize history for loss
@@ -1142,7 +1155,7 @@ class Population:
         plt.xlabel('epoch')
         plt.legend(['train', 'test'], loc='upper left')
         plt.tight_layout()
-        plt.savefig(f'./images/history_loss', show_shapes=True, show_layer_names=True)
+        plt.savefig(f'{basepath}/images/history_loss', show_shapes=True, show_layer_names=True)
 
         return score, history
 
@@ -1168,7 +1181,7 @@ class GraphOperator:
         plt.subplot(121)
         nx.draw(graph, nx.drawing.nx_agraph.graphviz_layout(graph, prog='dot'), with_labels=True, font_weight='bold', font_size=6)
         plt.tight_layout()
-        plt.savefig(f"./images/{filename}", format="PNG", bbox_inches="tight")
+        plt.savefig(f"{basepath}/images/{filename}", format="PNG", bbox_inches="tight")
         plt.clf()
 
     def random_component(self, possible_components, possible_complementary_components = None):
