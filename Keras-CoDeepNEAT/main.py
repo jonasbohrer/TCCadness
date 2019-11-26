@@ -10,7 +10,7 @@ from sklearn.neighbors import NearestCentroid
 from sklearn.preprocessing import scale
 from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.callbacks import EarlyStopping, ModelCheckpoint, CSVLogger
 from keras import regularizers
 
 input_configs = {
@@ -1847,15 +1847,16 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.RMSprop(), "metrics":["accuracy"]}
 
-    es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
+    es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience=10)
     mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+    csv_logger = CSVLogger('training.log')
 
     custom_fit_args = {"generator": datagen.flow(x_train, y_train, batch_size=batch_size),
     "steps_per_epoch": x_train.shape[0] // batch_size,
     "epochs": training_epochs,
     "verbose": 1,
     "validation_data": (x_test,y_test),
-    "callbacks": [es, mc]
+    "callbacks": [es, csv_logger]
     }
                                 
     improved_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
