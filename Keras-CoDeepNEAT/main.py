@@ -621,6 +621,11 @@ class Population:
         Can be evolved over generations.
         """
 
+        for item in self.individuals:
+            if item.model != None:
+                del item.model
+            del item
+        
         new_individuals = []
 
         for n in range(size):
@@ -1046,7 +1051,7 @@ class Population:
         for generation in range(generations):
             logging.info(f" -- Iterating generation {generation} -- ")
             print(f" -- Iterating generation {generation} -- ")
-            logging.log(21, f"Currently {len(self.modules)} modules, {len(self.blueprints)} blueprints, latest iteration: {np.array(iteration)}")
+            logging.log(21, f"Currently {len(self.modules)} modules, {len(self.blueprints)} blueprints, latest iteration: {iteration}")
             logging.log(21, f"Current modules: {[item.mark for item in self.modules]}")
             logging.log(21, f"Current blueprints: {[item.mark for item in self.blueprints]}")
 
@@ -1057,7 +1062,7 @@ class Population:
             # Iterate fitness and record the iteration results
             iteration = self.iterate_fitness(training_epochs, validation_split, current_generation=generation)
             iterations.append(iteration)
-            logging.log(21, f"This iteration: {np.array(iteration)}")
+            logging.log(21, f"This iteration: {iteration}")
 
             # Update weighted scores of species
             self.update_shared_fitness()
@@ -1889,7 +1894,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     # Iterate generating, fitting, scoring, speciating, reproducing and mutating.
     iteration = population.iterate_generations(generations=generations, training_epochs=training_epochs, validation_split=validation_split)
 
-    print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", np.array(iteration))
+    print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", (iteration))
 
     #Train the best model
     best_model = population.return_best_individual()
@@ -1982,7 +1987,7 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
     # Iterate generating, fitting, scoring, speciating, reproducing and mutating.
     iteration = population.iterate_generations(generations=generations, training_epochs=training_epochs, validation_split=validation_split)
 
-    print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", np.array(iteration))
+    print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", (iteration))
 
     #Set data augmentation
     population.datasets = improved_dataset
