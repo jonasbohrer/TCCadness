@@ -31,16 +31,16 @@ output_configs = {
 }
 
 possible_inputs = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([48,48], 'int'), "kernel_size": ([1], 'list'), "activation": (["relu"], 'list')})
+    "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([1], 'list'), "activation": (["relu"], 'list')})
 }
 
 possible_components = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([16,64], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
+    "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
     #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
 }
 
 possible_outputs = {
-    "dense": (keras.layers.Dense, {"units": ([48,256], 'int'), "activation": (["relu"], 'list')})
+    "dense": (keras.layers.Dense, {"units": ([32,128], 'int'), "activation": (["relu"], 'list')})
 }
 
 possible_complementary_outputs = {
@@ -1845,8 +1845,6 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
         )
     datagen.fit(x_train)
 
-    print("Using data augmentation.")
-
     my_dataset = Datasets(training=[x_train[0:20000], y_train[0:20000]], test=[x_test[0:20000], y_test[0:20000]])
     #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
@@ -1898,6 +1896,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     #Set data augmentation
     population.datasets = improved_dataset
+    print("Using data augmentation.")
 
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
@@ -1930,7 +1929,17 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
     x_train /= 255
     x_test /= 255
     validation_split = 0.15
-    #(x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
+    #training
+    batch_size = 128
+
+    #data augmentation
+    datagen = ImageDataGenerator(
+        rotation_range=15,
+        width_shift_range=0.1,
+        height_shift_range=0.1,
+        horizontal_flip=True,
+        )
+    datagen.fit(x_train)
 
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
@@ -1943,6 +1952,22 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
     logging.info(f"Hi, this is a test run.")
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+
+    es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience=15)
+    mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+    csv_logger = CSVLogger('training.log')
+
+    custom_fit_args = {"generator": datagen.flow(x_train, y_train, batch_size=batch_size),
+    "steps_per_epoch": x_train.shape[0] // batch_size,
+    "epochs": training_epochs,
+    "verbose": 1,
+    "validation_data": (x_test,y_test),
+    "callbacks": [es, csv_logger]
+    }
+                                
+    improved_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    improved_dataset.custom_fit_args = custom_fit_args
+    my_dataset.custom_fit_args = None
 
     population = Population(my_dataset, input_shape=x_train.shape[1:], population_size=population_size, compiler=compiler)
     
@@ -1959,24 +1984,27 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
 
     print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", np.array(iteration))
 
+    #Set data augmentation
+    population.datasets = improved_dataset
+
     #Train the best model
     best_model = population.return_best_individual()
 
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 50, validation_split)
+        population.train_full_model(best_model, 100, validation_split)
     except:
         population.individuals.remove(best_model)
         best_model = population.return_best_individual()
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 50, validation_split)
+        population.train_full_model(best_model, 100, validation_split)
   
 if __name__ == "__main__":
 
     generations = 20
     training_epochs = 2
     population_size = 6
-    blueprint_population_size = 6
+    blueprint_population_size = 10
     module_population_size = 30
     n_blueprint_species = 3
     n_module_species = 4
@@ -1992,5 +2020,5 @@ if __name__ == "__main__":
     create_dir("models/")
     create_dir("images/")
     
-    run_cifar10_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
-    #run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
+    #run_cifar10_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
+    run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species)
