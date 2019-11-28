@@ -15,6 +15,7 @@ from keras import regularizers
 
 basepath = "./"     #"/dbfs/FileStore/"
 SAMPLE_SIZE = 10000
+TEST_SAMPLE_SIZE = 1000
 
 input_configs = {
     "module_range" : ([1, 1], 'int'),
@@ -629,6 +630,12 @@ class Population:
 
         new_individuals = []
 
+        K.clear_session()
+        ## TODO: change the parameterization of the compiler variable.
+        # Currently here because the Optimizer needs to be instantiated in every TFGraph crated, because K.clear_session deletes it.
+        # compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+        compiler["optimizer"] = eval(compiler['optimizer'])
+
         for n in range(size):
 
             #Create a blueprint
@@ -693,10 +700,11 @@ class Population:
         #(batch, channels, rows, cols)
         # Please murder me for this part I deserve it (random.sample doesn't work aaaah!!!)
         i = random.randint(0,59999-SAMPLE_SIZE)
+        j = random.randint(0,9999-TEST_SAMPLE_SIZE)
         input_x = self.datasets.training[0][i:i+SAMPLE_SIZE]
         input_y = self.datasets.training[1][i:i+SAMPLE_SIZE]
-        test_x = self.datasets.test[0]
-        test_y = self.datasets.test[1]
+        test_x = self.datasets.test[0][j:j+TEST_SAMPLE_SIZE]
+        test_y = self.datasets.test[1][j:j+TEST_SAMPLE_SIZE]
 
         for individual in self.individuals:
             if (self.datasets.custom_fit_args is not None):
@@ -1870,7 +1878,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     logging.warning('This will get logged to a file')
     logging.info(f"Hi, this is a test run.")
 
-    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.RMSprop(), "metrics":["accuracy"]}
+    compiler = {"loss":"categorical_crossentropy", "optimizer":"keras.optimizers.Adam(lr=0.005)", "metrics":["accuracy"]}
 
     es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience=15)
     mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
@@ -1955,8 +1963,8 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
         )
     datagen.fit(x_train)
 
-    #my_dataset = Datasets(training=[x_train[0:10000], y_train[0:10000]], test=[x_test, y_test])
-    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    my_dataset = Datasets(training=[x_train[0:1000], y_train[0:1000]], test=[x_test[0:100], y_test[0:100]])
+    #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
                         filemode='w+', level=logging.INFO,
@@ -1966,7 +1974,7 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
     logging.warning('This will get logged to a file')
     logging.info(f"Hi, this is a test run.")
 
-    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+    compiler = {"loss":"categorical_crossentropy", "optimizer":"keras.optimizers.Adam(lr=0.005)", "metrics":["accuracy"]}
 
     es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience=15)
     mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
