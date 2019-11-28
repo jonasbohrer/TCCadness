@@ -1963,8 +1963,8 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
         )
     datagen.fit(x_train)
 
-    my_dataset = Datasets(training=[x_train[0:1000], y_train[0:1000]], test=[x_test[0:100], y_test[0:100]])
-    #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    #my_dataset = Datasets(training=[x_train[0:1000], y_train[0:1000]], test=[x_test[0:100], y_test[0:100]])
+    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
                         filemode='w+', level=logging.INFO,
