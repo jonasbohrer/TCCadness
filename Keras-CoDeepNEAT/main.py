@@ -14,6 +14,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, CSVLogger
 from keras import regularizers
 
 basepath = "./"     #"/dbfs/FileStore/"
+SAMPLE_SIZE = 10000
 
 input_configs = {
     "module_range" : ([1, 1], 'int'),
@@ -690,8 +691,10 @@ class Population:
         iteration = []
 
         #(batch, channels, rows, cols)
-        input_x = self.datasets.training[0]
-        input_y = self.datasets.training[1]
+        # Please murder me for this part I deserve it (random.sample doesn't work aaaah!!!)
+        i = random.randint(0,59999-SAMPLE_SIZE)
+        input_x = self.datasets.training[0][i:i+SAMPLE_SIZE]
+        input_y = self.datasets.training[1][i:i+SAMPLE_SIZE]
         test_x = self.datasets.test[0]
         test_y = self.datasets.test[1]
 
@@ -937,10 +940,14 @@ class Population:
                     logging.log(21, f"Excluding blueprint: {preferable_exclusions[n].mark}")
                     self.blueprints.remove(preferable_exclusions[n])
                 else:
-                    logging.log(21, f"Excluding blueprint: {exclusions[n].mark}")
-                    self.blueprints.remove(exclusions[n])
+                    preferable_exclusions = exclusions
+                    logging.log(21, f"Excluding blueprint: {preferable_exclusions[n].mark}")
+                    self.blueprints.remove(preferable_exclusions[n])
             except:
                 pass
+        
+        for item in preferable_exclusions:
+            del item
 
         if offspring != [] and offspring != None:
             logging.log(21, f"Including offspring blueprints: {[item.mark for item in offspring]}")
@@ -1048,6 +1055,7 @@ class Population:
         iterations = []
         best_scores = []
         csv_history = open(f"{basepath}iterations.csv", "w", newline="")
+        csv_history.write("indiv,blueprint,scores,features,species,generation\n")
         csv_history.close()
 
         for generation in range(generations):
@@ -1065,7 +1073,7 @@ class Population:
             iteration = self.iterate_fitness(training_epochs, validation_split, current_generation=generation)
             with open(f"{basepath}iterations.csv", "a", newline="") as csv_history:
                 csv_history_writer = csv.writer(csv_history)
-                csv_history_writer.writerows([iteration])
+                csv_history_writer.writerows(iteration)
             iterations.append(iteration)
             logging.log(21, f"This iteration: {iteration}")
 
@@ -1083,6 +1091,9 @@ class Population:
             except:
                 logging.error(f"Model from generation {generation} could not be saved.")
 
+            # Summarize execution
+            self.summary(generation)
+
             # Crossover, mutate and update species.
             if generation != generations:
                 self.crossover_modules()
@@ -1093,9 +1104,6 @@ class Population:
                 self.mutate_blueprints()
                 self.update_blueprint_species()
 
-            # Summarize execution
-            self.summary(generation)
-        
         return best_scores
 
     def summary(self, generation=""):
@@ -1211,9 +1219,9 @@ class GraphOperator:
             keras_complementary_component = None
 
         new_component = Component(representation=[component_def, parameter_def],
-                                    keras_component=component_def(**parameter_def),
+                                    keras_component=None,#component_def(**parameter_def),
                                     complementary_component=complementary_component,
-                                    keras_complementary_component=keras_complementary_component,
+                                    keras_complementary_component=None,#keras_complementary_component,
                                     component_type=component_type)
         return new_component
 
@@ -1947,8 +1955,8 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
         )
     datagen.fit(x_train)
 
-    my_dataset = Datasets(training=[x_train[0:10000], y_train[0:10000]], test=[x_test[0:1000], y_test[0:1000]])
-    #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    #my_dataset = Datasets(training=[x_train[0:10000], y_train[0:10000]], test=[x_test, y_test])
+    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
                         filemode='w+', level=logging.INFO,
