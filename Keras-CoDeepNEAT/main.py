@@ -625,7 +625,7 @@ class Population:
             if item.model != None:
                 del item.model
             del item
-        
+
         new_individuals = []
 
         for n in range(size):
@@ -1047,6 +1047,8 @@ class Population:
         iteration = None
         iterations = []
         best_scores = []
+        csv_history = open(f"{basepath}iterations.csv", "w", newline="")
+        csv_history.close()
 
         for generation in range(generations):
             logging.info(f" -- Iterating generation {generation} -- ")
@@ -1061,6 +1063,9 @@ class Population:
 
             # Iterate fitness and record the iteration results
             iteration = self.iterate_fitness(training_epochs, validation_split, current_generation=generation)
+            with open(f"{basepath}iterations.csv", "a", newline="") as csv_history:
+                csv_history_writer = csv.writer(csv_history)
+                csv_history_writer.writerows([iteration])
             iterations.append(iteration)
             logging.log(21, f"This iteration: {iteration}")
 
@@ -1090,11 +1095,7 @@ class Population:
 
             # Summarize execution
             self.summary(generation)
-
-        with open(f"{basepath}iterations.csv", "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerows(iterations)
-
+        
         return best_scores
 
     def summary(self, generation=""):
@@ -1946,7 +1947,8 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
         )
     datagen.fit(x_train)
 
-    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    my_dataset = Datasets(training=[x_train[0:10000], y_train[0:10000]], test=[x_test[0:1000], y_test[0:1000]])
+    #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
                         filemode='w+', level=logging.INFO,
