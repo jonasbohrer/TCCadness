@@ -1062,7 +1062,7 @@ class Population:
             if module.weighted_scores != [99,0]:
                  module.use_count == 1
             else module.use_count == 0
-        for blueprint in self.blueprint:
+        for blueprint in self.blueprints:
             if blueprint.weighted_scores != [99,0]:
                  blueprint.use_count == 1
             else blueprint.use_count == 0                
@@ -2032,12 +2032,12 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
 
     try:
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 100, validation_split)
+        population.train_full_model(best_model, 100, validation_split, custom_fit_args)
     except:
         population.individuals.remove(best_model)
         best_model = population.return_best_individual()
         print(f"Best fitting model chosen for retraining: {best_model.name}")
-        population.train_full_model(best_model, 100, validation_split)
+        population.train_full_model(best_model, 100, validation_split, custom_fit_args)
   
 if __name__ == "__main__":
 
