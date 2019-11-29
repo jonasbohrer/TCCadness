@@ -658,9 +658,12 @@ class Population:
             choice.use_count += 1
             return choice
         elif prefer_unused:
+            use_counts[0].use_count += 1
             return use_counts[0]
         else:
-            return random.choice(self.modules)
+            choice = random.choice(self.modules)
+            choice.use_count += 1
+            return choice
 
     def return_random_blueprint(self, prefer_unused=True):
         unused = [blueprint for blueprint in self.blueprints if blueprint.use_count == 0]
@@ -672,9 +675,12 @@ class Population:
             choice.use_count += 1
             return choice
         elif prefer_unused:
+            use_counts[0].use_count += 1
             return use_counts[0]
         else:
-            return random.choice(self.blueprints)
+            choice = random.choice(self.blueprints)
+            choice.use_count += 1
+            return choice
 
     def return_individual(self, name):
         for individual in self.individuals:
@@ -1051,6 +1057,16 @@ class Population:
             species.update_weighted_scores()
             species.score_log = []
 
+    def reset_usage(self):
+        for module in self.modules:
+            if module.weighted_scores != [99,0]:
+                 module.use_count == 1
+            else module.use_count == 0
+        for blueprint in self.blueprint:
+            if blueprint.weighted_scores != [99,0]:
+                 blueprint.use_count == 1
+            else blueprint.use_count == 0                
+
     def iterate_generations(self, generations=1, training_epochs=1, validation_split=0.15):
         """
         Manages generation iterations, applying the genetic algorithm in fact.
@@ -1087,6 +1103,7 @@ class Population:
 
             # Update weighted scores of species
             self.update_shared_fitness()
+            self.reset_usage()
 
             # Save best model
             # [name, blueprint_mark, score[test_loss, test_val], history]
