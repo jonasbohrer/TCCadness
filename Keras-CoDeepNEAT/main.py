@@ -1061,11 +1061,13 @@ class Population:
         for module in self.modules:
             if module.weighted_scores != [99,0]:
                  module.use_count == 1
-            else module.use_count == 0
+            else:
+                 module.use_count == 0
         for blueprint in self.blueprints:
             if blueprint.weighted_scores != [99,0]:
                  blueprint.use_count == 1
-            else blueprint.use_count == 0                
+            else:
+                 blueprint.use_count == 0                
 
     def iterate_generations(self, generations=1, training_epochs=1, validation_split=0.15):
         """
