@@ -5,3 +5,11 @@
 *.csv
 *.h5
 Keras-CoDeepNEAT/runs/large_sample_run/test.log
+Keras-CoDeepNEAT/runs/CIFAR-10_model_summary.txt
+Keras-CoDeepNEAT/runs/cifar_40gen_20k_samples_best_run_training.json
+Keras-CoDeepNEAT/runs/mnist_40gen_20k_semaples_training.json
+Keras-CoDeepNEAT/Views.twb
+Keras-CoDeepNEAT/training.json
+Keras-CoDeepNEAT/test.log
+Keras-CoDeepNEAT/main.py
+Keras-CoDeepNEAT/main.py
