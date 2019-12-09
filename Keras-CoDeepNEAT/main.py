@@ -17,43 +17,6 @@ basepath = "./"     #"/dbfs/FileStore/"
 SAMPLE_SIZE = 10000
 TEST_SAMPLE_SIZE = 1000
 
-input_configs = {
-    "module_range" : ([1, 1], 'int'),
-    "component_range" : ([1, 1], 'int')
-}
-
-global_configs = {
-    "module_range" : ([1, 1], 'int'),
-    "component_range" : ([1, 1], 'int')
-}
-
-output_configs = {
-    "module_range" : ([1, 1], 'int'),
-    "component_range" : ([1, 1], 'int')
-}
-
-possible_inputs = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([1], 'list'), "activation": (["relu"], 'list')})
-}
-
-possible_components = {
-    "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
-    #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
-}
-
-possible_outputs = {
-    "dense": (keras.layers.Dense, {"units": ([32,128], 'int'), "activation": (["relu"], 'list')})
-}
-
-possible_complementary_outputs = {
-    "dense": (keras.layers.Dense, {"units": ([10,10], 'int'), "activation": (["softmax"], 'list')})
-}
-
-possible_complementary_components = {
-    #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
-    "dropout": (keras.layers.Dropout, {"rate": ([0, 0.7], 'float')})
-}
-
 class HistoricalMarker:
     
     def __init__(self):
@@ -124,22 +87,6 @@ class Component(object):
         self.complementary_component = complementary_component
         self.keras_complementary_component = keras_complementary_component
         self.component_type = component_type
-    
-    def compare_to(self, component):
-        if self.representation[0] == component.representation[0]:
-            score = []
-            for n in self.representation[1]:
-                if self.representation[1][n] == component.representation[1][n]:
-                    score.append(1)
-                elif possible_components[self.component_type][1][n][1] == "int": 
-                    ranges = possible_components[self.component_type][1][n][0]
-                    scale = max(ranges) - min(ranges)
-                    score.append(1 - abs(self.representation[1][n] - component.representation[1][n])/scale)
-                else:
-                    score.append(0)
-            return sum(score)/len(score)
-        else:
-            return 0
 
     def get_layer_size(self):
         if self.component_type == "conv2d":
@@ -165,21 +112,6 @@ class Module(object):
     
     def __getitem__(self, item):
         return self.components[item]
-    
-    def compare_to(self, module):
-        nodes = self.component_graph.nodes()
-        obj_module_node_defs = [module.component_graph.nodes[node]["node_def"] for node in module.component_graph.nodes()]
-        
-        if self.mark == module.mark:
-            return 1
-        else:
-            score = []
-            for node in nodes:
-                scores = [nodes[node]["node_def"].compare_to(obj_node_def) for obj_node_def in obj_module_node_defs]
-                score.append(max(scores))
-
-            #print(score)
-            return sum(score)/len(score)
 
     def get_module_size(self):
         module_size = 0
@@ -542,35 +474,7 @@ class Population:
         self.population_size = population_size
         self.compiler = compiler
 
-    def create(self, size: int =1):
-        """
-        Creates a specific population of individuals.
-        """
-        pass
-
-    def create_random(self, size: int =1):
-        """
-        Creates a random population of individuals.
-        """
-        pass
-
-    def create_random_blueprints(self, size=1, compiler=None):
-
-        new_individuals = []
-
-        for n in range(size):
-
-            #Create a blueprint
-            input_shape = self.input_shape
-            new_blueprint = GraphOperator().random_blueprint(global_configs, possible_components, possible_complementary_components, input_shape)
-
-            #Create individual with the Blueprint
-            new_individual = Individual(blueprint=new_blueprint, name=n, compiler=compiler)
-            new_individuals.append(new_individual)
-
-        self.individuals = new_individuals
-
-    def create_module_population(self, size=1):
+    def create_module_population(self, size, global_configs, possible_components, possible_complementary_components):
         """
         Creates a population of modules to be used in blueprint populations.
         Can be evolved over generations.
@@ -590,7 +494,9 @@ class Population:
         #print(new_modules)
         self.modules = new_modules
 
-    def create_blueprint_population(self, size=1):
+    def create_blueprint_population(self, size, global_configs, possible_components, possible_complementary_components,
+                                    input_configs, possible_inputs, possible_complementary_inputs,
+                                    output_configs, possible_outputs, possible_complementary_outputs):
         """
         Creates a population of blueprints to be used in individual populations.
         Can be evolved over generations.
@@ -607,10 +513,17 @@ class Population:
             new_blueprint = GraphOperator().random_blueprint(global_configs,
                                                             possible_components, 
                                                             possible_complementary_components, 
+                                                            input_configs,
+                                                            possible_inputs,
+                                                            possible_complementary_inputs,
+                                                            output_configs,
+                                                            possible_outputs,
+                                                            possible_complementary_outputs,
                                                             input_shape,
                                                             node_content_generator=self.return_random_module,
                                                             args={},
                                                             name=mark)
+
             new_blueprint.mark = mark
             new_blueprints.append(new_blueprint)
 
@@ -692,41 +605,6 @@ class Population:
     def return_best_individual(self):
         best_fitting = max(self.individuals, key=lambda indiv: (indiv.scores[1], -indiv.scores[0]))
         return best_fitting
-
-    def iterate_fitness(self, training_epochs=1, validation_split=0.15, current_generation=0):
-        """
-        Fits the individuals and generates scores.
-
-        returns a list composed of [invidual name, test scores, training history]
-        """
-
-        logging.info(f"Iterating fitness over {len(self.individuals)} individuals")
-        iteration = []
-
-        #(batch, channels, rows, cols)
-        # Please murder me for this part I deserve it (random.sample doesn't work aaaah!!!)
-        i = random.randint(0,59999-SAMPLE_SIZE)
-        j = random.randint(0,9999-TEST_SAMPLE_SIZE)
-        input_x = self.datasets.training[0][i:i+SAMPLE_SIZE]
-        input_y = self.datasets.training[1][i:i+SAMPLE_SIZE]
-        test_x = self.datasets.test[0][j:j+TEST_SAMPLE_SIZE]
-        test_y = self.datasets.test[1][j:j+TEST_SAMPLE_SIZE]
-
-        for individual in self.individuals:
-            if (self.datasets.custom_fit_args is not None):
-                history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation, custom_fit_args=self.datasets.custom_fit_args)
-            else:
-                history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation)
-            score = individual.score(test_x, test_y)
-
-            iteration.append([individual.name,
-                              individual.blueprint.mark,
-                              score,
-                              individual.blueprint.get_kmeans_representation(),
-                              (None if individual.blueprint.species == None else individual.blueprint.species.name),
-                              current_generation])
-
-        return iteration
 
     def apply_kmeans_speciation(self, items, n_clusters, species_type):
         """
@@ -871,12 +749,6 @@ class Population:
 
         return None
 
-    def evaluate(self):
-        """
-        Choses which individuals will be kept in the population.
-        """
-        pass
-
     def crossover(self, items, species_list, marker_function, percent=0.2):
         """
         Generates new objects based on existing objects.
@@ -969,7 +841,7 @@ class Population:
         #Append the offspring to the population.
         self.blueprints = self.blueprints + offspring
     
-    def mutate_modules(self, percent=0.5):
+    def mutate_modules(self, percent, elitism_rate, possible_components, possible_complementary_components):
         """
         Mutates existing individuals.
         """
@@ -987,7 +859,7 @@ class Population:
             #Keep the 10% best intact
             candidates = self.modules
             candidates.sort(key=lambda x: (x.weighted_scores[1], -x.weighted_scores[0]), reverse=True)
-            candidates = candidates[max(1, int(len(candidates)/10)):]
+            candidates = candidates[max(1, int(len(candidates)*elitism_rate)):]
             
             candidates = random.sample(candidates, k=round(len(self.modules)*percent))
 
@@ -1008,7 +880,7 @@ class Population:
         else:
             pass
     
-    def mutate_blueprints(self, percent=0.5):
+    def mutate_blueprints(self, percent, elitism_rate, possible_components, possible_complementary_components):
         """
         Mutates existing individuals.
         """
@@ -1025,7 +897,7 @@ class Population:
             #Keep the 10% best intact
             candidates = self.blueprints
             candidates.sort(key=lambda x: (x.weighted_scores[1], -x.weighted_scores[0]), reverse=True)
-            candidates = candidates[max(1, int(len(candidates)/10)):]
+            candidates = candidates[max(1, int(len(candidates)*elitism_rate)):]
             
             candidates = random.sample(candidates, k=round(len(self.blueprints)*percent))
 
@@ -1069,7 +941,42 @@ class Population:
             else:
                  blueprint.use_count == 0                
 
-    def iterate_generations(self, generations=1, training_epochs=1, validation_split=0.15):
+    def iterate_fitness(self, training_epochs=1, validation_split=0.15, current_generation=0):
+        """
+        Fits the individuals and generates scores.
+
+        returns a list composed of [invidual name, test scores, training history]
+        """
+
+        logging.info(f"Iterating fitness over {len(self.individuals)} individuals")
+        iteration = []
+
+        #(batch, channels, rows, cols)
+        # Please murder me for this part I deserve it (random.sample doesn't work aaaah!!!)
+        i = random.randint(0,59999-SAMPLE_SIZE)
+        j = random.randint(0,9999-TEST_SAMPLE_SIZE)
+        input_x = self.datasets.training[0][i:i+SAMPLE_SIZE]
+        input_y = self.datasets.training[1][i:i+SAMPLE_SIZE]
+        test_x = self.datasets.test[0][j:j+TEST_SAMPLE_SIZE]
+        test_y = self.datasets.test[1][j:j+TEST_SAMPLE_SIZE]
+
+        for individual in self.individuals:
+            if (self.datasets.custom_fit_args is not None):
+                history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation, custom_fit_args=self.datasets.custom_fit_args)
+            else:
+                history = individual.fit(input_x, input_y, training_epochs, validation_split, current_generation=current_generation)
+            score = individual.score(test_x, test_y)
+
+            iteration.append([individual.name,
+                              individual.blueprint.mark,
+                              score,
+                              individual.blueprint.get_kmeans_representation(),
+                              (None if individual.blueprint.species == None else individual.blueprint.species.name),
+                              current_generation])
+
+        return iteration
+
+    def iterate_generations(self, generations=1, training_epochs=1, validation_split=0.15, mutation_rate=0.5, crossover_rate=0.2, elitism_rate=0.1):
         """
         Manages generation iterations, applying the genetic algorithm in fact.
 
@@ -1123,12 +1030,12 @@ class Population:
 
             # Crossover, mutate and update species.
             if generation != generations:
-                self.crossover_modules()
-                self.mutate_modules()
+                self.crossover_modules(crossover_rate)
+                self.mutate_modules(mutation_rate, elitism_rate, possible_components, possible_complementary_components)
                 self.update_module_species()
 
-                self.crossover_blueprints()
-                self.mutate_blueprints()
+                self.crossover_blueprints(crossover_rate)
+                self.mutate_blueprints(mutation_rate, elitism_rate, possible_components, possible_complementary_components)
                 self.update_blueprint_species()
 
         return best_scores
@@ -1287,7 +1194,7 @@ class GraphOperator:
 
         return new_graph
 
-    def random_module(self, global_configs, possible_nodes, possible_complementary_components, name=0, layer_type=ModuleComposition.INTERMED):
+    def random_module(self, global_configs, possible_components, possible_complementary_components, name=0, layer_type=ModuleComposition.INTERMED):
 
         node_range = self.random_parameter_def(global_configs, "component_range")
         logging.log(21, f"Generating {node_range} components")
@@ -1295,7 +1202,7 @@ class GraphOperator:
 
         graph = self.random_graph(node_range=node_range,
                                             node_content_generator=self.random_component,
-                                            args = {"possible_components": possible_nodes,
+                                            args = {"possible_components": possible_components,
                                                     "possible_complementary_components": possible_complementary_components})
 
         self.save_graph_plot(f"module_{name}_{self.count}_module_internal_graph.png", graph)
@@ -1304,7 +1211,10 @@ class GraphOperator:
 
         return new_module
 
-    def random_blueprint(self, global_configs, possible_components, possible_complementary_components, input_shape, node_content_generator=None, args={}, name=0):
+    def random_blueprint(self, global_configs, possible_components, possible_complementary_components,
+                        input_configs, possible_inputs, possible_complementary_inputs,
+                        output_configs, possible_outputs, possible_complementary_outputs,
+                        input_shape, node_content_generator=None, args={}, name=0):
 
         node_range = self.random_parameter_def(global_configs, "module_range")
         logging.log(21, f"Generating {node_range} modules")
@@ -1313,13 +1223,13 @@ class GraphOperator:
         if (node_content_generator == None):
             node_content_generator = self.random_module
             args = {"global_configs": global_configs,
-                                                    "possible_nodes": possible_components,
-                                                    "possible_complementary_components": possible_complementary_components}
+                    "possible_components": possible_components,
+                    "possible_complementary_components": possible_complementary_components}
 
         input_node = self.random_graph(node_range=1,
                                             node_content_generator=self.random_module,
                                             args = {"global_configs": input_configs,
-                                                    "possible_nodes": possible_inputs,
+                                                    "possible_components": possible_inputs,
                                                     "possible_complementary_components": None,
                                                     "layer_type": ModuleComposition.INPUT})
         #self.save_graph_plot(f"blueprint_{name}_input_module.png", input_node)
@@ -1332,7 +1242,7 @@ class GraphOperator:
         output_node = self.random_graph(node_range=1,
                                             node_content_generator=self.random_module,
                                             args = {"global_configs": output_configs,
-                                                    "possible_nodes": possible_outputs,
+                                                    "possible_components": possible_outputs,
                                                     "possible_complementary_components": possible_complementary_outputs,
                                                     "layer_type": ModuleComposition.OUTPUT})
         #self.save_graph_plot(f"blueprint_{name}_output_module.png", output_node)
@@ -1459,402 +1369,43 @@ class GraphOperator:
 
         return new_graph
 
-def run_cifar10_tests(global_configs, possible_components, population_size, generations, training_epochs):
-    from keras.datasets import cifar10
-
-    possible_inputs = {
-        "conv2d": (keras.layers.Conv2D, {"filters": ([48,48], 'int'), "kernel_size": ([3], 'list'), "activation": (["relu"], 'list')})
-    }
-
-    possible_components = {
-        "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
-        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
-    }
-
-    possible_outputs = {
-        "dense": (keras.layers.Dense, {"units": ([1,1], 'int'), "activation": (["softmax"], 'list')})
-    }
-    
-    # The data, split between train and test sets:
-    (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-    (x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
-    print('x_train shape:', x_train.shape)
-    print(x_train.shape[0], 'train samples')
-    print(x_test.shape[0], 'test samples')
-
-    batch_size = 32
-    num_classes = 10
-    data_augmentation = False
-    num_predictions = 20
-
-    # Convert class vectors to binary class matrices.
-    y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
-
-    x_train = x_train.astype('float32')
-    x_test = x_test.astype('float32')
-    x_train /= 255
-    x_test /= 255
-
-    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
-
-    logging.basicConfig(filename='test.log',
-                        filemode='w+', level=logging.INFO,
-                        format='%(levelname)s - %(asctime)s: %(message)s')
-    logging.addLevelName(21, "TOPOLOGY")
-
-    logging.warning('This will get logged to a file')
-    logging.info(f"Hi, this is a test run.")
-
-    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-
-    population = Population(my_dataset, input_shape=x_train.shape[1:])
-
-    n_blueprint_species = 3
-    n_module_species = 3
-
-    ###########
-    # MODULES #
-    ###########
-    
-    # Start with random modules
-    population.create_module_population(10)
-
-    #Test: original module selection
-    module = random.choice(population.modules)
-    GraphOperator().save_graph_plot("test_module_original.png", module.component_graph)
-    args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
-    generator_function = GraphOperator().random_component
-    #Test: mutation by removal
-    try:
-        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-        mutated_graph = GraphOperator().mutate_by_node_removal(module.component_graph, generator_function=generator_function)
-        print(f"mutation by removal; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_module_mutate_by_node_removal.png", mutated_graph)
-    except:
-        print("Mutation by removal didn't work (possibly too few nodes)")
-
-    #Test: mutation by addition
-    print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(module.component_graph, generator_function=generator_function, args=args))
-    print(f"mutation by addition; edges: {mutated_graph.edges()}")
-    GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_in_edges.png", mutated_graph)
-
-    #Test: mutation by addition 2
-    print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, generator_function=generator_function, args = args))
-    print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
-    GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_outside_edges.png", mutated_graph)
-
-    #Start module species
-    population.create_module_species(n_module_species)
-    for species in population.module_species:
-        print(f"Initial Module Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
-
-    #Add unspeciated members
-    current_population = population.modules
-    population.create_module_population(5)
-    population.modules = population.modules + current_population
-
-    #Test Speciation
-    population.update_module_species()
-    for species in population.module_species:
-        print(f"Re-Speciated Module Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
-
-    #Add unspeciated members through Crossover
-    population.crossover_modules()
-    population.update_module_species()
-    print(f"Post-Crossover Modules: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
-
-    ##############
-    # BLUEPRINTS #
-    ##############
-
-    # Start with random blueprints from modules
-    population.create_blueprint_population(5)
-
-    #Test: original blueprint selection
-    blueprint = random.choice(population.blueprints)
-    GraphOperator().save_graph_plot("test_blueprint_original.png", blueprint.module_graph)
-    args = {}
-    generator_function = population.return_random_module
-
-    #Test: mutation by removal
-    print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-    mutated_graph = GraphOperator().mutate_by_node_removal(blueprint.module_graph, generator_function=generator_function)
-    print(f"mutation by removal; edges: {mutated_graph.edges()}")
-    GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_removal.png", mutated_graph)
-
-    #Test: mutation by addition
-    print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(blueprint.module_graph, generator_function=generator_function, args=args))
-    print(f"mutation by addition; edges: {mutated_graph.edges()}")
-    GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_in_edges.png", mutated_graph)
-
-    #Test: mutation by addition 2
-    print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-    mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(blueprint.module_graph, generator_function=generator_function, args=args))
-    print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
-    GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
-
-    #Start blueprint species
-    population.create_blueprint_species(n_blueprint_species)
-    for species in population.blueprint_species:
-        print(f"Initial Blueprint Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[item.species.name for item in population.blueprints]}")
-
-    #Add unspeciated members
-    current_population = population.blueprints
-    population.create_blueprint_population(5)
-    population.blueprints = population.blueprints + current_population
-
-    #Test Speciation
-    population.update_blueprint_species()
-    for species in population.blueprint_species:
-        print(f"Re-Speciated Blueprint Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[item.species.name for item in population.blueprints]}")
-
-    #Add unspeciated members through Crossover
-    previous_population = population.blueprints
-    population.crossover_blueprints()
-    population.update_blueprint_species()
-    print(f"Post-Crossover Blueprints: {[item.mark for item in population.modules]}. \nSpecies: {[item.species.name for item in population.modules]}")
-
-    #Select a child and its parents and generate models from their blueprints.
-    for item in population.blueprints:
-        if item.parents != None:
-            Individual(blueprint=item, compiler=compiler).generate()
-            Individual(blueprint=item.parents[0], compiler=compiler).generate()
-            Individual(blueprint=item.parents[1], compiler=compiler).generate()
-
-            break
-
-    exit(0)
-
-    ###############
-    # POPULATIONS #
-    ###############
-
-    # Start with random blueprints from modules
-    population.create_individual_population(5, compiler)
-
-    iteration = population.iterate_generations(generations=generations, training_epochs=training_epochs, validation_split=0.15)
-    
-    print("Best fitting: ", iteration)
-
-def run_cifar10_crossover_tests(global_configs, possible_components, population_size, generations, training_epochs):
-    from keras.datasets import cifar10
-
-    possible_inputs = {
-        "conv2d": (keras.layers.Conv2D, {"filters": ([48,48], 'int'), "kernel_size": ([3], 'list'), "activation": (["relu"], 'list')})
-    }
-
-    possible_components = {
-        "conv2d": (keras.layers.Conv2D, {"filters": ([8, 48], 'int'), "kernel_size": ([1], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list')}),
-        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
-    }
-
-    possible_outputs = {
-        "dense": (keras.layers.Dense, {"units": ([1,1], 'int'), "activation": (["softmax"], 'list')})
-    }
-    
-    # The data, split between train and test sets:
-    (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-    (x_train, y_train), (x_test, y_test) = (x_train[0:1000], y_train[0:1000]), (x_test[0:100], y_test[0:100])
-    print('x_train shape:', x_train.shape)
-    print(x_train.shape[0], 'train samples')
-    print(x_test.shape[0], 'test samples')
-
-    batch_size = 32
-    num_classes = 10
-    data_augmentation = False
-    num_predictions = 20
-
-    # Convert class vectors to binary class matrices.
-    y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
-
-    x_train = x_train.astype('float32')
-    x_test = x_test.astype('float32')
-    x_train /= 255
-    x_test /= 255
-
-    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
-
-    logging.basicConfig(filename='test.log',
-                        filemode='w+', level=logging.INFO,
-                        format='%(levelname)s - %(asctime)s: %(message)s')
-    logging.addLevelName(21, "TOPOLOGY")
-
-    logging.warning('This will get logged to a file')
-    logging.info(f"Hi, this is a test run.")
-
-    compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-
-    population = Population(my_dataset, input_shape=x_train.shape[1:])
-
-    n_blueprint_species = 3
-    n_module_species = 3
-
-    ###########
-    # MODULES #
-    ###########
-    
-    # Start with random modules
-    population.create_module_population(10)
-
-    #Test: original module selection
-    module = random.choice(population.modules)
-    GraphOperator().save_graph_plot("test_module_original.png", module.component_graph)
-    args = {"possible_components": possible_components, "possible_complementary_components": possible_complementary_components}
-    generator_function = GraphOperator().random_component
-    #Test: mutation by removal
-    try:
-        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-        mutated_graph = GraphOperator().mutate_by_node_removal(module.component_graph, generator_function=generator_function)
-        print(f"mutation by removal; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_module_mutate_by_node_removal.png", mutated_graph)
-    except:
-        print("Mutation by removal didn't work (possibly too few nodes)")
-
-    #Test: mutation by addition
-    try:
-        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-        mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(module.component_graph, generator_function=generator_function, args=args))
-        print(f"mutation by addition; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_in_edges.png", mutated_graph)
-    except:
-        print("Mutation by addition didn't work (possibly too few nodes)")
-
-    #Test: mutation by addition 2
-    try:
-        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-        mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(module.component_graph, generator_function=generator_function, args = args))
-        print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_module_mutate_by_node_addition_outside_edges.png", mutated_graph)
-    except:
-        print("Mutation by addition didn't work (possibly too few nodes)")
-
-    #Test: mutation by node replacement
-    try:
-        print(f"module: {module.mark}, graph nodes: {module.component_graph.nodes()}, \ngraph edges: {module.component_graph.edges()}")
-        mutated_graph = (GraphOperator().mutate_by_node_replacement(module.component_graph, generator_function=generator_function, args = args))
-        print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("mutate_by_node_replacement.png", mutated_graph)
-    except:
-        print("Mutation by addition didn't work (possibly too few nodes)")
-
-    #Start module species
-    population.create_module_species(n_module_species)
-    for species in population.module_species:
-        print(f"Initial Module Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
-
-    #Add unspeciated members
-    current_population = population.modules
-    population.create_module_population(5)
-    population.modules = population.modules + current_population
-
-    #Test Speciation
-    population.update_module_species()
-    for species in population.module_species:
-        print(f"Re-Speciated Module Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Modules: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
-
-    #Add unspeciated members through Crossover
-    population.crossover_modules()
-    population.update_module_species()
-    print(f"Post-Crossover Modules: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
-
-    ##############
-    # BLUEPRINTS #
-    ##############
-
-    # Start with random blueprints from modules
-    population.create_blueprint_population(5)
-
-    #Test: original blueprint selection
-    blueprint = random.choice(population.blueprints)
-    GraphOperator().save_graph_plot("test_blueprint_original.png", blueprint.module_graph)
-    args = {}
-    generator_function = population.return_random_module
-
-    #Test: mutation by removal
-    try:
-        print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-        mutated_graph = GraphOperator().mutate_by_node_removal(blueprint.module_graph, generator_function=generator_function)
-        print(f"mutation by removal; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_removal.png", mutated_graph)
-    except:
-        print("Mutation by removal didn't work (possibly too few nodes)")
-
-    #Test: mutation by addition
-    try:
-        print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-        mutated_graph = (GraphOperator().mutate_by_node_addition_in_edges(blueprint.module_graph, generator_function=generator_function, args=args))
-        print(f"mutation by addition; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_in_edges.png", mutated_graph)
-    except:
-        print("Mutation by addition didn't work (possibly too few nodes)")
-
-    #Test: mutation by addition 2
-    try:
-        print(f"blueprint: {blueprint.mark}, graph nodes: {blueprint.module_graph.nodes()}, \ngraph edges: {blueprint.module_graph.edges()}")
-        mutated_graph = (GraphOperator().mutate_by_node_addition_outside_edges(blueprint.module_graph, generator_function=generator_function, args=args))
-        print(f"mutation by addition 2; edges: {mutated_graph.edges()}")
-        GraphOperator().save_graph_plot("test_blueprint_mutate_by_node_addition_outside_edges.png", mutated_graph)
-    except:
-        print("Mutation by addition didn't work (possibly too few nodes)")
-        
-    #Start blueprint species
-    population.create_blueprint_species(n_blueprint_species)
-    for species in population.blueprint_species:
-        print(f"Initial Blueprint Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.blueprints]}")
-
-    #Add unspeciated members
-    current_population = population.blueprints
-    population.create_blueprint_population(5)
-    population.blueprints = population.blueprints + current_population
-
-    #Test Speciation
-    population.update_blueprint_species()
-    for species in population.blueprint_species:
-        print(f"Re-Speciated Blueprint Species {species.name}: {[item.mark for item in species.group]}")
-    print(f"Blueprints: {[item.mark for item in population.blueprints]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.blueprints]}")
-
-    #Add unspeciated members through Crossover
-    previous_population = population.blueprints
-    population.crossover_blueprints()
-    population.update_blueprint_species()
-    print(f"Post-Crossover Blueprints: {[item.mark for item in population.modules]}. \nSpecies: {[[None if item.species == None else item.species.name] for item in population.modules]}")
-
-    #Select a child and its parents and generate models from their blueprints.
-    for item in population.blueprints:
-        if item.parents != None:
-            Individual(blueprint=item, compiler=compiler).generate()
-            Individual(blueprint=item.parents[0], compiler=compiler).generate()
-            Individual(blueprint=item.parents[1], compiler=compiler).generate()
-
-            break
-
-    exit(0)
-
-    ###############
-    # POPULATIONS #
-    ###############
-
-    # Start with random blueprints from modules
-    population.create_individual_population(5, compiler)
-
-    iteration = population.iterate_generations(generations=generations, training_epochs=training_epochs, validation_split=0.15)
-    
-    print("Best fitting: ", iteration)
-
 def run_cifar10_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species):
     from keras.datasets import cifar10
+
+    #Set parameter tables
+    global_configs = {
+        "module_range" : ([1, 1], 'int'),
+        "component_range" : ([1, 1], 'int')
+    }
+    input_configs = {
+    "module_range" : ([1, 1], 'int'),
+    "component_range" : ([1, 1], 'int')
+    }
+    output_configs = {
+        "module_range" : ([1, 1], 'int'),
+        "component_range" : ([1, 1], 'int')
+    }
+
+    possible_components = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
+        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
+    }
+    possible_inputs = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([1], 'list'), "activation": (["relu"], 'list')})
+    }
+    possible_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([32,128], 'int'), "activation": (["relu"], 'list')})
+    }
+
+    possible_complementary_components = {
+        #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
+        "dropout": (keras.layers.Dropout, {"rate": ([0, 0.5], 'float')})
+    }
+    possible_complementary_inputs = None
+    possible_complementary_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([10,10], 'int'), "activation": (["softmax"], 'list')})
+    }
+
     
     # The data, split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
@@ -1886,8 +1437,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
         )
     datagen.fit(x_train)
 
-    my_dataset = Datasets(training=[x_train[0:20000], y_train[0:20000]], test=[x_test[0:20000], y_test[0:20000]])
-    #my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
+    my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
                         filemode='w+', level=logging.INFO,
@@ -1920,15 +1470,23 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
     population = Population(my_dataset, input_shape=x_train.shape[1:], population_size=population_size, compiler=compiler)
   
     # Start with random modules
-    population.create_module_population(module_population_size)
+    population.create_module_population(module_population_size, global_configs, possible_components, possible_complementary_components)
     population.create_module_species(n_module_species)
 
     # Start with random modules
-    population.create_blueprint_population(blueprint_population_size)
+    population.create_blueprint_population(blueprint_population_size,
+                                            global_configs, possible_components, possible_complementary_components,
+                                            input_configs, possible_inputs, possible_complementary_inputs,
+                                            output_configs, possible_outputs, possible_complementary_outputs)
     population.create_blueprint_species(n_blueprint_species)
 
     # Iterate generating, fitting, scoring, speciating, reproducing and mutating.
-    iteration = population.iterate_generations(generations=generations, training_epochs=training_epochs, validation_split=validation_split)
+    iteration = population.iterate_generations(generations=generations,
+                                                training_epochs=training_epochs,
+                                                validation_split=validation_split,
+                                                mutation_rate=0.5,
+                                                crossover_rate=0.2,
+                                                elitism_rate=0.1)
 
     print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", (iteration))
 
@@ -1950,6 +1508,41 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
 def run_mnist_full(generations, training_epochs, population_size, blueprint_population_size, module_population_size, n_blueprint_species, n_module_species):
     from keras.datasets import mnist
+
+    #Set parameter tables
+    global_configs = {
+        "module_range" : ([1, 1], 'int'),
+        "component_range" : ([1, 1], 'int')
+    }
+    input_configs = {
+    "module_range" : ([1, 1], 'int'),
+    "component_range" : ([1, 1], 'int')
+    }
+    output_configs = {
+        "module_range" : ([1, 1], 'int'),
+        "component_range" : ([1, 1], 'int')
+    }
+
+    possible_components = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([2, 3, 5], 'list'), "strides": ([1], 'list'), "data_format": (['channels_last'], 'list'), "padding": (['same'], 'list'), "activation": (["relu"], 'list')}),
+        #"dense": (keras.layers.Dense, {"units": ([8, 48], 'int')})
+    }
+    possible_inputs = {
+        "conv2d": (keras.layers.Conv2D, {"filters": ([16,48], 'int'), "kernel_size": ([1], 'list'), "activation": (["relu"], 'list')})
+    }
+    possible_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([32,128], 'int'), "activation": (["relu"], 'list')})
+    }
+
+    possible_complementary_components = {
+        #"maxpooling2d": (keras.layers.MaxPooling2D, {"pool_size": ([2], 'list')}),
+        "dropout": (keras.layers.Dropout, {"rate": ([0, 0.5], 'float')})
+    }
+    possible_complementary_inputs = None
+    possible_complementary_outputs = {
+        "dense": (keras.layers.Dense, {"units": ([10,10], 'int'), "activation": (["softmax"], 'list')})
+    }
+
     
     # The data, split between train and test sets:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -1982,7 +1575,6 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
         )
     datagen.fit(x_train)
 
-    #my_dataset = Datasets(training=[x_train[0:1000], y_train[0:1000]], test=[x_test[0:100], y_test[0:100]])
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
     logging.basicConfig(filename='test.log',
@@ -2014,15 +1606,23 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
     population = Population(my_dataset, input_shape=x_train.shape[1:], population_size=population_size, compiler=compiler)
     
     # Start with random modules
-    population.create_module_population(module_population_size)
+    population.create_module_population(module_population_size, global_configs, possible_components, possible_complementary_components)
     population.create_module_species(n_module_species)
 
     # Start with random modules
-    population.create_blueprint_population(blueprint_population_size)
+    population.create_blueprint_population(blueprint_population_size,
+                                            global_configs, possible_components, possible_complementary_components,
+                                            input_configs, possible_inputs, possible_complementary_inputs,
+                                            output_configs, possible_outputs, possible_complementary_outputs)
     population.create_blueprint_species(n_blueprint_species)
 
     # Iterate generating, fitting, scoring, speciating, reproducing and mutating.
-    iteration = population.iterate_generations(generations=generations, training_epochs=training_epochs, validation_split=validation_split)
+    iteration = population.iterate_generations(generations=generations,
+                                                training_epochs=training_epochs,
+                                                validation_split=validation_split,
+                                                mutation_rate=0.5,
+                                                crossover_rate=0.2,
+                                                elitism_rate=0.1)
 
     print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", (iteration))
 
@@ -2043,13 +1643,13 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
   
 if __name__ == "__main__":
 
-    generations = 20
-    training_epochs = 2
-    population_size = 6
+    generations = 2
+    training_epochs = 1
+    population_size = 1
     blueprint_population_size = 10
     module_population_size = 30
-    n_blueprint_species = 3
-    n_module_species = 4
+    n_blueprint_species = 1
+    n_module_species = 1
 
     def create_dir(dir):
         if not os.path.exists(os.path.dirname(dir)):
