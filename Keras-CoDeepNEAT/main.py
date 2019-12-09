@@ -1439,7 +1439,7 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
-    logging.basicConfig(filename='test.log',
+    logging.basicConfig(filename='execution.log',
                         filemode='w+', level=logging.INFO,
                         format='%(levelname)s - %(asctime)s: %(message)s')
     logging.addLevelName(21, "TOPOLOGY")
@@ -1449,8 +1449,8 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":"keras.optimizers.Adam(lr=0.005)", "metrics":["accuracy"]}
 
-    es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience=15)
-    mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+    es = EarlyStopping(monitor='val_acc', mode='auto', verbose=1, patience=15)
+    mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='auto', verbose=1, save_best_only=True)
     csv_logger = CSVLogger('training.log')
 
     custom_fit_args = {"generator": datagen.flow(x_train, y_train, batch_size=batch_size),
@@ -1579,7 +1579,7 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
 
     my_dataset = Datasets(training=[x_train, y_train], test=[x_test, y_test])
 
-    logging.basicConfig(filename='test.log',
+    logging.basicConfig(filename='execution.log',
                         filemode='w+', level=logging.INFO,
                         format='%(levelname)s - %(asctime)s: %(message)s')
     logging.addLevelName(21, "TOPOLOGY")
@@ -1589,8 +1589,8 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
 
     compiler = {"loss":"categorical_crossentropy", "optimizer":"keras.optimizers.Adam(lr=0.005)", "metrics":["accuracy"]}
 
-    es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience=15)
-    mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+    es = EarlyStopping(monitor='val_acc', mode='auto', verbose=1, patience=15)
+    mc = ModelCheckpoint('best_model_checkpoint.h5', monitor='val_accuracy', mode='auto', verbose=1, save_best_only=True)
     csv_logger = CSVLogger('training.log')
 
     custom_fit_args = {"generator": datagen.flow(x_train, y_train, batch_size=batch_size),
