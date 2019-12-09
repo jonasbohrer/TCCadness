@@ -14,8 +14,8 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, CSVLogger
 from keras import regularizers
 
 basepath = "./"     #"/dbfs/FileStore/"
-SAMPLE_SIZE = 10000
-TEST_SAMPLE_SIZE = 1000
+SAMPLE_SIZE = 100
+TEST_SAMPLE_SIZE = 10
 
 class HistoricalMarker:
     
@@ -546,8 +546,8 @@ class Population:
         K.clear_session()
         ## TODO: change the parameterization of the compiler variable.
         # Currently here because the Optimizer needs to be instantiated in every TFGraph crated, because K.clear_session deletes it.
-        # compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
-        compiler["optimizer"] = eval(compiler['optimizer'])
+        compiler = {"loss":"categorical_crossentropy", "optimizer":keras.optimizers.Adam(lr=0.005), "metrics":["accuracy"]}
+        #compiler["optimizer"] = eval(compiler['optimizer'])
 
         for n in range(size):
 
@@ -976,7 +976,7 @@ class Population:
 
         return iteration
 
-    def iterate_generations(self, generations=1, training_epochs=1, validation_split=0.15, mutation_rate=0.5, crossover_rate=0.2, elitism_rate=0.1):
+    def iterate_generations(self, generations=1, training_epochs=1, validation_split=0.15, mutation_rate=0.5, crossover_rate=0.2, elitism_rate=0.1, possible_components=None, possible_complementary_components=None):
         """
         Manages generation iterations, applying the genetic algorithm in fact.
 
@@ -1486,7 +1486,9 @@ def run_cifar10_full(generations, training_epochs, population_size, blueprint_po
                                                 validation_split=validation_split,
                                                 mutation_rate=0.5,
                                                 crossover_rate=0.2,
-                                                elitism_rate=0.1)
+                                                elitism_rate=0.1,
+                                                possible_components=possible_components,
+                                                possible_complementary_components=possible_complementary_components)
 
     print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", (iteration))
 
@@ -1622,7 +1624,9 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
                                                 validation_split=validation_split,
                                                 mutation_rate=0.5,
                                                 crossover_rate=0.2,
-                                                elitism_rate=0.1)
+                                                elitism_rate=0.1,
+                                                possible_components=possible_components,
+                                                possible_complementary_components=possible_complementary_components)
 
     print("Best fitting: (Individual name, Blueprint mark, Scores[test loss, test acc], History).\n", (iteration))
 
@@ -1644,12 +1648,12 @@ def run_mnist_full(generations, training_epochs, population_size, blueprint_popu
 if __name__ == "__main__":
 
     generations = 2
-    training_epochs = 1
+    training_epochs = 2
     population_size = 1
     blueprint_population_size = 10
     module_population_size = 30
-    n_blueprint_species = 1
-    n_module_species = 1
+    n_blueprint_species = 3
+    n_module_species = 3
 
     def create_dir(dir):
         if not os.path.exists(os.path.dirname(dir)):
